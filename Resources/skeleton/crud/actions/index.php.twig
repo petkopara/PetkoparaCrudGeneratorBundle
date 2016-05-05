@@ -1,0 +1,105 @@
+
+    /**
+     * Lists all {{ entity }} entities.
+     *
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}")
+     * @Method("GET")
+{% endif %}
+     */
+    public function indexAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('e');
+{% if with_filter == true %}
+        list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
+{% endif %}
+
+        list(${{ entity_pluralized }}, $pagerHtml) = $this->paginator($queryBuilder, $request);
+        
+{% if bundle_views == false%}
+        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/index.html.twig', array(
+{%else%}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', array(
+{% endif %}
+            '{{ entity_pluralized }}' => ${{ entity_pluralized }},
+            'pagerHtml' => $pagerHtml,
+{% if with_filter == true %}
+            'filterForm' => $filterForm->createView(),
+{% endif %}
+
+        ));
+    }
+
+{% if with_filter == true %}
+    
+    /**
+    * Create filter form and process filter request.
+    *
+    */
+    protected function filter($queryBuilder, $request)
+    {
+        $session = $request->getSession();
+        $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType');
+
+        // Reset filter
+        if ($request->get('filter_action') == 'reset') {
+            $session->remove('{{ entity }}ControllerFilter');
+        }
+
+        // Filter action
+        if ($request->get('filter_action') == 'filter') {
+            // Bind values from the request
+            $filterForm->submit($request->query->get($filterForm->getName()));
+
+            if ($filterForm->isValid()) {
+                // Build the query from the given form object
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+                // Save filter to session
+                $filterData = $filterForm->getData();
+                $session->set('{{ entity }}ControllerFilter', $filterData);
+            }
+        } else {
+            // Get filter from session
+            if ($session->has('{{ entity }}ControllerFilter')) {
+                $filterData = $session->get('{{ entity }}ControllerFilter');
+                $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType', $filterData);
+                $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
+            }
+        }
+
+        return array($filterForm, $queryBuilder);
+    }
+{% endif %}
+
+    /**
+    * Get results from paginator and get paginator view.
+    *
+    */
+    protected function paginator($queryBuilder, $request)
+    {
+        // Paginator
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+        $pagerfanta = new Pagerfanta($adapter);
+        $currentPage = $request->get('page', 1);
+        $pagerfanta->setCurrentPage($currentPage);
+        $entities = $pagerfanta->getCurrentPageResults();
+
+        // Paginator - route generator
+        $me = $this;
+        $routeGenerator = function($page) use ($me)
+        {
+            return $me->generateUrl('{{ route_name_prefix }}', array('page' => $page));
+        };
+
+        // Paginator - view
+        $translator = $this->get('translator');
+        $view = new TwitterBootstrap3View();
+        $pagerHtml = $view->render($pagerfanta, $routeGenerator, array(
+            'proximity' => 3,
+            'prev_message' => 'previous',
+            'next_message' => 'next',
+        ));
+
+        return array($entities, $pagerHtml);
+    }

@@ -1,0 +1,25 @@
+
+    /**
+     * Finds and displays a {{ entity }} entity.
+     *
+{% if 'annotation' == format %}
+     * @Route("/{id}", name="{{ route_name_prefix }}_show")
+     * @Method("GET")
+{% endif %}
+     */
+    public function showAction({{ entity_class }} ${{ entity_singularized }})
+    {
+{% if 'delete' in actions %}
+        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
+{% endif %}
+{% if bundle_views == false%}
+        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/show.html.twig', array(
+{%else%}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
+{% endif %}
+            '{{ entity_singularized }}' => ${{ entity_singularized }},
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{% endif %}
+        ));
+    }

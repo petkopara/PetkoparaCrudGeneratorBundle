@@ -1,0 +1,9 @@
+<a  onclick="return confirm('Are you sure!');" title="Delete" class="btn btn-danger btn-sm" href="{{ "{{ path('"~ route_name_prefix ~"_by_id_delete', { 'id': " ~ entity_singularized ~ "."~ identifier ~"}) }}" }}">
+    <i class="fa fa-trash-o"></i>
+</a>
+<a title='show' class="btn btn-success btn-sm" href="{{ "{{ path('"~ route_name_prefix ~"_show', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">
+    <i class="fa fa-eye"></i>
+</a>
+<a  title='edit' class="btn btn-primary btn-sm" href="{{ "{{ path('"~ route_name_prefix ~"_edit', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">
+    <i class="fa fa-pencil"></i>
+</a>

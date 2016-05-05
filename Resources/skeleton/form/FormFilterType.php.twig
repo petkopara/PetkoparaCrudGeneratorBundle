@@ -1,0 +1,42 @@
+<?php
+
+namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
+
+
+class {{ form_class }} extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+        {%- for data in fields_data %}
+
+            ->add('{{ data.fieldName }}', {{ data.filterWidget }})
+
+        {%- endfor %}
+
+        ;
+
+
+    }
+
+    public function getBlockPrefix()
+    {
+        return '{{ form_filter_type_name }}';
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'csrf_protection' => false,
+            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
+        ));
+    }
+}

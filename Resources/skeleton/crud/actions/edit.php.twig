@@ -1,0 +1,33 @@
+
+    /**
+     * Displays a form to edit an existing {{ entity }} entity.
+     *
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
+     * @Method({"GET", "POST"})
+{% endif %}
+     */
+    public function editAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
+    {
+        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
+        $editForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}Type', ${{ entity_singularized }});
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist(${{ entity_singularized }});
+            $em->flush();
+            
+            $this->get('session')->getFlashBag()->add('success', 'Edited Successfully!');
+            return $this->redirectToRoute('{{ route_name_prefix }}_edit', array('id' => ${{ entity_singularized }}->getId()));
+        }
+{% if bundle_views == false%}
+        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig', array(
+{%else%}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
+{% endif %}
+            '{{ entity_singularized }}' => ${{ entity_singularized }},
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }

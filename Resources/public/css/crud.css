@@ -1,0 +1,23 @@
+.filters-right {
+    float: right;
+}
+.likepaginator {
+    margin: 18px 0;
+    float: right;
+}
+.float-left {
+    float: left;
+    margin: 5px;
+}
+.form-errors {
+    padding: 5px;
+}
+.form-errors > ul {
+    list-style: none;
+}
+form.well ul li {
+    border-radius: 3px 3px 3px 3px;
+    padding: 1px 4px 2px;
+    color: #FFFFFF;
+    background-color: #B94A48;
+}

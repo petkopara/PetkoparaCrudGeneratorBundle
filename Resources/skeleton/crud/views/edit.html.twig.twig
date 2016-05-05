@@ -1,0 +1,51 @@
+{{ "{% extends '"~  base_template  ~ "' %}" }}
+
+{{ "{% block title %}" }}
+{{ "{{ parent() }}" }} -  Edit {{ entity_singularized }}
+{{ "{% endblock %}" }}
+
+{{ "{% block body %}" }}
+
+<section class="panel">
+
+    <header class="panel-heading">
+        <h2> {{ entity }} Edit</h2>
+    </header>
+    <div class="panel-body">
+
+        {{ '{% if form_errors(edit_form) %}' }}
+        <div class="alert alert-block alert-error fade in form-errors">
+            {{ '{{ form_errors(edit_form) }}' }}
+        </div>
+        {{ '{% endif %}' }}
+
+        {{ "{% for flash_message in app.session.flashbag.get('error') %}" }}
+        <div class="alert alert-error ">
+            {{ ' {{ flash_message }}' }}
+        </div>
+        {{ '{% endfor %}' }}
+        {{ "{% for flash_message in app.session.flashbag.get('success') %}" }}
+        <div class="alert alert-success ">
+            {{ ' {{ flash_message }}' }}
+        </div>
+        {{ ' {% endfor %}' }}
+
+
+        {{ "{{ form_start(edit_form) }}" }}
+
+        {{ "{{ form_widget(edit_form) }}" }}
+        <p>
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-floppy-o"></i> Edit
+            </button>
+        </p>
+        {{ "{{ form_end(edit_form) }}" }}
+
+
+        {% set hide_edit, hide_delete, hide_new = true, false, false %}
+        {% include 'crud/views/others/record_actions.html.twig.twig' %}
+    </div>
+
+</section>
+
+{{ "{% endblock %}" }}

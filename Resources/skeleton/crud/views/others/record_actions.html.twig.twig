@@ -1,0 +1,29 @@
+<div class="form-group">
+    <a class="btn btn-default" href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        Back to list
+    </a>
+    {% if ('edit' in actions) and (not hide_edit) %}
+        <a class="btn btn-success" href="{{ "{{ path('"~ route_name_prefix ~"_edit', { 'id':  " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Edit
+        </a>
+    {% endif %}
+    {% if ('new' in actions) and (not hide_new) %}
+        <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            New
+        </a>
+    {% endif %}
+    {% if ('delete' in actions) and (not hide_delete) %}
+    </div>
+    <div class="form-group">
+        <form action="{{ "{{ path('"~ route_name_prefix ~"_delete', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ '{{ form_widget(delete_form) }}' }}
+            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure');">
+                <i class="fa fa-trash-o"></i> 
+                Delete</button>
+        </form>
+    {% endif %}
+</div>

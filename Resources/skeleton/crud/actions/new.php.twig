@@ -1,0 +1,32 @@
+
+    /**
+     * Displays a form to create a new {{ entity }} entity.
+     *
+{% if 'annotation' == format %}
+     * @Route("/new", name="{{ route_name_prefix }}_new")
+     * @Method({"GET", "POST"})
+{% endif %}
+     */
+    public function newAction(Request $request)
+    {
+    
+        ${{ entity_singularized }} = new {{ entity_class }}();
+        $form   = $this->createForm('{{ namespace }}\Form\{{ entity_class }}Type', ${{ entity_singularized }});
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist(${{ entity_singularized }});
+            $em->flush();
+
+            return $this->redirectToRoute('{{route_name_prefix}}_show', array('id' => ${{ entity_singularized }}->getId()));
+        }
+{% if bundle_views == false%}
+        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig', array(
+{%else%}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', array(
+{% endif %}
+            '{{ entity_singularized }}' => ${{ entity_singularized }},
+            'form'   => $form->createView(),
+        ));
+    }

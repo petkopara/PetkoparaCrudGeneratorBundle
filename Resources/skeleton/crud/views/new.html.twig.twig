@@ -1,0 +1,27 @@
+{{ "{% extends '"~  base_template  ~ "' %}" }}
+
+{{ "{% block title %}" }}
+{{ "{{ parent() }}" }} - New {{ entity_singularized }}
+{{ "{% endblock %}" }}
+
+{{ "{% block body %}" }}
+<section class="panel">
+    <header class="panel-heading">
+        <h2>New {{ entity_singularized }}</h2>
+    </header>
+    <div class="panel-body">
+        {{ "{{ form_start(form) }}" }}
+        {{ "{{ form_widget(form) }}" }}
+        <p>
+            <button type="submit" class="btn btn-success"> <i class="fa fa-plus-square-o" aria-hidden="true"></i> Submit</button>
+        </p>
+        {{ "{{ form_end(form) }}" }}
+
+
+        {% set hide_edit, hide_delete, hide_new = true, true, true %}
+        {% include 'crud/views/others/record_actions.html.twig.twig' %}
+    </div>
+</section>
+
+
+{{ "{% endblock %}" }}
