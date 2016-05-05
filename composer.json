@@ -1,6 +1,6 @@
 {
     "name": "Triton/crud-generator",
-    "description": "This bundle generates a nice CRUD",
+    "description": "Flexible bundle for CRUD generation",
     "keywords": ["crud", "generator"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -11,20 +11,22 @@
         }
     ],
     "require": {
-        "symfony/symfony": ">2.2.0",
-        "sensio/generator-bundle": ">2.2.0",
+        "symfony/symfony": ">=2.8.0",
+        "sensio/generator-bundle": ">=3.0.0",
         "pagerfanta/pagerfanta": "1.0.*@dev",
         "lexik/form-filter-bundle": "~5.0",
-        "doctrine/orm": ">=2.2.3"
+        "doctrine/orm": ">=2.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.*"
+        "phpunit/phpunit": "4.8.*"
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "JordiLlonch\\Bundle\\CrudGeneratorBundle": "" }
+        "psr-0": {
+            "Petkopara\\Bundle\\TritonCrudBundle": ""
+        }
     },
-    "target-dir": "JordiLlonch/Bundle/CrudGeneratorBundle",
+    "target-dir": "Petkopara/Bundle/TrutonCrudBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.3.x-dev"
