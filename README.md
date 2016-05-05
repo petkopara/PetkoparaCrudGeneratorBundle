@@ -1,8 +1,8 @@
 # CrudGeneratorBundle
 Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter bootstrap 3.3.6 features.
+It's highly customizable and flexible. 
 
-
-[![Build Status](https://secure.travis-ci.org/Triton/CrudGeneratorBundle.png?branch=master)](http://travis-ci.org/Triton/CrudGeneratorBundle)
+[![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
 
 
 ## Screenshot
@@ -10,6 +10,7 @@ Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter
 ![Screenshot](https://raw.github.com/Triton/CrudGeneratorBundle/master/screenshot.png "Screenshot")
 
 ## Installation
+This bundle is compatible with Symfony 2.8/3.0 or higher.
 
 ### Using composer
 
