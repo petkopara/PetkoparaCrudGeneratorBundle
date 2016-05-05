@@ -1,8 +1,6 @@
 # CrudGeneratorBundle
+Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter bootstrap 3.3.6 features.
 
-This Symfony2 bundle aims to be the bundle that you are looking for create a nice CRUD with pagination, filter, translation and Twitter bootstrap 2.2.2 features.
-
-This bundle is inspired in an article wrote by Ricard Clau: [Extending SensioGeneratorBundle for our Admin Areas](http://www.ricardclau.com/2012/03/extending-sensiogeneratorbundle-for-our-admin-areas/)
 
 [![Build Status](https://secure.travis-ci.org/Triton/CrudGeneratorBundle.png?branch=master)](http://travis-ci.org/Triton/CrudGeneratorBundle)
 
@@ -11,53 +9,19 @@ This bundle is inspired in an article wrote by Ricard Clau: [Extending SensioGen
 
 ![Screenshot](https://raw.github.com/Triton/CrudGeneratorBundle/master/screenshot.png "Screenshot")
 
-## Why use a CRUD generator?
-
-Well, because CRUD generator creates simple code, no magic, no configuration files, just simple and plain code that you can extend and modify easily.
-
-
 ## Installation
 
 ### Using composer
 
 Add following lines to your `composer.json` file:
 
-#### Symfony >= 2.5
+#### Symfony >= 2.8 
 
     "require": {
       ...
       "Triton/crud-generator": "dev-master"
     },
 
-#### Symfony 2.4
-
-    "require": {
-      ...
-      "Triton/crud-generator": "2.4.*"
-    },
-
-#### Symfony 2.3
-
-    "require": {
-      ...
-      "Triton/crud-generator": "2.3.*"
-    },
-
-#### Symfony 2.2
-
-    "require": {
-      ...
-      "Triton/crud-generator": "2.2.*"
-    },
-    "minimum-stability": "dev",
-
-#### Symfony 2.1
-
-    "require": {
-      ...
-      "Triton/crud-generator": "2.1.*"
-    },
-    "minimum-stability": "dev",
 
 Execute:
 
@@ -66,19 +30,15 @@ Execute:
 Add it to the `AppKernel.php` class:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
-    new JordiLlonch\Bundle\CrudGeneratorBundle\JordiLlonchCrudGeneratorBundle(),
+    new Petkopara\Bundle\Crud\PetkoparaTritonCrudBundle(),
 
 Add it to your `app/config/config.yml`
 
-    framework:
-        translator: { fallback: en }
-
     twig:
-        form:
-            resources:
-                - LexikFormFilterBundle:Form:form_div_layout.html.twig
+        form_themes:
+			- 'bootstrap_3_layout.html.twig' 
 
-**This bundle works on Symfony 2.1, 2.2, 2.3, 2.4 and >= 2.5 version.**
+**This bundle works on Symfony 2.8 and >= 3.0 version.**
 
 
 ## Dependencies
