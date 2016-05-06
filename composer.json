@@ -18,15 +18,15 @@
         "doctrine/orm": ">=2.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.2.*"
+        "phpunit/phpunit": "5.3.*"
     },
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Petkopara\\Bundle\\TritonCrudBundle": ""
+            "Triton\\Bundle\\CrudBundle": ""
         }
     },
-    "target-dir": "Petkopara/Bundle/TrutonCrudBundle",
+    "target-dir": "Triton/Bundle/CrudBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.3.x-dev"
