@@ -105,6 +105,7 @@ EOT
     }
 
     protected function interact(InputInterface $input, OutputInterface $output) {
+
         $questionHelper = $this->getQuestionHelper();
         $questionHelper->writeSection($output, 'Welcome to the Triton CRUD generator');
 
@@ -125,9 +126,11 @@ EOT
         $question = new Question($questionHelper->getQuestion('The Entity shortcut name', $input->getOption('entity')), $input->getOption('entity'));
         $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'));
 
-        $autocompleter = new EntitiesAutoCompleter($this->getContainer()->get('doctrine')->getManager());
-        $autocompleteEntities = $autocompleter->getSuggestions();
-        $question->setAutocompleterValues($autocompleteEntities);
+//        die(var_dump($this->getContainer()->get('doctrine')->getManager()));
+
+//        $autocompleter = new EntitiesAutoCompleter($this->getContainer()->get('doctrine')->getManager());
+//        $autocompleteEntities = $autocompleter->getSuggestions();
+//        $question->setAutocompleterValues($autocompleteEntities);
         $entity = $questionHelper->ask($input, $output, $question);
 
         $input->setOption('entity', $entity);
