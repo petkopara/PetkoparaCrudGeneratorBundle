@@ -35,7 +35,8 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, $baseTemplate = null, $bundleViews = false, $withFilter = true, $withBulkDelete = true) {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
-        $this->withBulkDelete = $withBulkDelete;
+
+        $this->withBulkDelete = $needWriteActions ? $withBulkDelete : false;
 
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
         if ($needWriteActions and $withBulkDelete) {
@@ -142,16 +143,16 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             case 'datetime':
             case 'vardatetime':
             case 'datetimetz':
-                return 'Filters\DateTimeRangeFilterType::class';
+                return 'Filters\DateTimeFilterType::class';
             case 'date':
-                return 'Filters\DateRangeFilterType::class';
+                return 'Filters\DateFilterType::class';
                 break;
             case 'decimal':
             case 'float':
             case 'integer':
             case 'bigint':
             case 'smallint':
-                return 'Filters\NumberRangeFilterType::class';
+                return 'Filters\NumberFilterType::class';
                 break;
             case 'string':
             case 'text':
