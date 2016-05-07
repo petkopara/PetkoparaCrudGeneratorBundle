@@ -13,7 +13,7 @@
     "require": {
         "symfony/symfony": "~2.7|~3.0",
         "sensio/generator-bundle": "~3.0",
-        "pagerfanta/pagerfanta": "~1.0.*@dev",
+        "pagerfanta/pagerfanta": "1.0.*@dev",
         "lexik/form-filter-bundle": "~5.0",
         "doctrine/orm": "~2.4.0"
     },
