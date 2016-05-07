@@ -18,7 +18,7 @@
         "doctrine/orm": ">=2.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.3.*"
+        "phpunit/phpunit": "5.2.*"
     },
     "minimum-stability": "dev",
     "autoload": {
@@ -29,7 +29,7 @@
     "target-dir": "Triton/Bundle/CrudBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     }
 }
