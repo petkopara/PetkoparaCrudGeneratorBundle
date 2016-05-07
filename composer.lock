@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d28c32b52d8c50f5057cb22307f6fa60",
-    "content-hash": "b0910ccd7f9ce5818e0810624df45fb1",
+    "hash": "eebb46f4928c0cb19781f4b0945fe551",
+    "content-hash": "006eac6b3b76574f3e9d2a495365df2e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2402,7 +2402,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pagerfanta/pagerfanta": 20
+        "pagerfanta/pagerfanta": 20,
+        "triton/crud-generator": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
