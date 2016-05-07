@@ -1,5 +1,5 @@
 {
-    "name": "Triton/crud-generator",
+    "name": "triton/crud-generator",
     "description": "Flexible bundle for CRUD generation",
     "keywords": ["crud", "generator"],
     "type": "symfony-bundle",
