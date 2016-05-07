@@ -3,7 +3,7 @@ Symfony3 CRUD generator bundle with pagination, filter, bulk delete and Twitter 
 It's highly customizable and flexible. 
 
 [![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
-
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
 
 ## Screenshot
 

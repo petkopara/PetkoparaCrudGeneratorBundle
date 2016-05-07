@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "eebb46f4928c0cb19781f4b0945fe551",
-    "content-hash": "006eac6b3b76574f3e9d2a495365df2e",
+    "hash": "b76c90474733049db53a31a180b9a355",
+    "content-hash": "61f2782ea0ef729a4103f4135670391c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1515,16 +1515,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "3.3.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "5c8dd64bb3b3f4842933aa8c2876787b6c479229"
+                "reference": "9eb699e97e0097f05bcf1cd9bbb91c582a48bf9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/5c8dd64bb3b3f4842933aa8c2876787b6c479229",
-                "reference": "5c8dd64bb3b3f4842933aa8c2876787b6c479229",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9eb699e97e0097f05bcf1cd9bbb91c582a48bf9e",
+                "reference": "9eb699e97e0097f05bcf1cd9bbb91c582a48bf9e",
                 "shasum": ""
             },
             "require": {
@@ -1538,7 +1538,7 @@
             },
             "require-dev": {
                 "ext-xdebug": ">=2.1.4",
-                "phpunit/phpunit": "~5"
+                "phpunit/phpunit": "^5.4"
             },
             "suggest": {
                 "ext-dom": "*",
@@ -1548,7 +1548,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -1574,7 +1574,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-05-04 11:47:27"
+            "time": "2016-05-04 12:34:12"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1756,16 +1756,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.3.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6867f2080438ad23132ce39fc8a008a0ea618486"
+                "reference": "82a3aafd187033fd5572ad28dfff7c1989cbf68d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6867f2080438ad23132ce39fc8a008a0ea618486",
-                "reference": "6867f2080438ad23132ce39fc8a008a0ea618486",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/82a3aafd187033fd5572ad28dfff7c1989cbf68d",
+                "reference": "82a3aafd187033fd5572ad28dfff7c1989cbf68d",
                 "shasum": ""
             },
             "require": {
@@ -1777,11 +1777,11 @@
                 "myclabs/deep-copy": "~1.3",
                 "php": "^5.6 || ^7.0",
                 "phpspec/prophecy": "^1.3.1",
-                "phpunit/php-code-coverage": "^3.3.0",
+                "phpunit/php-code-coverage": "^4.0",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-timer": "^1.0.6",
-                "phpunit/phpunit-mock-objects": "^3.1",
+                "phpunit/phpunit-mock-objects": "^3.2",
                 "sebastian/comparator": "~1.1",
                 "sebastian/diff": "~1.2",
                 "sebastian/environment": "~1.3",
@@ -1801,7 +1801,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.3.x-dev"
+                    "dev-master": "5.4.x-dev"
                 }
             },
             "autoload": {
@@ -1827,7 +1827,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-04-29 09:30:44"
+            "time": "2016-05-05 07:36:17"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2402,8 +2402,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pagerfanta/pagerfanta": 20,
-        "triton/crud-generator": 20
+        "pagerfanta/pagerfanta": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
