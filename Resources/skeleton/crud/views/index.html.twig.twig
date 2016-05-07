@@ -24,8 +24,8 @@
             {{ ' {% endfor %}' }}
         </div>
     </div>
-        
-        
+
+
     {% if with_filter == true %}
         <div class="row">
             <div class="col-md-12">
@@ -36,7 +36,7 @@
                 {{ '{% endif %}' }}
             </div>
         </div>
-            
+
         <div class="filters-right">
             <a class="btn dropdown-toggle" data-toggle="collapse" data-target="#filters">
                 Filter
@@ -66,9 +66,9 @@
                 </div>
             </div>
         </div>
-{% endif %}
+    {% endif %}
 
-{% if 'new' in actions %}
+    {% if 'new' in actions %}
         <div class="row">
             <div class="col-md-2 form-group pull-right">
                 <a class="btn btn-primary likepaginator" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
@@ -77,11 +77,11 @@
             </div>
         </div>
 
-{% endif %}
+    {% endif %}
 
-{% if bulk_action == true %}
+    {% if bulk_action == true %}
         <form method="POST" action="{{ "{{ path('"~ route_name_prefix ~"_bulk_action') }}" }} ">
-{% endif %}
+        {% endif %}
 
         <div class="row">
             <div class="col-md-12">
@@ -89,16 +89,16 @@
                 <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                         <tr>
-{% if bulk_action == true %}
+                            {% if bulk_action == true %}
 
                                 <th width="20px"><input type="checkbox" class="check-all" onclick="toggle(this)"></th>
                                 {% endif %}
 
-{%- for field, metadata in fields %}
+                            {%- for field, metadata in fields %}
 
                             <th>{{ field|capitalize }}</th>
 
-{%- endfor %}
+                            {%- endfor %}
 
                             <th width = "130px">List</th>
                         </tr>

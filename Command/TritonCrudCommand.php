@@ -48,7 +48,7 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand {
                     new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
                     new InputOption('with-bulk-delete', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk delete')))
-        ->setHelp(<<<EOT
+                ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
@@ -161,18 +161,21 @@ EOT
         $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate filter', $withFilter ? 'yes' : 'no', '?', $withFilter), $withFilter);
         $withFilter = $questionHelper->ask($input, $output, $question);
         $input->setOption('with-filter', $withFilter);
-
-        // bulk delete?
-        $withBulkDelete = $input->getOption('with-bulk-delete') ? : true;
-        $output->writeln(array(
-            '',
-            'By default, the generator creates bulk delete ',
-            '',
-        ));
-        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk delete', $withBulkDelete ? 'yes' : 'no', '?', $withBulkDelete), $withBulkDelete);
-        $withBulkDelete = $questionHelper->ask($input, $output, $question);
-        $input->setOption('with-bulk-delete', $withBulkDelete);
-
+        
+        //bulk delete
+        if ($withWrite == true) {
+            $withBulkDelete = $input->getOption('with-bulk-delete') ? : true;
+            $output->writeln(array(
+                '',
+                'By default, the generator creates bulk delete ',
+                '',
+            ));
+            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk delete', $withBulkDelete ? 'yes' : 'no', '?', $withBulkDelete), $withBulkDelete);
+            $withBulkDelete = $questionHelper->ask($input, $output, $question);
+            $input->setOption('with-bulk-delete', $withBulkDelete);
+        } else {
+            $withBulkDelete = false;
+        }
 
         // template?
         $template = $input->getOption('template');
