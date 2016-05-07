@@ -4,10 +4,13 @@ It's highly customizable and flexible.
 
 [![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
+[![Latest Stable Version](https://poser.pugx.org/triton/crud-generator/v/stable)](https://packagist.org/packages/triton/crud-generator)
+[![Total Downloads](https://poser.pugx.org/triton/crud-generator/downloads)](https://packagist.org/packages/triton/crud-generator)
+[![License](https://poser.pugx.org/triton/crud-generator/license)](https://packagist.org/packages/triton/crud-generator)
 
 ## Screenshot
 
-![Screenshot](https://raw.github.com/Triton/CrudGeneratorBundle/master/screenshot.png "Screenshot")
+![Screenshot](https://raw.github.com/petkopara/TritonCrudBundle/master/screenshot.png "Screenshot")
 
 ## Installation
 This bundle is compatible with Symfony 2.8/3.0 or higher.
@@ -49,7 +52,7 @@ php bin/console triton:generate:crud
 And follow the wizard steps.
 
 ### Available new options
-The bundle adds few new parameters to the command compared to the doctrine crud generator.
+The bundle adds few new parameters to the generate command compared to the doctrine crud generator.
 
 * `--with-filter` -  Whether or not to generate the filters.
 
