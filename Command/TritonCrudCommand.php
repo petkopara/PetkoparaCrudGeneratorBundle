@@ -47,11 +47,8 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand {
                     new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
                     new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
-                    new InputOption('with-bulk-delete', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk delete'),
-        ));
-
-
-        $this->setHelp(<<<EOT
+                    new InputOption('with-bulk-delete', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk delete')))
+        ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
@@ -79,8 +76,7 @@ And
 __project_root__/app/Resources/TritonCrudBundle/skeleton/form</info>
 
 EOT
-        )
-        ;
+        );
     }
 
     protected function createGenerator($bundle = null) {
@@ -235,7 +231,6 @@ EOT
             $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you confirm generation', 'yes', '?'), true);
             if (!$questionHelper->ask($input, $output, $question)) {
                 $output->writeln('<error>Command aborted</error>');
-
                 return 1;
             }
         }

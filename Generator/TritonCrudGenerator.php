@@ -35,10 +35,9 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, $baseTemplate = null, $bundleViews = false, $withFilter = true, $withBulkDelete = true) {
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
-
         $this->withBulkDelete = $needWriteActions ? $withBulkDelete : false;
-
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
+        
         if ($needWriteActions && $withBulkDelete) {
             array_push($this->actions, 'bulk');
         }
