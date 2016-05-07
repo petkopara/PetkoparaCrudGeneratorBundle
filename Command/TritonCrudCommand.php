@@ -64,7 +64,7 @@ Using the --bundle-views option store the view files in the bundles dir.
                 
 Using the --with-bulk-delete=false  option to not generate bulk delete.
                 
-Using the --template option allows to set base template from which the crud template to overide.
+Using the --template option allows to set base template from which the crud views to overide.
     
 <info>php %command.full_name% doctrine:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
 
@@ -126,11 +126,10 @@ EOT
         $question = new Question($questionHelper->getQuestion('The Entity shortcut name', $input->getOption('entity')), $input->getOption('entity'));
         $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'));
 
-//        die(var_dump($this->getContainer()->get('doctrine')->getManager()));
 
-//        $autocompleter = new EntitiesAutoCompleter($this->getContainer()->get('doctrine')->getManager());
-//        $autocompleteEntities = $autocompleter->getSuggestions();
-//        $question->setAutocompleterValues($autocompleteEntities);
+        $autocompleter = new EntitiesAutoCompleter($this->getContainer()->get('doctrine')->getManager());
+        $autocompleteEntities = $autocompleter->getSuggestions();
+        $question->setAutocompleterValues($autocompleteEntities);
         $entity = $questionHelper->ask($input, $output, $question);
 
         $input->setOption('entity', $entity);
@@ -138,7 +137,7 @@ EOT
 
         try {
             $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . '\\' . $entity;
-            $metadata = $this->getEntityMetadata($entityClass);
+            $this->getEntityMetadata($entityClass);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Entity "%s" does not exist in the "%s" bundle. You may have mistyped the bundle name or maybe the entity doesn\'t exist yet (create it first with the "doctrine:generate:entity" command).', $entity, $bundle));
         }

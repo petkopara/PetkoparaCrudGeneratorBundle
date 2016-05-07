@@ -39,7 +39,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->withBulkDelete = $needWriteActions ? $withBulkDelete : false;
 
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
-        if ($needWriteActions and $withBulkDelete) {
+        if ($needWriteActions && $withBulkDelete) {
             array_push($this->actions, 'bulk');
         }
 

@@ -44,20 +44,20 @@ support using [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBu
 
 Use following command from console:
 ```sh
-php bin/console Triton:generate:crud
+php bin/console triton:generate:crud
 ```
 And follow the wizard steps.
 
 ### Available new options
-The bundle adds few new steps to the command wizard compared to the doctrine crud generator.
+The bundle adds few new parameters to the command compared to the doctrine crud generator.
 
 * `--with-filter` -  Whether or not to generate the filters.
 
 * `--with-bulk-delete` - Whether or not to generate bulk delete code.
 
-* `--template` - The base template name, which the views will override (by default TritonCrudBundle::base.html.twig).
+* `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default TritonCrudBundle::base.html.twig).
 
-* `--bundle-views` - Whether or not to store the view files in app/Resources/views/ or in bundle's dir (default in app/Resources/views). It's not present in the wizard, but you can use it as parameter.
+* `--bundle-views` - Whether or not to store the view files in app/Resources/views/ or in bundle's dir (default in app/Resources/views). It's not present in the wizard, but can be used as parameter.
 
 `--with-write` options is enabled by default.
 
@@ -68,4 +68,4 @@ Petko Petkov - petkopara@gmail.com
 
 ## License
 
-CrudGeneratorBundle is licensed under the MIT License. See the LICENSE file for full details.
+TritonCrudBundle is licensed under the MIT License. See the LICENSE file for full details.
