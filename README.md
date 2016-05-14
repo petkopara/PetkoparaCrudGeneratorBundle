@@ -1,6 +1,6 @@
 # CrudGeneratorBundle
-Symfony3 CRUD generator bundle with pagination, filter, bulk delete and Twitter bootstrap 3.3.6 features.
-It's highly customizable and flexible. 
+Symfony3 CRUD generator bundle with pagination, filter, bulk delete and Twitter bootstrap 3.3.6 markup.
+Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
 [![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
@@ -39,13 +39,13 @@ twig:
 
 ## Dependencies
 
-This bundle extends [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle)  .
+This bundle extends [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle). 
 Pagination with [PagerFanta](https://github.com/whiteoctober/Pagerfanta/) and filter
 support using [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle).
 
 ## Usage
 
-Use following command from console:
+Use the following command from console:
 ```sh
 php bin/console triton:generate:crud
 ```
@@ -71,4 +71,4 @@ Petko Petkov - petkopara@gmail.com
 
 ## License
 
-TritonCrudBundle is licensed under the MIT License. See the LICENSE file for full details.
+TritonCrudBundle is licensed under the MIT License.
