@@ -9,11 +9,11 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 [![License](https://poser.pugx.org/triton/crud-generator/license)](https://packagist.org/packages/triton/crud-generator)
 
 ## Features
-* Possibility to set the path for all the generated files (by default in app/Resources).
+* Pagination
+* Filtering
 * Show/hide bulk delete action for multiple rows
+* Possibility to set the path for all the generated files (by default in app/Resources).
 
-## ToDo:
-* Possiblity to show/hide the view action.
 
 ## Screenshot
 
