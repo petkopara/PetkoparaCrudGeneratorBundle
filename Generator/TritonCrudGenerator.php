@@ -59,9 +59,9 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             $this->baseTemplate = $baseTemplate;
         }
 
-        $this->generateControllerClass($forceOverwrite);
-
         $this->bundleViews = $bundleViews;
+
+        $this->generateControllerClass($forceOverwrite);
         //define where to save the view files
         if (!$this->bundleViews) { //save in root Resources
             $dir = sprintf('%s/Resources/views/%s', $this->rootDir, str_replace('\\', '/', strtolower($this->entity)));
