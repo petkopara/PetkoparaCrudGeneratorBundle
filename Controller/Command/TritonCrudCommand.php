@@ -26,6 +26,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 use Triton\Bundle\CrudBundle\Generator\TritonCrudGenerator;
+use Triton\Bundle\CrudBundle\Configuration\GeneratorAdvancedConfiguration;
 
 class TritonCrudCommand extends GenerateDoctrineCrudCommand {
 
@@ -161,7 +162,7 @@ EOT
         $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate filter', $withFilter ? 'yes' : 'no', '?', $withFilter), $withFilter);
         $withFilter = $questionHelper->ask($input, $output, $question);
         $input->setOption('with-filter', $withFilter);
-        
+
         //bulk delete
         if ($withWrite == true) {
             $withBulkDelete = $input->getOption('with-bulk-delete') ? : true;
@@ -246,9 +247,12 @@ EOT
         $withWrite = $input->getOption('with-write');
         $withFilter = $input->getOption('with-filter');
         $withBulkDelete = $input->getOption('with-bulk-delete');
+        $bundleViews = $input->getOption('bundle-views');
 
         $template = $input->getOption('template');
-        $bundleViews = $input->getOption('bundle-views');
+
+        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulkDelete);
+
 
         $forceOverwrite = $input->getOption('overwrite');
 
@@ -265,7 +269,7 @@ EOT
 
         $generator = $this->getGenerator($bundle);
 
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $template, $bundleViews, $withFilter, $withBulkDelete);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $advancedConfig);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 

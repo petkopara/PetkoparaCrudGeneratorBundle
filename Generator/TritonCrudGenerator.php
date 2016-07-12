@@ -8,14 +8,12 @@ use Exception;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Triton\Bundle\CrudBundle\Configuration\GeneratorAdvancedConfiguration;
 
 class TritonCrudGenerator extends DoctrineCrudGenerator {
 
     protected $formFilterGenerator;
-    protected $baseTemplate;
-    protected $bundleViews;
-    protected $withFilter;
-    protected $withBulkDelete;
+    protected $advancedConfig;
 
     /**
      * Same as Doctrine generate method except the view folders name are camelCase
@@ -26,19 +24,16 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
      * @param type $routePrefix
      * @param type $needWriteActions
      * @param type $forceOverwrite
-     * @param type $baseTemplate
-     * @param type $bundleViews
-     * @param type $withFilter
-     * @param type $withBulkDelete
+     * @param GeneratorAdvancedConfiguration $advancedConfig
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, $baseTemplate = null, $bundleViews = false, $withFilter = true, $withBulkDelete = true) {
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, GeneratorAdvancedConfiguration $advancedConfig) {
+        $this->advancedConfig = $advancedConfig;
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
-        $this->withBulkDelete = $needWriteActions ? $withBulkDelete : false;
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
-        
-        if ($needWriteActions && $withBulkDelete) {
+
+        if ($needWriteActions && $advancedConfig->getWithBulkDelete()) {
             array_push($this->actions, 'bulk');
         }
 
@@ -51,19 +46,13 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->entityPluralized = lcfirst(Inflector::pluralize($entity));
         $this->bundle = $bundle;
         $this->metadata = $metadata;
-        $this->withFilter = $withFilter;
 
         $this->setFormat($format);
 
-        if (!empty($baseTemplate)) {
-            $this->baseTemplate = $baseTemplate;
-        }
-
-        $this->bundleViews = $bundleViews;
 
         $this->generateControllerClass($forceOverwrite);
         //define where to save the view files
-        if (!$this->bundleViews) { //save in root Resources
+        if (!$advancedConfig->getBundleViews()) { //save in root Resources
             $dir = sprintf('%s/Resources/views/%s', $this->rootDir, str_replace('\\', '/', strtolower($this->entity)));
         } else { //save in bundle Resources
             $dir = sprintf('%s/Resources/views/%s', $bundle->getPath(), str_replace('\\', '/', $this->entity));
@@ -90,7 +79,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->generateTestClass();
         $this->generateConfiguration();
 
-        if ($this->withFilter) {
+        if ($advancedConfig->getWithFilter()) {
             $this->generateFormFilter($bundle, $entity, $metadata, $forceOverwrite);
         }
     }
@@ -210,9 +199,9 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'record_actions' => $this->getRecordActions(),
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'base_template' => $this->baseTemplate,
-            'bulk_action' => $this->withBulkDelete,
-            'with_filter' => $this->withFilter,
+            'base_template' => $this->advancedConfig->getBaseTemplate(),
+            'bulk_action' => $this->advancedConfig->getWithBulkDelete(),
+            'with_filter' => $this->advancedConfig->getWithFilter(),
         ));
     }
 
@@ -231,7 +220,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'actions' => $this->actions,
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
-            'base_template' => $this->baseTemplate,
+            'base_template' => $this->advancedConfig->getBaseTemplate(),
         ));
     }
 
@@ -249,7 +238,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'route_name_prefix' => $this->routeNamePrefix,
             'actions' => $this->actions,
             'fields' => $this->metadata->fieldMappings,
-            'base_template' => $this->baseTemplate,
+            'base_template' => $this->advancedConfig->getBaseTemplate(),
         ));
     }
 
@@ -268,7 +257,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'fields' => $this->metadata->fieldMappings,
             'bundle' => $this->bundle->getName(),
             'actions' => $this->actions,
-            'base_template' => $this->baseTemplate,
+            'base_template' => $this->advancedConfig->getBaseTemplate(),
         ));
     }
 
@@ -302,8 +291,8 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'namespace' => $this->bundle->getNamespace(),
             'entity_namespace' => $entityNamespace,
             'format' => $this->format,
-            'bundle_views' => $this->bundleViews,
-            'with_filter' => $this->withFilter,
+            'bundle_views' => $this->advancedConfig->getBundleViews(),
+            'with_filter' => $this->advancedConfig->getWithFilter(),
         ));
     }
 
