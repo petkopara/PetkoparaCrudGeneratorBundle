@@ -1,6 +1,6 @@
 <?php
 
-namespace Triton\Bundle\CrudBundle\DependencyInjection;
+namespace Petkopara\TritonCrudBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

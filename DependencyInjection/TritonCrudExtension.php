@@ -1,6 +1,6 @@
 <?php
 
-namespace Triton\Bundle\CrudBundle\DependencyInjection;
+namespace Petkopara\TritonCrudBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

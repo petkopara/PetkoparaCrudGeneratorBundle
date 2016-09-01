@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Triton\Bundle\CrudBundle\Tests\Generator;
+namespace Petkopara\TritonCrudBundle\Tests\Generator;
 
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineFormGenerator;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Triton\Bundle\CrudBundle\Configuration;
+namespace Petkopara\TritonCrudBundle\Configuration;
 
 class GeneratorAdvancedConfiguration {
 
@@ -9,11 +9,11 @@ class GeneratorAdvancedConfiguration {
     protected $withFilter;
     protected $withBulkDelete;
 
-    function __construct($baseTemplate, $bundleViews, $withFilter, $withBulkDelete) {
+    function __construct($baseTemplate, $bundleViews, $withFilter, $withBulkDelete, $needWriteAction) {
         $this->baseTemplate = $baseTemplate;
         $this->bundleViews = $bundleViews;
         $this->withFilter = $withFilter;
-        $this->withBulkDelete = $withBulkDelete;
+        $this->withBulkDelete = $needWriteAction ? $withBulkDelete : false;
     }
 
     public function getBaseTemplate() {
@@ -29,7 +29,7 @@ class GeneratorAdvancedConfiguration {
     }
 
     public function getWithBulkDelete() {
-        return $this->needWriteActions ? $this->withBulkDelete : false;
+        return $this->withBulkDelete;
     }
 
     public function setBaseTemplate($baseTemplate) {

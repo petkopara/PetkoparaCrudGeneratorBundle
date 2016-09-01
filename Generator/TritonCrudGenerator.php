@@ -1,14 +1,14 @@
 <?php
 
-namespace Triton\Bundle\CrudBundle\Generator;
+namespace Petkopara\TritonCrudBundle\Generator;
 
 use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
+use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Triton\Bundle\CrudBundle\Configuration\GeneratorAdvancedConfiguration;
 
 class TritonCrudGenerator extends DoctrineCrudGenerator {
 
@@ -27,7 +27,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
      * @param GeneratorAdvancedConfiguration $advancedConfig
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, GeneratorAdvancedConfiguration $advancedConfig) {
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, GeneratorAdvancedConfiguration $advancedConfig = null) {
         $this->advancedConfig = $advancedConfig;
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);

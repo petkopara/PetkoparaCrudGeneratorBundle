@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Triton\Bundle\CrudBundle\Command;
+namespace Petkopara\TritonCrudBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
@@ -25,8 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
-use Triton\Bundle\CrudBundle\Generator\TritonCrudGenerator;
-use Triton\Bundle\CrudBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
+use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 
 class TritonCrudCommand extends GenerateDoctrineCrudCommand {
 
@@ -78,10 +78,10 @@ __project_root__/app/Resources/TritonCrudBundle/skeleton/form</info>
 
 EOT
         );
-    }
+        }
 
     protected function createGenerator($bundle = null) {
-        return new TritonCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->get('kernel')->getRootDir());
+        return new TritonCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->getParameter('kernel.root_dir'));
     }
 
     protected function getSkeletonDirs(BundleInterface $bundle = null) {
@@ -95,8 +95,8 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@TritonCrudBundle/Resources/skeleton');
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@TritonCrudBundle/Resources');
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaTritonCrudBundle/Resources/skeleton');
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaTritonCrudBundle/Resources');
 
         return $skeletonDirs;
     }
@@ -251,7 +251,7 @@ EOT
 
         $template = $input->getOption('template');
 
-        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulkDelete);
+        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulkDelete, $withWrite);
 
 
         $forceOverwrite = $input->getOption('overwrite');

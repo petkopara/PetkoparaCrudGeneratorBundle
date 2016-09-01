@@ -1,5 +1,5 @@
 <?php
-namespace Triton\Bundle\CrudBundle\Tests\Command;
+namespace Petkopara\TritonCrudBundle\Tests\Command;
 
 use Sensio\Bundle\GeneratorBundle\Tests\Command\GenerateCommandTest;
 use Symfony\Component\Console\Tester\CommandTester;

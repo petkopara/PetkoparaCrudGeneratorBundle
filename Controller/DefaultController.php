@@ -1,6 +1,6 @@
 <?php
 
-namespace Triton\Bundle\CrudBundle\Controller;
+namespace Petkopara\TritonCrudBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
