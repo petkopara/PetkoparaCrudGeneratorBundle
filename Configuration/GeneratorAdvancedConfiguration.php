@@ -9,7 +9,7 @@ class GeneratorAdvancedConfiguration {
     protected $withFilter;
     protected $withBulkDelete;
 
-    function __construct($baseTemplate, $bundleViews, $withFilter, $withBulkDelete, $needWriteAction) {
+    function __construct($baseTemplate = 'TritonCrudBundle::base.html.twig', $bundleViews = false, $withFilter = true, $withBulkDelete = true, $needWriteAction = true) {
         $this->baseTemplate = $baseTemplate;
         $this->bundleViews = $bundleViews;
         $this->withFilter = $withFilter;
