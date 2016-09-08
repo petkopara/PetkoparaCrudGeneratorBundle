@@ -33,7 +33,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
 
-        if ($needWriteActions && $advancedConfig->getWithBulkDelete()) {
+        if ($advancedConfig->getWithBulk()) {
             array_push($this->actions, 'bulk');
         }
 
@@ -75,6 +75,8 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         if (in_array('edit', $this->actions)) {
             $this->generateEditView($dir);
         }
+
+        die(var_dump($this->actions));
 
         $this->generateTestClass();
         $this->generateConfiguration();
@@ -200,7 +202,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
             'base_template' => $this->advancedConfig->getBaseTemplate(),
-            'bulk_action' => $this->advancedConfig->getWithBulkDelete(),
+            'bulk_action' => $this->advancedConfig->getWithBulk(),
             'with_filter' => $this->advancedConfig->getWithFilter(),
         ));
     }

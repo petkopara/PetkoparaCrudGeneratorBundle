@@ -7,13 +7,13 @@ class GeneratorAdvancedConfiguration {
     protected $baseTemplate;
     protected $bundleViews;
     protected $withFilter;
-    protected $withBulkDelete;
+    protected $withBulk;
 
-    function __construct($baseTemplate = 'TritonCrudBundle::base.html.twig', $bundleViews = false, $withFilter = true, $withBulkDelete = true, $needWriteAction = true) {
+    function __construct($baseTemplate = 'PetkoparaTritonCrudBundle::base.html.twig', $bundleViews = false, $withFilter = true, $withBulk = true, $needWriteAction = true) {
         $this->baseTemplate = $baseTemplate;
         $this->bundleViews = $bundleViews;
         $this->withFilter = $withFilter;
-        $this->withBulkDelete = $needWriteAction ? $withBulkDelete : false;
+        $this->withBulk = $needWriteAction ? $withBulk : false;
     }
 
     public function getBaseTemplate() {
@@ -28,8 +28,8 @@ class GeneratorAdvancedConfiguration {
         return $this->withFilter;
     }
 
-    public function getWithBulkDelete() {
-        return $this->withBulkDelete;
+    public function getWithBulk() {
+        return $this->withBulk;
     }
 
     public function setBaseTemplate($baseTemplate) {
@@ -47,8 +47,8 @@ class GeneratorAdvancedConfiguration {
         return $this;
     }
 
-    public function setWithBulkDelete($withBulkDelete) {
-        $this->withBulkDelete = $withBulkDelete;
+    public function setWithBulk($withBulk) {
+        $this->withBulk = $withBulk;
         return $this;
     }
 

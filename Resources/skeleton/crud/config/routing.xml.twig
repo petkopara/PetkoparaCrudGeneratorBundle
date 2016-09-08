@@ -39,6 +39,18 @@
         <default key="_controller">{{ bundle }}:{{ entity }}:delete</default>
         <requirement key="_method">post|delete</requirement>
     </route>
+        
+    <route id="{{ route_name_prefix }}_by_id_delete" pattern="/{id}/delete">
+        <default key="_controller">{{ bundle }}:{{ entity }}:deleteById</default>
+        <requirement key="_method">get</requirement>
+    </route>
+{% endif %}
+
+{% if 'bulk' in actions %}
+    <route id="{{ route_name_prefix }}_bulk_action" pattern="/bulk-action">
+        <default key="_controller">{{ bundle }}:{{ entity }}:bulk</default>
+        <requirement key="_method">post</requirement>
+    </route>
 {% endif %}
 
 </routes>

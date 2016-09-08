@@ -50,21 +50,15 @@
      * @Method("GET")
 {% endif %}
      */
-    public function deleteById($id){
-
+    public function deleteByIdAction({{ entity }} ${{ entity_singularized }}){
         $em = $this->getDoctrine()->getManager();
-        ${{ entity_singularized }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-        
-        if (!${{ entity_singularized }}) {
-            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-        }
         
         try {
             $em->remove(${{ entity_singularized }});
             $em->flush();
-            $this->get('session')->getFlashBag()->add('success', 'flash.delete.success');
+            $this->get('session')->getFlashBag()->add('success', 'The {{ entity }} was deleted successfully');
         } catch (Exception $ex) {
-            $this->get('session')->getFlashBag()->add('error', 'flash.delete.error');
+            $this->get('session')->getFlashBag()->add('error', 'Problem with deletion of the {{entity}}');
         }
 
         return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));

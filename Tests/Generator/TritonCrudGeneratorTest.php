@@ -179,6 +179,22 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         $this->assertFilterAndPaginator();
     }
 
+    public function testGenerateWithBaseTemplate() {
+        
+    }
+
+    public function testGenerateWithBundleViews() {
+        
+    }
+
+    public function testGenerateWithoutFilter() {
+        
+    }
+    
+    public function testGenerateWithoutDelete(){
+        
+    }
+
     /**
      * @dataProvider getRoutePrefixes
      */

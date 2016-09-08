@@ -42,13 +42,13 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand {
                     new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
                     new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
                     new InputOption('route-prefix', '', InputOption::VALUE_REQUIRED, 'The route prefix'),
-                    new InputOption('template', '', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'TritonCrudBundle::base.html.twig'),
+                    new InputOption('template', '', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
                     new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
                     new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
                     new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
-                    new InputOption('with-bulk-delete', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk delete')))
+                    new InputOption('with-bulk', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions')))
                 ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
@@ -60,7 +60,7 @@ Using the --with-write option allows to generate the new, edit and delete action
                 
 Using the --bundle-views option store the view files in the bundles dir.
                 
-Using the --with-bulk-delete=false  option to not generate bulk delete.
+Using the --with-bulk=false  option to not generate bulk delete.
                 
 Using the --template option allows to set base template from which the crud views to overide.
     
@@ -165,17 +165,17 @@ EOT
 
         //bulk delete
         if ($withWrite == true) {
-            $withBulkDelete = $input->getOption('with-bulk-delete') ? : true;
+            $withBulkActions = $input->getOption('with-bulk') ? false:true;
             $output->writeln(array(
                 '',
-                'By default, the generator creates bulk delete ',
+                'By default, the generator creates bulk actions ',
                 '',
             ));
-            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk delete', $withBulkDelete ? 'yes' : 'no', '?', $withBulkDelete), $withBulkDelete);
-            $withBulkDelete = $questionHelper->ask($input, $output, $question);
-            $input->setOption('with-bulk-delete', $withBulkDelete);
+            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk actions', $withBulkActions ? 'yes' : 'no', '?', $withBulkActions), $withBulkActions);
+            $withBulkActions = $questionHelper->ask($input, $output, $question);
+            $input->setOption('with-bulk', $withBulkActions);
         } else {
-            $withBulkDelete = false;
+            $withBulkActions = false;
         }
 
         // template?
@@ -246,12 +246,12 @@ EOT
         $prefix = $this->getRoutePrefix($input, $entity);
         $withWrite = $input->getOption('with-write');
         $withFilter = $input->getOption('with-filter');
-        $withBulkDelete = $input->getOption('with-bulk-delete');
+        $withBulk = $input->getOption('with-bulk');
         $bundleViews = $input->getOption('bundle-views');
 
         $template = $input->getOption('template');
 
-        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulkDelete, $withWrite);
+        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulk, $withWrite);
 
 
         $forceOverwrite = $input->getOption('overwrite');

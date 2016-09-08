@@ -47,6 +47,21 @@ $collection->add('{{ route_name_prefix }}_delete', new Route(
     array('_controller' => '{{ bundle }}:{{ entity }}:delete'),
     array('_method' => 'post|delete')
 ));
+
+$collection->add('{{ route_name_prefix }}_by_id_delete', new Route(
+    '/{id}/delete',
+    array('_controller' => '{{ bundle }}:{{ entity }}:deleteById'),
+    array('_method' => 'get')
+));
+{% endif %}
+
+{% if 'bulk' in actions %}
+    
+$collection->add('{{ route_name_prefix }}_bulk_action', new Route(
+    '/bulk-action',
+    array('_controller' => '{{ bundle }}:{{ entity }}:bulk'),
+    array('_method' => 'post')
+));
 {% endif %}
 
 return $collection;
