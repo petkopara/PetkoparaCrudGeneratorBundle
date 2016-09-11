@@ -78,7 +78,7 @@ __project_root__/app/Resources/TritonCrudBundle/skeleton/form</info>
 
 EOT
         );
-        }
+    }
 
     protected function createGenerator($bundle = null) {
         return new TritonCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->getParameter('kernel.root_dir'));
@@ -140,7 +140,7 @@ EOT
         }
 
         // write?
-        $withWrite = $input->getOption('with-write') ? : true;
+        $withWrite = $input->getOption('with-write') ? false : true;
         $output->writeln(array(
             '',
             'By default, the generator creates all actions: list and show, new, update, and delete.',
@@ -153,7 +153,7 @@ EOT
 
 
         // filters?
-        $withFilter = $input->getOption('with-filter') ? : true;
+        $withFilter = $input->getOption('with-filter') ? false : true;
         $output->writeln(array(
             '',
             'By default, the generator creates filter',
@@ -165,7 +165,7 @@ EOT
 
         //bulk delete
         if ($withWrite == true) {
-            $withBulkActions = $input->getOption('with-bulk') ? false:true;
+            $withBulkActions = $input->getOption('with-bulk') ? false : true;
             $output->writeln(array(
                 '',
                 'By default, the generator creates bulk actions ',

@@ -76,8 +76,6 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             $this->generateEditView($dir);
         }
 
-        die(var_dump($this->actions));
-
         $this->generateTestClass();
         $this->generateConfiguration();
 
