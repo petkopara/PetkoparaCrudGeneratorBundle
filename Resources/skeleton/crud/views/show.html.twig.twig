@@ -6,10 +6,13 @@
 
 {{ "{% block body %}" }}
 
-<header class="panel-heading">
-    <h2> {{ entity }}</h2>
-</header>
-<div class="panel-body">
+<div id="top" class="row">
+    <div class="page-header">
+        <h2>View {{ entity_singularized }} <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> </h2>
+    </div>
+</div>
+
+<div class="row">
 
     <form class="form form-vertical">
         <fieldset>
@@ -49,11 +52,10 @@
             {%- endfor %}
         </fieldset>
     </form>
-        <hr>
+    <hr>
     {% set hide_edit, hide_delete, hide_new= false, false, false %}
     {% include 'crud/views/others/record_actions.html.twig.twig' %}
 </div>
-<hr>
 
 {{ "{% endblock %}" }}
 

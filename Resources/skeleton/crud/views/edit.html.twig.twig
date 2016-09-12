@@ -37,11 +37,12 @@
     {{ "{{ form_widget(edit_form) }}" }}
     <p>
         <button type="submit" class="btn btn-primary">
-           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Edit
+           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Submit
         </button>
     </p>
     {{ "{{ form_end(edit_form) }}" }}
 
+    <hr/>
 
     {% set hide_edit, hide_delete, hide_new = true, false, false %}
     {% include 'crud/views/others/record_actions.html.twig.twig' %}

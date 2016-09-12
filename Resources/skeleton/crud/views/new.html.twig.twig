@@ -17,14 +17,14 @@
     {{ "{{ form_widget(form) }}" }}
     <p>
         <button type="submit" class="btn btn-primary"> 
-             Submit <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+            Submit <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
         </button>
     </p>
-    
-    
+
+
     {{ "{{ form_end(form) }}" }}
 
-
+    <hr/>
     {% set hide_edit, hide_delete, hide_new = true, true, true %}
     {% include 'crud/views/others/record_actions.html.twig.twig' %}
 </div>
