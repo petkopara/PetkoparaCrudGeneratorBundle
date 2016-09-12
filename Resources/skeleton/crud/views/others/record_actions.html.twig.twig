@@ -1,17 +1,18 @@
 <div class="form-group">
     <a class="btn btn-default" href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">
-        <i class="fa fa-list" aria-hidden="true"></i>
+        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
         Back to list
     </a>
     {% if ('edit' in actions) and (not hide_edit) %}
-        <a class="btn btn-success" href="{{ "{{ path('"~ route_name_prefix ~"_edit', { 'id':  " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
+        <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_edit', { 'id':  " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+
             Edit
         </a>
     {% endif %}
     {% if ('new' in actions) and (not hide_new) %}
-        <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
-            <i class="fa fa-plus" aria-hidden="true"></i>
+        <a class="btn btn-info" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             New
         </a>
     {% endif %}
@@ -20,7 +21,7 @@
             <input type="hidden" name="_method" value="DELETE" />
             {{ '{{ form_widget(delete_form) }}' }}
             <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure');">
-                <i class="fa fa-trash-o"></i> 
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 Delete</button>
         </form>
     {% endif %}
