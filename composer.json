@@ -1,5 +1,5 @@
 {
-    "name": "triton/crud-generator",
+    "name": "petkopara/triton-crud-generator",
     "description": "Symfony3 bundle for CRUD generation with pagination, filtering bulk delete and bootstrap3 markup",
     "keywords": ["crud", "generator", "symfony3", "pagination", "filter"],
     "type": "symfony-bundle",
@@ -21,11 +21,11 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": {
-            "Triton\\Bundle\\CrudBundle": ""
-        }
+        "psr-4": { "Petkopara\\TritonCrudBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
-    "target-dir": "Triton/Bundle/CrudBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
