@@ -1,4 +1,4 @@
-# CrudGeneratorBundle
+# TritonCrudBundle
 Symfony3 CRUD generator bundle with pagination, filter, bulk delete and Twitter bootstrap 3.3.6 markup.
 Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
@@ -10,10 +10,12 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 ## Features
 * Pagination
-* Filtering
-* Show/hide bulk delete action for multiple rows
+* Filtering 
+* Bulk actions(delete) on multiple rows
+* Delete from index
+* Set your base template in the generated views.
 * Possibility to set the path for all the generated files (by default in app/Resources).
-
+* Filtering, bulk a write are optional and you are able skip them.
 
 ## Screenshot
 
@@ -40,8 +42,6 @@ twig:
 	- 'bootstrap_3_layout.html.twig' 
 
 ```
-
-**This bundle works on Symfony 2.8 and >= 3.0 version.**
 
 
 ## Dependencies
