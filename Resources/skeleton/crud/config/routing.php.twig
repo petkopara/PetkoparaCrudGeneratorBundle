@@ -49,7 +49,7 @@ $collection->add('{{ route_name_prefix }}_delete', new Route(
 ));
 
 $collection->add('{{ route_name_prefix }}_by_id_delete', new Route(
-    '/{id}/delete',
+    '/delete/{id}',
     array('_controller' => '{{ bundle }}:{{ entity }}:deleteById'),
     array('_method' => 'get')
 ));

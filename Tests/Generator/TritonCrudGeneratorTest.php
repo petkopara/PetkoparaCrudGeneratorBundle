@@ -53,7 +53,6 @@ class TritonCrudGeneratorTest extends GeneratorTest {
             $this->assertContains($string, $content);
         }
 
-        $this->assertFilterAndPaginator();
     }
 
     public function testGenerateXml() {
@@ -96,7 +95,6 @@ class TritonCrudGeneratorTest extends GeneratorTest {
             $this->assertNotContains($string, $content);
         }
 
-        $this->assertFilterAndPaginator();
     }
 
     public function testGenerateAnnotationWrite() {
@@ -133,7 +131,6 @@ class TritonCrudGeneratorTest extends GeneratorTest {
             $this->assertContains($string, $content);
         }
 
-        $this->assertFilterAndPaginator();
     }
 
     public function testGenerateAnnotation() {
@@ -175,8 +172,6 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
-
-        $this->assertFilterAndPaginator();
     }
 
     public function testGenerateWithBaseTemplate() {

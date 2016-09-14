@@ -1,45 +1,45 @@
 {% if 'index' in actions %}
 {{ route_name_prefix }}:
-    pattern:  /
+    path:  /
     defaults: { _controller: "{{ bundle }}:{{ entity }}:index" }
 {% endif %}
 
 {% if 'show' in actions %}
 {{ route_name_prefix }}_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "{{ bundle }}:{{ entity }}:show" }
 {% endif %}
 
 {% if 'new' in actions %}
 {{ route_name_prefix }}_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "{{ bundle }}:{{ entity }}:new" }
 
 {{ route_name_prefix }}_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "{{ bundle }}:{{ entity }}:create" }
     requirements: { _method: post }
 {% endif %}
 
 {% if 'edit' in actions %}
 {{ route_name_prefix }}_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "{{ bundle }}:{{ entity }}:edit" }
 
 {{ route_name_prefix }}_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "{{ bundle }}:{{ entity }}:update" }
     requirements: { _method: post|put }
 {% endif %}
 
 {% if 'delete' in actions %}
 {{ route_name_prefix }}_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "{{ bundle }}:{{ entity }}:delete" }
     requirements: { _method: post|delete }
     
 {{ route_name_prefix }}_by_id_delete:
-    pattern:  /{id}/delete
+    path:  /delete/{id}
     defaults: { _controller: "{{ bundle }}:{{ entity }}:deleteById" }
     requirements: { _method: get }
     
@@ -47,7 +47,7 @@
 
 {% if 'bulk' in actions %}
 {{ route_name_prefix }}_bulk_action:
-    pattern:  /bulk-action
+    path:  /bulk-action
     defaults: { _controller: "{{ bundle }}:{{ entity }}:bulk" }
     requirements: { _method: post }
     

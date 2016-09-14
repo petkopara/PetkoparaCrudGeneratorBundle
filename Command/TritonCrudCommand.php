@@ -13,25 +13,28 @@
 
 namespace Petkopara\TritonCrudBundle\Command;
 
+use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
+use Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator;
+use Petkopara\TritonCrudBundle\Generator\TritonFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
-use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
-use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 
 class TritonCrudCommand extends GenerateDoctrineCrudCommand {
 
     protected $generator;
     protected $formGenerator;
+    private $filterGenerator;
 
     protected function configure() {
 
@@ -282,6 +285,11 @@ EOT
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
+        if ($withFilter) {
+            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
+            $output->writeln('Generating the Filter code: <info>OK</info>');
+        }
+
         // routing
         $output->write('Updating the routing: ');
         if ('annotation' != $format) {
@@ -291,6 +299,31 @@ EOT
         }
 
         $questionHelper->writeGeneratorSummary($output, $errors);
+    }
+
+    /**
+     * Tries to generate filtlers if they don't exist yet and if we need write operations on entities.
+     */
+    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false) {
+        $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite);
+    }
+
+    protected function getFilterGenerator($bundle = null) {
+        if (null === $this->filterGenerator) {
+            $this->filterGenerator = new TritonFilterGenerator($this->getContainer()->get('filesystem'));
+            $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->filterGenerator;
+    }
+
+    protected function getFormGenerator($bundle = null) {
+        if (null === $this->formGenerator) {
+            $this->formGenerator = new TritonFormGenerator($this->getContainer()->get('filesystem'));
+            $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->formGenerator;
     }
 
 }
