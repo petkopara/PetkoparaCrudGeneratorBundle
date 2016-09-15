@@ -43,6 +43,12 @@ twig:
 
 ```
 
+If you are using the triton base.html.twig for base  template, install the assets.
+```sh
+php bin/console assets:install --symlink
+```
+ 
+**This bundle works on Symfony 2.8 and >= 3.0 version.**
 
 ## Dependencies
 
