@@ -33,7 +33,7 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
 Add it to the `AppKernel.php` class:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
-    new Triton\Bundle\CrudBundle\TritonCrudBundle(),
+    new Petkopara\TritonCrudBundle\PetkoparaTritonCrudBundle(),
 
 Optionally for the bootstrap theme, add this to your `app/config/config.yml`
 ```yaml
