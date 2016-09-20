@@ -48,7 +48,6 @@ If you are using the triton base.html.twig for base  template, install the asset
 php bin/console assets:install --symlink
 ```
  
-**This bundle works on Symfony 2.8 and >= 3.0 version.**
 
 ## Dependencies
 
@@ -67,13 +66,13 @@ And follow the wizard steps.
 ### Available new options
 The bundle adds few new parameters to the generate command compared to the doctrine crud generator.
 
-* `--with-filter` -  Whether or not to generate the filters.
+* `--with-filter` -  To generate the filters.
 
-* `--with-bulk-delete` - Whether or not to generate bulk delete code.
+* `--with-bulk-delete` - To generate bulk delete code.
 
 * `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default TritonCrudBundle::base.html.twig).
 
-* `--bundle-views` - Whether or not to store the view files in app/Resources/views/ or in bundle's dir (default in app/Resources/views). It's not present in the wizard, but can be used as parameter.
+* `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_. It's not present in the wizard, but can be used as parameter.
 
 `--with-write` options is enabled by default.
 
