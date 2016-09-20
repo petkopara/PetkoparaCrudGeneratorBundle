@@ -95,7 +95,7 @@ class TritonFilterGenerator extends Generator {
         return $fieldsData;
     }
 
-    public function getFilterType($dbType, $columnName) {
+    private function getFilterType($dbType, $columnName) {
         switch ($dbType) {
             case 'boolean':
                 return 'Filters\BooleanFilterType::class';

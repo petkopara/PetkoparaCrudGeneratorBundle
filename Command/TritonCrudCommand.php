@@ -319,11 +319,13 @@ EOT
 
     protected function getFormGenerator($bundle = null) {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new TritonFormGenerator($this->getContainer()->get('filesystem'));
+            $this->formGenerator = new TritonFormGenerator($this->getContainer());
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
         return $this->formGenerator;
     }
+    
+    
 
 }

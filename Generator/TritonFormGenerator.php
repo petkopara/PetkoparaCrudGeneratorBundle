@@ -2,9 +2,11 @@
 
 namespace Petkopara\TritonCrudBundle\Generator;
 
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -14,18 +16,21 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class TritonFormGenerator extends Generator
 {
+
     private $filesystem;
     private $className;
     private $classPath;
+    private $container;
 
     /**
      * Constructor.
      *
      * @param Filesystem $filesystem A Filesystem instance
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(ContainerInterface $container)
     {
-        $this->filesystem = $filesystem;
+        $this->container = $container;
+        $this->filesystem = $container->get('filesystem');
     }
 
     public function getClassName()
@@ -52,9 +57,9 @@ class TritonFormGenerator extends Generator
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
-        $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
+        $this->className = $entityClass . 'Type';
+        $dirPath = $bundle->getPath() . '/Form';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
             throw new RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
@@ -66,17 +71,17 @@ class TritonFormGenerator extends Generator
 
         $parts = explode('\\', $entity);
         array_pop($parts);
-
+        $this->getAssociatedFields($metadata);
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields' => $this->getFieldsFromMetadata($metadata),
+            'fields_associated' => $this->getAssociatedFields($metadata),
             'fields_mapping' => $metadata->fieldMappings,
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'form_class' => $this->className,
-            'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.substr($this->className, 0, -4)),
-
+            'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . substr($this->className, 0, -4)),
             // Add 'setDefaultOptions' method with deprecated type hint, if the new 'configureOptions' isn't available.
             // Required as long as Symfony 2.6 is supported.
             'configure_options_available' => method_exists('Symfony\Component\Form\AbstractType', 'configureOptions'),
@@ -101,12 +106,45 @@ class TritonFormGenerator extends Generator
             $fields = array_diff($fields, $metadata->identifier);
         }
 
-        foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
+//        foreach ($metadata->associationMappings as $fieldName => $relation) {
+//            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
+//                $fields[] = $fieldName;
+//            }
+//        }
+
+        return $fields;
+    }
+
+    private function getAssociatedFields(ClassMetadataInfo $metadata)
+    {
+        $fields = array();
+
+        foreach ($metadata->associationMappings as $fieldName => $relation)
+        {
+            if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE) {
+                $fields[$fieldName]['name'] = $fieldName;
+                $fields[$fieldName]['widget'] = 'EntityType::class';
+                $fields[$fieldName]['class'] = $relation['targetEntity'];
+                $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
             }
         }
 
         return $fields;
     }
+
+    private function guessChoiceLabelFromClass($entity)
+    {
+        $factory = new DisconnectedMetadataFactory($this->container->get('doctrine'));
+        $metadata = $factory->getClassMetadata($entity)->getMetadata();
+
+        foreach ($metadata[0]->fieldMappings as $fieldName => $field)
+        {
+            if ($field['type'] == 'string') {
+                return $fieldName;
+            }
+        }
+        //if no string field found, return id
+        return 'id';
+    }
+
 }

@@ -8,6 +8,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 {% if not configure_options_available %}
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 {% endif %}
+{% if fields_associated|length > 0 %}
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+{% endif %}
 use Symfony\Component\OptionsResolver\OptionsResolver;
 {% endblock use_statements %}
 
@@ -24,13 +27,15 @@ class {{ form_class }} extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
-        {%- for field in fields -%}
-
+        {% for field in fields %}
             ->add('{{ field }}')
-
-        {%- endfor %}
-
+        {% endfor %}
+        {% for field in fields_associated %}
+            ->add('{{ field.name }}', {{field.widget}}, array(
+                    'class' => '{{field.class}}',
+                    'choice_label' => '{{field.choice_label}}',
+                )) 
+        {% endfor %}
         ;
     }
     {% endif %}
