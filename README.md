@@ -14,8 +14,8 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 * Bulk actions(delete) on multiple rows
 * Delete from index
 * Set your base template in the generated views.
-* Possibility to set the path for all the generated files (by default in app/Resources).
-* Filtering, bulk a write are optional and you are able skip them.
+* Possibility to set the save path for all the generated files (by default in app/Resources).
+* Filtering, bulk and write are optional and you are able skip them.
 
 ## Screenshot
 
