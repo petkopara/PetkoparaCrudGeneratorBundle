@@ -6,7 +6,6 @@ use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -20,17 +19,17 @@ class TritonFormGenerator extends Generator
     private $filesystem;
     private $className;
     private $classPath;
-    private $container;
+    private $metadataFactory;
 
     /**
      * Constructor.
      *
      * @param Filesystem $filesystem A Filesystem instance
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Filesystem $filesystem, DisconnectedMetadataFactory $metadataFactory)
     {
-        $this->container = $container;
-        $this->filesystem = $container->get('filesystem');
+        $this->metadataFactory = $metadataFactory;
+        $this->filesystem = $filesystem;
     }
 
     public function getClassName()
@@ -106,12 +105,6 @@ class TritonFormGenerator extends Generator
             $fields = array_diff($fields, $metadata->identifier);
         }
 
-//        foreach ($metadata->associationMappings as $fieldName => $relation) {
-//            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-//                $fields[] = $fieldName;
-//            }
-//        }
-
         return $fields;
     }
 
@@ -119,8 +112,7 @@ class TritonFormGenerator extends Generator
     {
         $fields = array();
 
-        foreach ($metadata->associationMappings as $fieldName => $relation)
-        {
+        foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE) {
                 $fields[$fieldName]['name'] = $fieldName;
                 $fields[$fieldName]['widget'] = 'EntityType::class';
@@ -132,13 +124,16 @@ class TritonFormGenerator extends Generator
         return $fields;
     }
 
+    /**
+     * Trying to find string field in relation entity. 
+     * @param type $entity
+     * @return string
+     */
     private function guessChoiceLabelFromClass($entity)
     {
-        $factory = new DisconnectedMetadataFactory($this->container->get('doctrine'));
-        $metadata = $factory->getClassMetadata($entity)->getMetadata();
-
-        foreach ($metadata[0]->fieldMappings as $fieldName => $field)
-        {
+        $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
+        
+        foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
             if ($field['type'] == 'string') {
                 return $fieldName;
             }

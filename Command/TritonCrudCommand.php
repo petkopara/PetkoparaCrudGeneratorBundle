@@ -13,6 +13,7 @@
 
 namespace Petkopara\TritonCrudBundle\Command;
 
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
 use Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator;
@@ -30,13 +31,15 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
-class TritonCrudCommand extends GenerateDoctrineCrudCommand {
+class TritonCrudCommand extends GenerateDoctrineCrudCommand
+{
 
     protected $generator;
     protected $formGenerator;
     private $filterGenerator;
 
-    protected function configure() {
+    protected function configure()
+    {
 
         $this
                 ->setName('triton:generate:crud')
@@ -83,11 +86,13 @@ EOT
         );
     }
 
-    protected function createGenerator($bundle = null) {
+    protected function createGenerator($bundle = null)
+    {
         return new TritonCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->getParameter('kernel.root_dir'));
     }
 
-    protected function getSkeletonDirs(BundleInterface $bundle = null) {
+    protected function getSkeletonDirs(BundleInterface $bundle = null)
+    {
         $skeletonDirs = array();
 
         if (isset($bundle) && is_dir($dir = $bundle->getPath() . '/Resources/SensioGeneratorBundle/skeleton')) {
@@ -104,7 +109,8 @@ EOT
         return $skeletonDirs;
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output) {
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
 
         $questionHelper = $this->getQuestionHelper();
         $questionHelper->writeSection($output, 'Welcome to the Triton CRUD generator');
@@ -167,7 +173,7 @@ EOT
         $input->setOption('with-filter', $withFilter);
 
         //bulk delete
-        if ($withWrite == true) {
+        if ($withWrite === true) {
             $withBulkActions = $input->getOption('with-bulk') ? false : true;
             $output->writeln(array(
                 '',
@@ -231,7 +237,8 @@ EOT
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $questionHelper = $this->getQuestionHelper();
 
         if ($input->isInteractive()) {
@@ -304,11 +311,13 @@ EOT
     /**
      * Tries to generate filtlers if they don't exist yet and if we need write operations on entities.
      */
-    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false) {
+    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false)
+    {
         $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite);
     }
 
-    protected function getFilterGenerator($bundle = null) {
+    protected function getFilterGenerator($bundle = null)
+    {
         if (null === $this->filterGenerator) {
             $this->filterGenerator = new TritonFilterGenerator($this->getContainer()->get('filesystem'));
             $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
@@ -317,15 +326,15 @@ EOT
         return $this->filterGenerator;
     }
 
-    protected function getFormGenerator($bundle = null) {
+    protected function getFormGenerator($bundle = null)
+    {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new TritonFormGenerator($this->getContainer());
+            $metadataFactory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
+            $this->formGenerator = new TritonFormGenerator($this->getContainer()->get('filesystem'), $metadataFactory);
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
         return $this->formGenerator;
     }
-    
-    
 
 }
