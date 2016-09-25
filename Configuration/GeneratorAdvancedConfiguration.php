@@ -9,7 +9,7 @@ class GeneratorAdvancedConfiguration {
     protected $withFilter;
     protected $withBulk;
 
-    function __construct($baseTemplate = 'PetkoparaTritonCrudBundle::base.html.twig', $bundleViews = false, $withFilter = true, $withBulk = true, $needWriteAction = true) {
+    public function __construct($baseTemplate = 'PetkoparaTritonCrudBundle::base.html.twig', $bundleViews = false, $withFilter = true, $withBulk = true, $needWriteAction = true) {
         $this->baseTemplate = $baseTemplate;
         $this->bundleViews = $bundleViews;
         $this->withFilter = $withFilter;

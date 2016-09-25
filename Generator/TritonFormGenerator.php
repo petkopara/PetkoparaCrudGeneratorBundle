@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 class TritonFormGenerator extends Generator
 {
 
-    private $filesystem;
     private $className;
     private $classPath;
     private $metadataFactory;
@@ -26,10 +25,9 @@ class TritonFormGenerator extends Generator
      *
      * @param Filesystem $filesystem A Filesystem instance
      */
-    public function __construct(Filesystem $filesystem, DisconnectedMetadataFactory $metadataFactory)
+    public function __construct(DisconnectedMetadataFactory $metadataFactory)
     {
         $this->metadataFactory = $metadataFactory;
-        $this->filesystem = $filesystem;
     }
 
     public function getClassName()
@@ -132,7 +130,7 @@ class TritonFormGenerator extends Generator
     private function guessChoiceLabelFromClass($entity)
     {
         $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
-        
+
         foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
             if ($field['type'] == 'string') {
                 return $fieldName;

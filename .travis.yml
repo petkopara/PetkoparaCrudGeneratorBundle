@@ -9,4 +9,3 @@ before_script:
     - php composer.phar --prefer-source --prefer-lowest --prefer-stable update
 
 
-    

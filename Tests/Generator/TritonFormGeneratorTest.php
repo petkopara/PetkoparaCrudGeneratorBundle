@@ -13,13 +13,39 @@
 
 namespace Petkopara\TritonCrudBundle\Tests\Generator;
 
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Petkopara\TritonCrudBundle\Generator\TritonFormGenerator;
-use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
-class TritonFormGeneratorTest extends GeneratorTest {
+class TritonFormGeneratorTest extends KernelTestCase
+{
 
-    public function testGenerate() {
-        /*
+    protected $metadataFactory;
+    protected $filesystem;
+    protected $tmpDir;
+
+    protected function setUp()
+    {
+        self::bootKernel();
+        $this->tmpDir = sys_get_temp_dir() . '/sf2';
+        $this->filesystem = new Filesystem();
+
+//        $this->filesystem = static::$kernel->getContainer()->get('filesystem');
+        $this->filesystem->remove($this->tmpDir);
+
+        $doctrine = static::$kernel->getContainer()->get('doctrine');
+        $this->metadataFactory = DisconnectedMetadataFactory($doctrine);
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+//        $this->filesystem->remove($this->tmpDir);
+    }
+
+    public function testGenerate()
+    {
         $this->generateForm(false);
         $this->assertTrue(file_exists($this->tmpDir . '/Form/PostType.php'));
         $content = file_get_contents($this->tmpDir . '/Form/PostType.php');
@@ -36,14 +62,12 @@ class TritonFormGeneratorTest extends GeneratorTest {
             $this->assertNotContains('getName', $content);
             $this->assertNotContains("'foo_barbundle_post'", $content);
         }
-        */
     }
-    
-    
+
     private function generateForm($overwrite)
     {
-        $generator = new TritonFormGenerator($this->filesystem);
-        $generator->setSkeletonDirs(__DIR__.'/../../Resources/skeleton');
+        $generator = new TritonFormGenerator($this->filesystem, $this->metadataFactory);
+        $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
         $bundle->expects($this->any())->method('getNamespace')->will($this->returnValue('Foo\BarBundle'));

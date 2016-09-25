@@ -4,7 +4,6 @@ namespace Petkopara\TritonCrudBundle\Generator;
 
 use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Exception;
 use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;

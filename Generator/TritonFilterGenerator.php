@@ -15,18 +15,9 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
  */
 class TritonFilterGenerator extends Generator {
 
-    private $filesystem;
     private $className;
     private $classPath;
 
-    /**
-     * Constructor.
-     *
-     * @param Filesystem $filesystem A Filesystem instance
-     */
-    public function __construct(Filesystem $filesystem) {
-        $this->filesystem = $filesystem;
-    }
 
     public function getClassName() {
         return $this->className;

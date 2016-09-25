@@ -319,7 +319,7 @@ EOT
     protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
-            $this->filterGenerator = new TritonFilterGenerator($this->getContainer()->get('filesystem'));
+            $this->filterGenerator = new TritonFilterGenerator();
             $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
@@ -330,7 +330,7 @@ EOT
     {
         if (null === $this->formGenerator) {
             $metadataFactory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
-            $this->formGenerator = new TritonFormGenerator($this->getContainer()->get('filesystem'), $metadataFactory);
+            $this->formGenerator = new TritonFormGenerator($metadataFactory);
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
