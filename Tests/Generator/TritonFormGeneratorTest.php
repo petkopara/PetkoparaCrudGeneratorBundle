@@ -48,7 +48,7 @@ class TritonFormGeneratorTest extends GeneratorTest
         $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValueMap(array('title' => array('name' => 'string'))));
+        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array('title' => array('name' => 'string'))));
 
         $generator = new TritonFormGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
