@@ -68,7 +68,7 @@ class TritonFormGenerator extends Generator
 
         $parts = explode('\\', $entity);
         array_pop($parts);
-        $this->getAssociatedFields($metadata);
+        
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields' => $this->getFieldsFromMetadata($metadata),
             'fields_associated' => $this->getAssociatedFields($metadata),

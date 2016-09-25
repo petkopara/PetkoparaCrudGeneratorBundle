@@ -52,7 +52,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-
+        
+        $this->assertPagination();
     }
 
     public function testGenerateXml() {
@@ -94,6 +95,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
+        
+        $this->assertPagination();
 
     }
 
@@ -130,6 +133,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
+        
+        $this->assertPagination();
 
     }
 
@@ -172,6 +177,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
+        
+        $this->assertPagination();
     }
 
     public function testGenerateWithBaseTemplate() {
@@ -242,23 +249,14 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $metadata;
     }
 
-    protected function assertFilterAndPaginator() {
+    protected function assertPagination() {
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
-            'protected function filter',
             'protected function paginator',
         );
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-
-
-        $this->assertTrue(file_exists($this->tmpDir . '/Form/PostFilterType.php'));
-
-        $content = file_get_contents($this->tmpDir . '/Form/PostFilterType.php');
-//        $this->assertContains('->add(\'title\', \'filter_text\')', $content);
-        $this->assertContains('class PostFilterType extends AbstractType', $content);
-        $this->assertContains("'foo_barbundle_postfiltertype'", $content);
     }
 
     protected function assertWithDelete() {
