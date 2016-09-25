@@ -6,7 +6,6 @@ namespace Petkopara\TritonCrudBundle\Generator;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
