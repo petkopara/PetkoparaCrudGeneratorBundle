@@ -6,6 +6,6 @@ php:
 
 before_script:
     - wget http://getcomposer.org/composer.phar
-    - php composer.phar --prefer-source --prefer-lowest --prefer-stable update
+    - php composer.phar --prefer-source --prefer-lowest --prefer-stable install -o
 
 
