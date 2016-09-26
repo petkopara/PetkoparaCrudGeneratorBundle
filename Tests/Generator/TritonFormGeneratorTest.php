@@ -25,12 +25,13 @@ class TritonFormGeneratorTest extends GeneratorTest
         $this->generateForm(false);
         $this->assertTrue(file_exists($this->tmpDir . '/Form/PostType.php'));
         $content = file_get_contents($this->tmpDir . '/Form/PostType.php');
-
         $this->assertContains('->add(\'title\')', $content);
         $this->assertContains('->add(\'createdAt\')', $content);
         $this->assertContains('->add(\'publishedAt\')', $content);
         $this->assertContains('->add(\'updatedAt\')', $content);
         $this->assertContains('->add(\'parent\')', $content);
+        $this->assertContains("'class' => 'FooBundle\Entity\Parent'", $content);
+        $this->assertContains("'choice_label' => 'name'", $content);
         $this->assertContains('class PostType extends AbstractType', $content);
         $this->assertContains("'data_class' => 'Foo\BarBundle\Entity\Post'", $content);
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
@@ -47,8 +48,14 @@ class TritonFormGeneratorTest extends GeneratorTest
 
         $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
                 ->disableOriginalConstructor()
+                ->setMethods(array('getClassMetadata', 'getMetadata'))
                 ->getMock();
-        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array('title' => array('name' => 'string'))));
+        $obj = new \stdClass();
+        $obj->fieldMappings = array('name' => array('type' => 'string'));
+        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array($obj)));
+        $metadataFactory->expects($this->any())
+                ->method($this->anything())  // all other calls return self
+                ->will($this->returnSelf());
 
         $generator = new TritonFormGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
@@ -56,7 +63,7 @@ class TritonFormGeneratorTest extends GeneratorTest
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
         $bundle->expects($this->any())->method('getNamespace')->will($this->returnValue('Foo\BarBundle'));
-        
+
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
         $metadata->fieldMappings = array(
@@ -74,7 +81,7 @@ class TritonFormGeneratorTest extends GeneratorTest
             'parent' => 'parent',
         );
         $metadata->associationMappings = $metadata->fieldMappings;
-        
+
         $generator->generate($bundle, 'Post', $metadata, $overwrite);
     }
 

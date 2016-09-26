@@ -130,7 +130,6 @@ class TritonFormGenerator extends Generator
     private function guessChoiceLabelFromClass($entity)
     {
         $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
-
         foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
             if ($field['type'] == 'string') {
                 return $fieldName;
