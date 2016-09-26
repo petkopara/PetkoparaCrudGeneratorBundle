@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the CrudGeneratorBundle
  *
@@ -10,7 +9,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Petkopara\TritonCrudBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -30,6 +28,9 @@ class TritonFilterGeneratorTest extends GeneratorTest
         $this->assertContains("->add('createdAt', Filters\DateFilterType::class)", $content);
         $this->assertContains("->add('publishedAt', Filters\TextFilterType::class)", $content);
         $this->assertContains("->add('updatedAt', Filters\DateTimeFilterType::class)", $content);
+        $this->assertContains("->add('parent', Filters\EntityFilterType::class", $content);
+        $this->assertContains("'class' => 'FooBundle\Entity\Parent',", $content);
+        $this->assertContains("'choice_label' => 'name',", $content);
         $this->assertContains('class PostFilterType extends AbstractType', $content);
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             $this->assertContains('getName', $content);
@@ -43,13 +44,24 @@ class TritonFilterGeneratorTest extends GeneratorTest
     private function generateFilter($overwrite)
     {
 
-        $generator = new TritonFilterGenerator();
+        $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getClassMetadata', 'getMetadata'))
+            ->getMock();
+        $obj = new \stdClass();
+        $obj->fieldMappings = array('name' => array('type' => 'string'));
+        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array($obj)));
+        $metadataFactory->expects($this->any())
+            ->method($this->anything())  // all other calls return self
+            ->will($this->returnSelf());
+
+        $generator = new TritonFilterGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
         $bundle->expects($this->any())->method('getNamespace')->will($this->returnValue('Foo\BarBundle'));
-        
+
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
         $metadata->fieldMappings = array(
@@ -58,9 +70,10 @@ class TritonFilterGeneratorTest extends GeneratorTest
             'publishedAt' => array('type' => 'time'),
             'updatedAt' => array('type' => 'datetime'),
         );
-        $metadata->associationMappings = $metadata->fieldMappings;
-        
+        $metadata->associationMappings = array(
+            'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'targetEntity' => 'FooBundle\Entity\Parent'),
+        );
+
         $generator->generate($bundle, 'Post', $metadata, $overwrite);
     }
-
 }
