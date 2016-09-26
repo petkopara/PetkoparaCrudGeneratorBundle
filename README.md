@@ -4,13 +4,13 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 [![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
-[![Latest Stable Version](https://poser.pugx.org/triton/crud-generator/v/stable)](https://packagist.org/packages/triton/crud-generator)
-[![Total Downloads](https://poser.pugx.org/triton/crud-generator/downloads)](https://packagist.org/packages/triton/crud-generator)
-[![License](https://poser.pugx.org/triton/crud-generator/license)](https://packagist.org/packages/triton/crud-generator)
+[![Latest Stable](https://img.shields.io/packagist/v/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
+[![Total Downloads](https://img.shields.io/packagist/dt/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
 
 ## Features
 * Pagination
 * Filtering 
+* Doctrine Many-To-One association mapping support in forms and filters
 * Bulk actions(delete) on multiple rows
 * Delete from index
 * Set your base template in the generated views.

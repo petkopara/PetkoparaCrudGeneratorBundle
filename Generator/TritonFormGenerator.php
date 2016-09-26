@@ -23,7 +23,7 @@ class TritonFormGenerator extends Generator
     /**
      * Constructor.
      *
-     * @param Filesystem $filesystem A Filesystem instance
+     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
      */
     public function __construct(DisconnectedMetadataFactory $metadataFactory)
     {

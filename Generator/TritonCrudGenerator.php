@@ -32,7 +32,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
 
-        if ($advancedConfig->getWithBulk()) {
+        if ($advancedConfig->getWithBulk()!== false) {
             array_push($this->actions, 'bulk');
         }
 
