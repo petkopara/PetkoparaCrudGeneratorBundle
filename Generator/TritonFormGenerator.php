@@ -109,25 +109,31 @@ class TritonFormGenerator extends Generator
         $fields = array();
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
-            $fields[$fieldName]['name'] = $fieldName;
-            $fields[$fieldName]['widget'] = 'EntityType::class';
-            $fields[$fieldName]['class'] = $relation['targetEntity'];
-            $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
-
+            
             switch ($relation['type']) {
                 case ClassMetadataInfo::MANY_TO_ONE:
-                    $fields[$fieldName]['type'] = "MANY_TO_ONE";
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_ONE");
                     break;
                 case ClassMetadataInfo::MANY_TO_MANY:
-                    $fields[$fieldName]['type'] = "MANY_TO_MANY";
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_MANY");
                     break;
                 case ClassMetadataInfo::ONE_TO_MANY:
-                    $fields[$fieldName]['type'] = "ONE_TO_MANY";
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "ONE_TO_MANY");
                     break;
             }
         }
 
         return $fields;
+    }
+
+    private function getRelationFieldData($fieldName, $relation, $relationType)
+    {
+        $field['name'] = $fieldName;
+        $field['widget'] = 'EntityType::class';
+        $field['class'] = $relation['targetEntity'];
+        $field['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+        $field['type'] = $relationType;
+        return $field;
     }
 
     /**
