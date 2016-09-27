@@ -27,15 +27,23 @@ class {{ form_class }} extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        {% for field in fields %}
+{% for field in fields %}
             ->add('{{ field }}')
-        {% endfor %}
-        {% for field in fields_associated %}
+{% endfor %}
+{% for field in fields_associated %}
             ->add('{{ field.name }}', {{field.widget}}, array(
-                    'class' => '{{field.class}}',
-                    'choice_label' => '{{field.choice_label}}',
-                )) 
-        {% endfor %}
+                'class' => '{{field.class}}',
+                'choice_label' => '{{field.choice_label}}',
+{% if field.type == 'ONE_TO_MANY' %}
+                'expanded' => false,
+                'multiple' => true
+{%endif %}
+{% if field.type == 'MANY_TO_MANY' %}
+                'expanded' => true,
+                'multiple' => true
+{%endif %}
+            )) 
+{% endfor %}
         ;
     }
     {% endif %}

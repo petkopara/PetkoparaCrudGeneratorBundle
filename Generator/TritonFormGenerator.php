@@ -1,6 +1,4 @@
-<?php
-
-namespace Petkopara\TritonCrudBundle\Generator;
+<?php namespace Petkopara\TritonCrudBundle\Generator;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -68,7 +66,7 @@ class TritonFormGenerator extends Generator
 
         $parts = explode('\\', $entity);
         array_pop($parts);
-        
+
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields' => $this->getFieldsFromMetadata($metadata),
             'fields_associated' => $this->getAssociatedFields($metadata),
@@ -111,11 +109,21 @@ class TritonFormGenerator extends Generator
         $fields = array();
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE) {
-                $fields[$fieldName]['name'] = $fieldName;
-                $fields[$fieldName]['widget'] = 'EntityType::class';
-                $fields[$fieldName]['class'] = $relation['targetEntity'];
-                $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+            $fields[$fieldName]['name'] = $fieldName;
+            $fields[$fieldName]['widget'] = 'EntityType::class';
+            $fields[$fieldName]['class'] = $relation['targetEntity'];
+            $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+
+            switch ($relation['type']) {
+                case ClassMetadataInfo::MANY_TO_ONE:
+                    $fields[$fieldName]['type'] = "MANY_TO_ONE";
+                    break;
+                case ClassMetadataInfo::MANY_TO_MANY:
+                    $fields[$fieldName]['type'] = "MANY_TO_MANY";
+                    break;
+                case ClassMetadataInfo::ONE_TO_MANY:
+                    $fields[$fieldName]['type'] = "ONE_TO_MANY";
+                    break;
             }
         }
 
@@ -138,5 +146,4 @@ class TritonFormGenerator extends Generator
         //if no string field found, return id
         return 'id';
     }
-
 }
