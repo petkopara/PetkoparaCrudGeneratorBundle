@@ -137,7 +137,9 @@ class TritonFilterGenerator extends Generator
         $fields = array();
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE) {
+            if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE ||
+                $relation['type'] == ClassMetadataInfo::ONE_TO_MANY ||
+                $relation['type'] == ClassMetadataInfo::MANY_TO_MANY) {
                 $fields[$fieldName]['name'] = $fieldName;
                 $fields[$fieldName]['widget'] = 'Filters\EntityFilterType::class';
                 $fields[$fieldName]['class'] = $relation['targetEntity'];

@@ -35,6 +35,7 @@ class {{ form_class }} extends AbstractType
                 'class' => '{{field.class}}',
                 'choice_label' => '{{field.choice_label}}',
 {% if field.type == 'ONE_TO_MANY' %}
+                'required' => false,
                 'expanded' => false,
                 'multiple' => true
 {%endif %}
