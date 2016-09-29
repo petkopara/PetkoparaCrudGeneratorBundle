@@ -72,7 +72,7 @@ acme_blog:
     resource: "@AcmeBlogBundle/Resources/config/routing.xml"
     prefix:   /
 DATA;
-        file_put_contents($rootDir.'/config/routing.yml', $routing);
+        file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
         $input = "AcmeBlogBundle:Blog/Post\ny\nannotation\n/foobar\n";
         $expected = array('Blog\\Post', 'annotation', 'foobar', true);
@@ -86,7 +86,7 @@ DATA;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
         $expected = 'acme_blog_post:';
-        $this->assertContains($expected, file_get_contents($rootDir.'/config/routing.yml'));
+        $this->assertContains($expected, file_get_contents($rootDir . '/config/routing.yml'));
     }
     public function testCreateCrudWithAnnotationInAnnotationBundle()
     {
@@ -96,7 +96,7 @@ acme_blog:
     resource: "@AcmeBlogBundle/Controller/"
     type:     annotation
 DATA;
-        file_put_contents($rootDir.'/config/routing.yml', $routing);
+        file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
         $input = "AcmeBlogBundle:Blog/Post\ny\nyml\n/foobar\n";
         $expected = array('Blog\\Post', 'yml', 'foobar', true);
@@ -109,7 +109,7 @@ DATA;
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
-        $this->assertEquals($routing, file_get_contents($rootDir.'/config/routing.yml'));
+        $this->assertEquals($routing, file_get_contents($rootDir . '/config/routing.yml'));
     }
     public function testAddACrudWithOneAlreadyDefined()
     {
@@ -119,7 +119,7 @@ acme_blog:
     resource: "@AcmeBlogBundle/Controller/OtherController.php"
     type:     annotation
 DATA;
-        file_put_contents($rootDir.'/config/routing.yml', $routing);
+        file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
         $input = "AcmeBlogBundle:Blog/Post\ny\nannotation\n/foobar\n";
         $expected = array('Blog\\Post', 'annotation', 'foobar', true);
@@ -133,7 +133,7 @@ DATA;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
         $expected = '@AcmeBlogBundle/Controller/PostController.php';
-        $this->assertContains($expected, file_get_contents($rootDir.'/config/routing.yml'));
+        $this->assertContains($expected, file_get_contents($rootDir . '/config/routing.yml'));
     }
     protected function getCommand($generator, $input)
     {

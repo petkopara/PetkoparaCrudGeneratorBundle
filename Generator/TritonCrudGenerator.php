@@ -32,7 +32,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
 
-        if ($advancedConfig->getWithBulk()!== false) {
+        if ($advancedConfig->getWithBulk() !== false) {
             array_push($this->actions, 'bulk');
         }
 
@@ -163,6 +163,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
 
     /**
      * Generates the controller class only.
+     * @param boolean $forceOverwrite
      */
     protected function generateControllerClass($forceOverwrite) {
         $dir = $this->bundle->getPath();

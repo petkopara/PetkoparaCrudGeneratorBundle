@@ -126,6 +126,9 @@ class TritonFormGenerator extends Generator
         return $fields;
     }
 
+    /**
+     * @param string $relationType
+     */
     private function getRelationFieldData($fieldName, $relation, $relationType)
     {
         $field['name'] = $fieldName;
