@@ -10,7 +10,7 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 ## Features
 * Pagination
 * Filtering 
-* Doctrine association mapping support(Many-to-One, One-to-Many and Many-to-Many) in forms and filters
+* Doctrine association mapping support(Many-to-One, One-to-Many, One-to-One and Many-to-Many) in forms and filters
 * Bulk actions(delete) on multiple rows
 * Delete from index
 * Set your base template in the generated views.

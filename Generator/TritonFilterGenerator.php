@@ -89,14 +89,17 @@ class TritonFilterGenerator extends Generator
     private function getFieldsDataFromMetadata(ClassMetadataInfo $metadata)
     {
         $fieldsData = (array) $metadata->fieldMappings;
-
+        $fieldsResult = array();
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
-            $fieldsData[$fieldName]['fieldName'] = $fieldName;
-            $fieldsData[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            if ($fieldWidget) {
+                $fieldsResult[$fieldName]['fieldName'] = $fieldName;
+                $fieldsResult[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            }
         }
 
-        return $fieldsData;
+        return $fieldsResult;
     }
 
     private function getFilterType($dbType, $columnName)
@@ -124,11 +127,10 @@ class TritonFilterGenerator extends Generator
             case 'collection':
                 return 'Filters\EntityFilterType::class';
             case 'array':
-                throw new Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
             case 'virtual':
-                throw new Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
+                return false; //array and virtual types are not yet implemented
             default:
-                throw new Exception('The dbType "' . $dbType . '" is not yet implemented (column "' . $columnName . '")');
+                return false;
         }
     }
 
@@ -139,6 +141,7 @@ class TritonFilterGenerator extends Generator
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE ||
                 $relation['type'] == ClassMetadataInfo::ONE_TO_MANY ||
+                $relation['type'] == ClassMetadataInfo::ONE_TO_ONE ||
                 $relation['type'] == ClassMetadataInfo::MANY_TO_MANY) {
                 $fields[$fieldName]['name'] = $fieldName;
                 $fields[$fieldName]['widget'] = 'Filters\EntityFilterType::class';

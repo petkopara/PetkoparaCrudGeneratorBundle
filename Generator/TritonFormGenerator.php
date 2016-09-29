@@ -110,6 +110,7 @@ class TritonFormGenerator extends Generator
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             
             switch ($relation['type']) {
+                case ClassMetadataInfo::ONE_TO_ONE:
                 case ClassMetadataInfo::MANY_TO_ONE:
                     $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_ONE");
                     break;
