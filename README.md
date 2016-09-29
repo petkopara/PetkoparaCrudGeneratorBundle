@@ -68,7 +68,7 @@ The bundle adds few new parameters to the generate command compared to the doctr
 
 * `--with-filter` -  To generate the filters.
 
-* `--with-bulk-delete` - To generate bulk delete code.
+* `--with-bulk` - To generate bulk actions code.
 
 * `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default TritonCrudBundle::base.html.twig).
 
