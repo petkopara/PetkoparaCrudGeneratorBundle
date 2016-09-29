@@ -17,12 +17,12 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
     /**
      * Same as Doctrine generate method except the view folders name are camelCase
      * @param BundleInterface $bundle
-     * @param type $entity
+     * @param string $entity
      * @param ClassMetadataInfo $metadata
-     * @param type $format
-     * @param type $routePrefix
-     * @param type $needWriteActions
-     * @param type $forceOverwrite
+     * @param string $format
+     * @param string $routePrefix
+     * @param boolean $needWriteActions
+     * @param boolean $forceOverwrite
      * @param GeneratorAdvancedConfiguration $advancedConfig
      * @throws RuntimeException
      */

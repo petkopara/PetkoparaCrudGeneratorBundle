@@ -171,7 +171,6 @@ EOT
         $input->setOption('with-filter', $withFilter);
 
         //bulk delete
-        $withBulkActions = false;
         if ($withWrite === true) {
             $withBulkActions = $input->getOption('with-bulk') ? false : true;
             $output->writeln(array(
