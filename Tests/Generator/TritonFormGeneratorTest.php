@@ -43,6 +43,9 @@ class TritonFormGeneratorTest extends GeneratorTest
         }
     }
 
+    /**
+     * @param boolean $overwrite
+     */
     private function generateForm($overwrite)
     {
 

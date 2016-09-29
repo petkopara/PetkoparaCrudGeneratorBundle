@@ -306,6 +306,7 @@ EOT
 
     /**
      * Tries to generate filtlers if they don't exist yet and if we need write operations on entities.
+     * @param string $entity
      */
     protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false)
     {

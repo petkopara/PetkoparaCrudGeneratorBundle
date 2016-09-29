@@ -193,7 +193,7 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         
     }
     
-    public function testGenerateWithoutDelete(){
+    public function testGenerateWithoutDelete() {
         
     }
 
@@ -234,6 +234,9 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $generator;
     }
 
+    /**
+     * @return \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     */
     protected function getBundle() {
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
@@ -242,6 +245,9 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $bundle;
     }
 
+    /**
+     * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
+     */
     public function getMetadata() {
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
