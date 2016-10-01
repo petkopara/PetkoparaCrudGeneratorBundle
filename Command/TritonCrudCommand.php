@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the CrudBundle
  *
@@ -9,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Petkopara\TritonCrudBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
@@ -40,20 +42,21 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand
     {
 
         $this
-            ->setName('triton:generate:crud')
-            ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
-            ->setDefinition(array(
-                new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
-                new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
-                new InputOption('route-prefix', '', InputOption::VALUE_REQUIRED, 'The route prefix'),
-                new InputOption('template', '', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
-                new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
-                new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
-                new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
-                new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
-                new InputOption('with-bulk', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions')))
-            ->setHelp(<<<EOT
+                ->setName('triton:generate:crud')
+                ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
+                ->setDefinition(array(
+                    new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
+                    new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
+                    new InputOption('route-prefix', '', InputOption::VALUE_REQUIRED, 'The route prefix'),
+                    new InputOption('template', '', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
+                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
+                    new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
+                    new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+                    new InputOption('filter-type', '', InputOption::VALUE_NONE, 'What type of filtrations to be used. Form filter or Multi search input'),
+                    new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                    new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
+                    new InputOption('with-bulk', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions')))
+                ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
