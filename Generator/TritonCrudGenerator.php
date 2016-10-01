@@ -4,7 +4,6 @@ namespace Petkopara\TritonCrudBundle\Generator;
 
 use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Exception;
 use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
@@ -18,12 +17,12 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
     /**
      * Same as Doctrine generate method except the view folders name are camelCase
      * @param BundleInterface $bundle
-     * @param type $entity
+     * @param string $entity
      * @param ClassMetadataInfo $metadata
-     * @param type $format
-     * @param type $routePrefix
-     * @param type $needWriteActions
-     * @param type $forceOverwrite
+     * @param string $format
+     * @param string $routePrefix
+     * @param boolean $needWriteActions
+     * @param boolean $forceOverwrite
      * @param GeneratorAdvancedConfiguration $advancedConfig
      * @throws RuntimeException
      */
@@ -33,7 +32,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
         $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
 
-        if ($advancedConfig->getWithBulk()) {
+        if ($advancedConfig->getWithBulk() !== false) {
             array_push($this->actions, 'bulk');
         }
 
@@ -50,13 +49,14 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
         $this->setFormat($format);
 
 
-        $this->generateControllerClass($forceOverwrite);
         //define where to save the view files
         if (!$advancedConfig->getBundleViews()) { //save in root Resources
             $dir = sprintf('%s/Resources/views/%s', $this->rootDir, str_replace('\\', '/', strtolower($this->entity)));
         } else { //save in bundle Resources
             $dir = sprintf('%s/Resources/views/%s', $bundle->getPath(), str_replace('\\', '/', $this->entity));
         }
+        
+        $this->generateControllerClass($forceOverwrite);
 
         if (!file_exists($dir)) {
             $this->filesystem->mkdir($dir, 0777);
@@ -163,6 +163,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
 
     /**
      * Generates the controller class only.
+     * @param boolean $forceOverwrite
      */
     protected function generateControllerClass($forceOverwrite) {
         $dir = $this->bundle->getPath();

@@ -21,6 +21,13 @@ class {{ form_class }} extends AbstractType
             ->add('{{ data.fieldName }}', {{ data.filterWidget }})
 
         {%- endfor %}
+        
+        {% for field in fields_associated %}
+            ->add('{{ field.name }}', {{field.widget}}, array(
+                    'class' => '{{field.class}}',
+                    'choice_label' => '{{field.choice_label}}',
+                )) 
+        {% endfor %}
 
         ;
 

@@ -1,21 +1,21 @@
 # TritonCrudBundle
-Symfony 3 CRUD generator bundle with pagination, filter, bulk delete and Twitter bootstrap 3.3.6 markup.
+Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter bootstrap 3.3.6 markup.
 Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
 [![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
-[![Latest Stable Version](https://poser.pugx.org/triton/crud-generator/v/stable)](https://packagist.org/packages/triton/crud-generator)
-[![Total Downloads](https://poser.pugx.org/triton/crud-generator/downloads)](https://packagist.org/packages/triton/crud-generator)
-[![License](https://poser.pugx.org/triton/crud-generator/license)](https://packagist.org/packages/triton/crud-generator)
+[![Latest Stable](https://img.shields.io/packagist/v/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
+[![Total Downloads](https://img.shields.io/packagist/dt/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
 
 ## Features
 * Pagination
 * Filtering 
+* Doctrine association mapping support(Many-to-One, One-to-Many, One-to-One and Many-to-Many) in forms and filters
 * Bulk actions(delete) on multiple rows
-* Delete from index 
+* Delete from index
 * Set your base template in the generated views.
-* Possibility to set the path for all the generated files (by default in app/Resources).
-* Filtering, bulk a write are optional and you are able skip them.
+* Possibility to set the save path for all the generated files (by default in app/Resources).
+* Filtering, bulk and write are optional.
 
 ## Screenshot
 
@@ -33,7 +33,7 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
 Add it to the `AppKernel.php` class:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
-    new Triton\Bundle\CrudBundle\TritonCrudBundle(),
+    new Petkopara\TritonCrudBundle\PetkoparaTritonCrudBundle(),
 
 Optionally for the bootstrap theme, add this to your `app/config/config.yml`
 ```yaml
@@ -43,6 +43,11 @@ twig:
 
 ```
 
+If you are using the triton base.html.twig for base  template, install the assets.
+```sh
+php bin/console assets:install --symlink
+```
+ 
 
 ## Dependencies
 
@@ -61,13 +66,13 @@ And follow the wizard steps.
 ### Available new options
 The bundle adds few new parameters to the generate command compared to the doctrine crud generator.
 
-* `--with-filter` -  Whether or not to generate the filters.
+* `--with-filter` -  To generate the filters.
 
-* `--with-bulk-delete` - Whether or not to generate bulk delete code.
+* `--with-bulk` - To generate bulk actions code.
 
 * `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default TritonCrudBundle::base.html.twig).
 
-* `--bundle-views` - Whether or not to store the view files in app/Resources/views/ or in bundle's dir (default in app/Resources/views). It's not present in the wizard, but can be used as parameter.
+* `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_. It's not present in the wizard, but can be used as parameter.
 
 `--with-write` options is enabled by default.
 

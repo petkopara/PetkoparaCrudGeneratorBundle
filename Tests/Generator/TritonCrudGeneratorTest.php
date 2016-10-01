@@ -52,7 +52,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-
+        
+        $this->assertPagination();
     }
 
     public function testGenerateXml() {
@@ -94,6 +95,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
+        
+        $this->assertPagination();
 
     }
 
@@ -130,6 +133,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
+        
+        $this->assertPagination();
 
     }
 
@@ -172,6 +177,8 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
+        
+        $this->assertPagination();
     }
 
     public function testGenerateWithBaseTemplate() {
@@ -186,7 +193,7 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         
     }
     
-    public function testGenerateWithoutDelete(){
+    public function testGenerateWithoutDelete() {
         
     }
 
@@ -227,6 +234,9 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $generator;
     }
 
+    /**
+     * @return \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     */
     protected function getBundle() {
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
@@ -235,6 +245,9 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $bundle;
     }
 
+    /**
+     * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
+     */
     public function getMetadata() {
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
@@ -242,23 +255,14 @@ class TritonCrudGeneratorTest extends GeneratorTest {
         return $metadata;
     }
 
-    protected function assertFilterAndPaginator() {
+    protected function assertPagination() {
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
-            'protected function filter',
             'protected function paginator',
         );
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-
-
-        $this->assertTrue(file_exists($this->tmpDir . '/Form/PostFilterType.php'));
-
-        $content = file_get_contents($this->tmpDir . '/Form/PostFilterType.php');
-//        $this->assertContains('->add(\'title\', \'filter_text\')', $content);
-        $this->assertContains('class PostFilterType extends AbstractType', $content);
-        $this->assertContains("'foo_barbundle_postfiltertype'", $content);
     }
 
     protected function assertWithDelete() {

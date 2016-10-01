@@ -63,6 +63,13 @@
             // Get filter from session
             if ($session->has('{{ entity }}ControllerFilter')) {
                 $filterData = $session->get('{{ entity }}ControllerFilter');
+                
+                foreach ($filterData as $key => $filter) { //fix for entityFilterType that is loaded from session
+                    if (is_object($filter)) {
+                        $filterData[$key] = $queryBuilder->getEntityManager()->merge($filter);
+                    }
+                }
+                
                 $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType', $filterData);
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
             }

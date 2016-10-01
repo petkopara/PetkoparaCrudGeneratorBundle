@@ -1,38 +1,38 @@
-<?php
+<?php namespace Petkopara\TritonCrudBundle\Generator;
 
-
-namespace Petkopara\TritonCrudBundle\Generator;
-
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
 /**
  * Generates a form Filter class based on a Doctrine entity.
  */
-class TritonFilterGenerator extends Generator {
+class TritonFilterGenerator extends Generator
+{
 
-    private $filesystem;
     private $className;
     private $classPath;
+    private $metadataFactory;
 
     /**
      * Constructor.
      *
-     * @param Filesystem $filesystem A Filesystem instance
+     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
      */
-    public function __construct(Filesystem $filesystem) {
-        $this->filesystem = $filesystem;
+    public function __construct(DisconnectedMetadataFactory $metadataFactory)
+    {
+        $this->metadataFactory = $metadataFactory;
     }
 
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->className;
     }
 
-    public function getClassPath() {
+    public function getClassPath()
+    {
         return $this->classPath;
     }
 
@@ -46,7 +46,8 @@ class TritonFilterGenerator extends Generator {
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite) {
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite)
+    {
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
@@ -67,6 +68,7 @@ class TritonFilterGenerator extends Generator {
 
         $this->renderFile('form/FormFilterType.php.twig', $this->classPath, array(
             'fields_data' => $this->getFieldsDataFromMetadata($metadata),
+            'fields_associated' => $this->getAssociatedFields($metadata),
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
@@ -83,19 +85,24 @@ class TritonFilterGenerator extends Generator {
      * @param ClassMetadataInfo $metadata
      * @return array $fields
      */
-    private function getFieldsDataFromMetadata(ClassMetadataInfo $metadata) {
+    private function getFieldsDataFromMetadata(ClassMetadataInfo $metadata)
+    {
         $fieldsData = (array) $metadata->fieldMappings;
-
+        $fieldsResult = array();
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
-            $fieldsData[$fieldName]['fieldName'] = $fieldName;
-            $fieldsData[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            if ($fieldWidget) {
+                $fieldsResult[$fieldName]['fieldName'] = $fieldName;
+                $fieldsResult[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            }
         }
 
-        return $fieldsData;
+        return $fieldsResult;
     }
 
-    public function getFilterType($dbType, $columnName) {
+    private function getFilterType($dbType, $columnName)
+    {
         switch ($dbType) {
             case 'boolean':
                 return 'Filters\BooleanFilterType::class';
@@ -105,33 +112,59 @@ class TritonFilterGenerator extends Generator {
                 return 'Filters\DateTimeFilterType::class';
             case 'date':
                 return 'Filters\DateFilterType::class';
-                break;
             case 'decimal':
             case 'float':
             case 'integer':
             case 'bigint':
             case 'smallint':
                 return 'Filters\NumberFilterType::class';
-                break;
             case 'string':
             case 'text':
             case 'time':
                 return 'Filters\TextFilterType::class';
-                break;
             case 'entity':
             case 'collection':
                 return 'Filters\EntityFilterType::class';
-                break;
             case 'array':
-                throw new Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
-                break;
             case 'virtual':
-                throw new Exception('The dbType "' . $dbType . '" is only for list implemented (column "' . $columnName . '")');
-                break;
+                return false; //array and virtual types are not yet implemented
             default:
-                throw new Exception('The dbType "' . $dbType . '" is not yet implemented (column "' . $columnName . '")');
-                break;
+                return false;
         }
     }
 
+    private function getAssociatedFields(ClassMetadataInfo $metadata)
+    {
+        $fields = array();
+
+        foreach ($metadata->associationMappings as $fieldName => $relation) {
+            if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE ||
+                $relation['type'] == ClassMetadataInfo::ONE_TO_MANY ||
+                $relation['type'] == ClassMetadataInfo::ONE_TO_ONE ||
+                $relation['type'] == ClassMetadataInfo::MANY_TO_MANY) {
+                $fields[$fieldName]['name'] = $fieldName;
+                $fields[$fieldName]['widget'] = 'Filters\EntityFilterType::class';
+                $fields[$fieldName]['class'] = $relation['targetEntity'];
+                $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+            }
+        }
+        return $fields;
+    }
+
+    /**
+     * Trying to find string field in relation entity. 
+     * @param type $entity
+     * @return string
+     */
+    private function guessChoiceLabelFromClass($entity)
+    {
+        $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
+        foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
+            if ($field['type'] == 'string') {
+                return $fieldName;
+            }
+        }
+        //if no string field found, return id
+        return 'id';
+    }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the CrudGeneratorBundle
  *
@@ -10,30 +9,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Petkopara\TritonCrudBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Petkopara\TritonCrudBundle\Generator\TritonFormGenerator;
+use Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 
-class TritonFormGeneratorTest extends GeneratorTest
+class TritonFilterGeneratorTest extends GeneratorTest
 {
 
     public function testGenerate()
     {
-        $this->generateForm(false);
-        $this->assertTrue(file_exists($this->tmpDir . '/Form/PostType.php'));
-        $content = file_get_contents($this->tmpDir . '/Form/PostType.php');
-        $this->assertContains('->add(\'title\')', $content);
-        $this->assertContains('->add(\'createdAt\')', $content);
-        $this->assertContains('->add(\'publishedAt\')', $content);
-        $this->assertContains('->add(\'updatedAt\')', $content);
-        $this->assertContains('->add(\'parent\')', $content);
-        $this->assertContains("'class' => 'FooBundle\Entity\Parent'", $content);
-        $this->assertContains("'choice_label' => 'name'", $content);
-        $this->assertContains('class PostType extends AbstractType', $content);
-        $this->assertContains("'data_class' => 'Foo\BarBundle\Entity\Post'", $content);
+        $this->generateFilter(false);
+        $this->assertTrue(file_exists($this->tmpDir . '/Form/PostFilterType.php'));
+        $content = file_get_contents($this->tmpDir . '/Form/PostFilterType.php');
+
+        $this->assertContains("->add('title', Filters\TextFilterType::class)", $content);
+        $this->assertContains("->add('createdAt', Filters\DateFilterType::class)", $content);
+        $this->assertContains("->add('publishedAt', Filters\TextFilterType::class)", $content);
+        $this->assertContains("->add('updatedAt', Filters\DateTimeFilterType::class)", $content);
+        $this->assertContains("->add('parent', Filters\EntityFilterType::class", $content);
+        $this->assertContains("'class' => 'FooBundle\Entity\Parent',", $content);
+        $this->assertContains("'choice_label' => 'name',", $content);
+        $this->assertContains('class PostFilterType extends AbstractType', $content);
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             $this->assertContains('getName', $content);
             $this->assertContains("'foo_barbundle_post'", $content);
@@ -43,24 +41,21 @@ class TritonFormGeneratorTest extends GeneratorTest
         }
     }
 
-    /**
-     * @param boolean $overwrite
-     */
-    private function generateForm($overwrite)
+    private function generateFilter($overwrite)
     {
 
         $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getClassMetadata', 'getMetadata'))
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->setMethods(array('getClassMetadata', 'getMetadata'))
+            ->getMock();
         $obj = new \stdClass();
         $obj->fieldMappings = array('name' => array('type' => 'string'));
         $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array($obj)));
         $metadataFactory->expects($this->any())
-                ->method($this->anything())  // all other calls return self
-                ->will($this->returnSelf());
+            ->method($this->anything())  // all other calls return self
+            ->will($this->returnSelf());
 
-        $generator = new TritonFormGenerator($metadataFactory);
+        $generator = new TritonFilterGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
@@ -74,18 +69,11 @@ class TritonFormGeneratorTest extends GeneratorTest
             'createdAt' => array('type' => 'date'),
             'publishedAt' => array('type' => 'time'),
             'updatedAt' => array('type' => 'datetime'),
+        );
+        $metadata->associationMappings = array(
             'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'targetEntity' => 'FooBundle\Entity\Parent'),
         );
-        $metadata->fieldNames = array(
-            'title' => 'title',
-            'createdAt' => 'createdAt',
-            'publishedAt' => 'publishedAt',
-            'updatedAt' => 'updatedAt',
-            'parent' => 'parent',
-        );
-        $metadata->associationMappings = $metadata->fieldMappings;
 
         $generator->generate($bundle, 'Post', $metadata, $overwrite);
     }
-
 }

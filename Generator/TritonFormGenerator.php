@@ -1,11 +1,9 @@
-<?php
+<?php namespace Petkopara\TritonCrudBundle\Generator;
 
-namespace Petkopara\TritonCrudBundle\Generator;
-
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -14,18 +12,19 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class TritonFormGenerator extends Generator
 {
-    private $filesystem;
+
     private $className;
     private $classPath;
+    private $metadataFactory;
 
     /**
      * Constructor.
      *
-     * @param Filesystem $filesystem A Filesystem instance
+     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(DisconnectedMetadataFactory $metadataFactory)
     {
-        $this->filesystem = $filesystem;
+        $this->metadataFactory = $metadataFactory;
     }
 
     public function getClassName()
@@ -52,9 +51,9 @@ class TritonFormGenerator extends Generator
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
-        $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
+        $this->className = $entityClass . 'Type';
+        $dirPath = $bundle->getPath() . '/Form';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
             throw new RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));
@@ -69,14 +68,14 @@ class TritonFormGenerator extends Generator
 
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
             'fields' => $this->getFieldsFromMetadata($metadata),
+            'fields_associated' => $this->getAssociatedFields($metadata),
             'fields_mapping' => $metadata->fieldMappings,
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'form_class' => $this->className,
-            'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.substr($this->className, 0, -4)),
-
+            'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . substr($this->className, 0, -4)),
             // Add 'setDefaultOptions' method with deprecated type hint, if the new 'configureOptions' isn't available.
             // Required as long as Symfony 2.6 is supported.
             'configure_options_available' => method_exists('Symfony\Component\Form\AbstractType', 'configureOptions'),
@@ -101,12 +100,59 @@ class TritonFormGenerator extends Generator
             $fields = array_diff($fields, $metadata->identifier);
         }
 
+        return $fields;
+    }
+
+    private function getAssociatedFields(ClassMetadataInfo $metadata)
+    {
+        $fields = array();
+
         foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
+            
+            switch ($relation['type']) {
+                case ClassMetadataInfo::ONE_TO_ONE:
+                case ClassMetadataInfo::MANY_TO_ONE:
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_ONE");
+                    break;
+                case ClassMetadataInfo::MANY_TO_MANY:
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_MANY");
+                    break;
+                case ClassMetadataInfo::ONE_TO_MANY:
+                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "ONE_TO_MANY");
+                    break;
             }
         }
 
         return $fields;
+    }
+
+    /**
+     * @param string $relationType
+     */
+    private function getRelationFieldData($fieldName, $relation, $relationType)
+    {
+        $field['name'] = $fieldName;
+        $field['widget'] = 'EntityType::class';
+        $field['class'] = $relation['targetEntity'];
+        $field['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+        $field['type'] = $relationType;
+        return $field;
+    }
+
+    /**
+     * Trying to find string field in relation entity. 
+     * @param type $entity
+     * @return string
+     */
+    private function guessChoiceLabelFromClass($entity)
+    {
+        $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
+        foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
+            if ($field['type'] == 'string') {
+                return $fieldName;
+            }
+        }
+        //if no string field found, return id
+        return 'id';
     }
 }

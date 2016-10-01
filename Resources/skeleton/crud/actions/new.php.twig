@@ -18,8 +18,11 @@
             $em = $this->getDoctrine()->getManager();
             $em->persist(${{ entity_singularized }});
             $em->flush();
+            
+            $editLink = $this->generateUrl('{{route_name_prefix}}_edit', array('id' => ${{ entity_singularized }}->getId()));
+            $this->get('session')->getFlashBag()->add('success', "<a href='$editLink'>New {{ entity_singularized }} was created successfully.</a>" );
 
-            return $this->redirectToRoute('{{route_name_prefix}}_edit', array('id' => ${{ entity_singularized }}->getId()));
+            return $this->redirectToRoute('{{route_name_prefix}}');
         }
 {% if bundle_views == false%}
         return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig', array(
@@ -30,7 +33,4 @@
             'form'   => $form->createView(),
         ));
     }
-    
-    
-
     
