@@ -52,7 +52,10 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
                     new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
                     new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+<<<<<<< HEAD
                     new InputOption('filter-type', '', InputOption::VALUE_NONE, 'What type of filtrations to be used. Form filter or Multi search input'),
+=======
+>>>>>>> master
                     new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
                     new InputOption('with-bulk', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions')))
@@ -334,6 +337,16 @@ EOT
         }
 
         return $this->formGenerator;
+    }
+
+    public function setTritonFormGenerator(TritonFormGenerator $formGenerator)
+    {
+        $this->formGenerator = $formGenerator;
+    }
+
+    public function setTritonFilterGenerator(TritonFilterGenerator $filterGenerator)
+    {
+        $this->filterGenerator = $filterGenerator;
     }
 
 }
