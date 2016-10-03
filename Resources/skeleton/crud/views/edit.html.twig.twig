@@ -12,32 +12,17 @@
     </div>
 </div>
 
+
+
 <div class="row">
-
-    {{ '{% if form_errors(edit_form) %}' }}
-    <div class="alert alert-block alert-error fade in form-errors">
-        {{ '{{ form_errors(edit_form) }}' }}
-    </div>
-    {{ '{% endif %}' }}
-
-    {{ "{% for flash_message in app.session.flashbag.get('error') %}" }}
-    <div class="alert alert-error ">
-        {{ ' {{ flash_message }}' }}
-    </div>
-    {{ '{% endfor %}' }}
-    {{ "{% for flash_message in app.session.flashbag.get('success') %}" }}
-    <div class="alert alert-success ">
-        {{ ' {{ flash_message }}' }}
-    </div>
-    {{ ' {% endfor %}' }}
-
+    {% include 'crud/views/others/flash_messages.html.twig.twig' %}
 
     {{ "{{ form_start(edit_form) }}" }}
 
     {{ "{{ form_widget(edit_form) }}" }}
     <p>
         <button type="submit" class="btn btn-primary">
-           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Submit
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Submit
         </button>
     </p>
     {{ "{{ form_end(edit_form) }}" }}

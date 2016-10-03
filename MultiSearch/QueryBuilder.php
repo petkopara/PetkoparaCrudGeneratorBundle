@@ -1,6 +1,4 @@
-<?php
-
-namespace Petkopara\TritonCrudBundle\MultiSearch;
+<?php namespace Petkopara\TritonCrudBundle\MultiSearch;
 
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Pagerfanta;
@@ -48,12 +46,10 @@ class QueryBuilder
 
         /** @var $metadata \Doctrine\ORM\Mapping\ClassMetadata */
         $metadata = $entityManager->getClassMetadata($className);
-        /** @var $reflectionClass \ReflectionClass */
-        $reflectionClass = $metadata->getReflectionClass();
-        $this->idName = $metadata->getSingleIdentifierFieldName();
 
-        foreach ($reflectionClass->getProperties() as $property) {
-            $this->searchColumns[] = $property->getName();
+        $this->idName = $metadata->getSingleIdentifierFieldName();
+        foreach ($metadata->fieldMappings as $field) {
+            $this->searchColumns[] = $field['fieldName'];
         }
     }
 
@@ -65,8 +61,8 @@ class QueryBuilder
     {
         $qb = $this->entityManager->createQueryBuilder();
         $query = $qb
-                ->select('entity')
-                ->from($this->entityName, 'entity');
+            ->select('entity')
+            ->from($this->entityName, 'entity');
 
         if ($searchQuery == '') {
             return $query;
@@ -88,32 +84,32 @@ class QueryBuilder
 
             foreach ($this->searchColumns as $column) {
                 $whereQuery->add($qb->expr()->like(
-                                $subst . '.' . $column, '?' . $paramPosistion
+                        $subst . '.' . $column, '?' . $paramPosistion
                 ));
             }
 
             $subqueryInner = $qbInner
-                    ->select($subst . '.' . $this->idName)
-                    ->from($this->entityName, $subst)
-                    ->where($whereQuery);
+                ->select($subst . '.' . $this->idName)
+                ->from($this->entityName, $subst)
+                ->where($whereQuery);
 
             if ($subquery != null) {
                 $subqueryInner->andWhere(
-                        $qb->expr()->in(
-                                $subst . '.' . $this->idName, $subquery->getQuery()->getDql()
-                        )
+                    $qb->expr()->in(
+                        $subst . '.' . $this->idName, $subquery->getQuery()->getDql()
+                    )
                 );
             }
 
             $subquery = $subqueryInner;
 
-            $query->setParameter($paramPosistion, $searchQueryPart);
+            $query->setParameter($paramPosistion, '%'.$searchQueryPart.'%');
         }
 
         $query->where(
-                $qb->expr()->in(
-                        'entity.' . $this->idName, $subquery->getQuery()->getDql()
-                )
+            $qb->expr()->in(
+                'entity.' . $this->idName, $subquery->getQuery()->getDql()
+            )
         );
 
         return $query;
@@ -126,7 +122,7 @@ class QueryBuilder
     public function getPagerfantaAdapter($searchQuery)
     {
         return new PagerfantaAdapter(
-                $this->createDoctrineQueryBuilder($searchQuery), $this->entityManager, $this->entityName
+            $this->createDoctrineQueryBuilder($searchQuery), $this->entityManager, $this->entityName
         );
     }
 
@@ -138,5 +134,4 @@ class QueryBuilder
     {
         return new Pagerfanta($this->getPagerfantaAdapter($searchQuery));
     }
-
 }

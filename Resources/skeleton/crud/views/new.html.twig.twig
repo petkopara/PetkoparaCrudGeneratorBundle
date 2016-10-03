@@ -11,13 +11,20 @@
         <h2>New {{ entity_singularized }} <span class="glyphicon glyphicon-file" aria-hidden="true"></span> </h2>
     </div>
 </div>
-
+    
+    
+    
 <div class="row">
+    {% include 'crud/views/others/flash_messages.html.twig.twig' %}
+
     {{ "{{ form_start(form) }}" }}
     {{ "{{ form_widget(form) }}" }}
     <p>
-        <button type="submit" class="btn btn-primary"> 
-            Submit <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+        <button type="submit" name="submit" value="save" class="btn btn-primary"> 
+            Save <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+        </button>
+        <button type="submit" name="submit" value="saveAndAdd" class="btn btn-info"> 
+            Save and Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </button>
     </p>
 
@@ -25,8 +32,8 @@
     {{ "{{ form_end(form) }}" }}
 
     <hr/>
-    {% set hide_edit, hide_delete, hide_new = true, true, true %}
-    {% include 'crud/views/others/record_actions.html.twig.twig' %}
+{% set hide_edit, hide_delete, hide_new = true, true, true %}
+{% include 'crud/views/others/record_actions.html.twig.twig' %}
 </div>
 
 
