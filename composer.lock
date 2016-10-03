@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "05d4671cb5b37a3ba405ae5e7d5b8940",
-    "content-hash": "514cb3d60bf1b349f33a14b20a937ca4",
+    "hash": "1a3138c4136e0c21261cf9fe1f69d8f5",
+    "content-hash": "18dadc61d9e1388384800ccba73efd80",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1437,12 +1437,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "e9e29fa5be3389f8074229e22551563f98916ced"
+                "reference": "fbc8682d96c3367720ab8ec441153bcd99b66180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/e9e29fa5be3389f8074229e22551563f98916ced",
-                "reference": "e9e29fa5be3389f8074229e22551563f98916ced",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/fbc8682d96c3367720ab8ec441153bcd99b66180",
+                "reference": "fbc8682d96c3367720ab8ec441153bcd99b66180",
                 "shasum": ""
             },
             "require": {
@@ -1455,7 +1455,7 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "twig/twig": "~1.23|~2.0"
+                "twig/twig": "~1.26|~2.0"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "<3.0",
@@ -1571,7 +1571,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-09-25 16:21:58"
+            "time": "2016-09-29 23:55:53"
         },
         {
             "name": "twig/twig",
@@ -1579,12 +1579,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "80518a195bb4a05ac1c24de6ef4568edc586bf86"
+                "reference": "32d3cc90e774b40eed0da03621fb40b055a7fb59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/80518a195bb4a05ac1c24de6ef4568edc586bf86",
-                "reference": "80518a195bb4a05ac1c24de6ef4568edc586bf86",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/32d3cc90e774b40eed0da03621fb40b055a7fb59",
+                "reference": "32d3cc90e774b40eed0da03621fb40b055a7fb59",
                 "shasum": ""
             },
             "require": {
@@ -1633,7 +1633,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-09-24 19:24:21"
+            "time": "2016-09-29 20:51:46"
         }
     ],
     "packages-dev": [
@@ -1693,16 +1693,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "9270140b940ff02e58ec577c237274e92cd40cdd"
+                "reference": "8331b5efe816ae05461b7ca1e721c01b46bafb3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/9270140b940ff02e58ec577c237274e92cd40cdd",
-                "reference": "9270140b940ff02e58ec577c237274e92cd40cdd",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/8331b5efe816ae05461b7ca1e721c01b46bafb3e",
+                "reference": "8331b5efe816ae05461b7ca1e721c01b46bafb3e",
                 "shasum": ""
             },
             "require": {
@@ -1734,7 +1734,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-06-10 09:48:41"
+            "time": "2016-09-30 07:12:33"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -1789,12 +1789,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "d3be8294e4729abcf8e6e207f25cdcb299cd1c88"
+                "reference": "c1016e6501312201ede77e3911748024d78cdd31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/d3be8294e4729abcf8e6e207f25cdcb299cd1c88",
-                "reference": "d3be8294e4729abcf8e6e207f25cdcb299cd1c88",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c1016e6501312201ede77e3911748024d78cdd31",
+                "reference": "c1016e6501312201ede77e3911748024d78cdd31",
                 "shasum": ""
             },
             "require": {
@@ -1805,7 +1805,8 @@
                 "sebastian/recursion-context": "^1.0"
             },
             "require-dev": {
-                "phpspec/phpspec": "^2.0"
+                "phpspec/phpspec": "^2.0",
+                "phpunit/phpunit": "^4.8 || ^5"
             },
             "type": "library",
             "extra": {
@@ -1843,7 +1844,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2016-09-21 19:41:08"
+            "time": "2016-09-28 11:19:12"
         },
         {
             "name": "phpunit/php-code-coverage",
