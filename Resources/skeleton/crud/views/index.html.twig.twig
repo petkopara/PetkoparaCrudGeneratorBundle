@@ -12,7 +12,7 @@
     <div class="col-md-12">
         <div class="page-header">
             <h3>{{ entity }}
-                {% if with_filter == true %}
+                {%- if filter_type == 'form' %}
                     <a class="btn dropdown-toggle pull-right" data-toggle="collapse" data-target="#filters">
                         Filter
                         <span class="caret"></span>
@@ -23,7 +23,7 @@
     </div>
 
 
-    {% if with_filter == true %}
+    {%- if filter_type == 'form' %}
         <div class="col-md-12">
             {#        <div class="input-group h2">
                         <input name="data[search]" class="form-control" id="search" type="text" placeholder="Pesquisar Itens">
@@ -33,7 +33,7 @@
                             </button>
                         </span>
                     </div>#}
-            {{ '{% if form_errors(filterForm) %}' }}
+            {{ '{%- if form_errors(filterForm) %}' }}
             <div class="alert alert-block alert-error fade in form-errors">
                 {{ '{{ form_errors(filterForm) }}' }}
             </div>
@@ -64,7 +64,7 @@
 
 <div id="list" class="row">
 
-    {% if 'new' in actions %}
+    {%- if 'new' in actions %}
         <div class="col-md-12">
             <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" style="margin-bottom:10px">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
@@ -74,14 +74,14 @@
 
 
 
-    {% if bulk_action == true %}
+    {%- if without_bulk_action == false %}
         <form method="POST" action="{{ "{{ path('"~ route_name_prefix ~"_bulk_action') }}" }} ">
         {% endif %}
         <div class="table-responsive col-md-12">
             <table class="table table-striped table-hover table-bordered" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        {% if bulk_action == true %}
+                        {%- if without_bulk_action == false %}
 
                             <th width="20px"><input type="checkbox" class="check-all" onclick="toggleAll(this)"></th>
                             {% endif %}
@@ -98,34 +98,34 @@
                 <tbody>
                     {{ '{% for ' ~ entity_singularized ~ ' in ' ~ entity_pluralized ~ ' %}' }}
                     <tr>
-                        {% if bulk_action == true %}
-                            <td><input type="checkbox" name="ids[]" onclick='bulkSubmitBtnManage();' class="check-all" value="{{ "{{" ~entity_singularized ~ "."~ identifier~"}}" }}"/></td>
-                            {% endif %}
+                        {%- if without_bulk_action == false %}
+                        <td><input type="checkbox" name="ids[]" onclick='bulkSubmitBtnManage();' class="check-all" value="{{ "{{" ~entity_singularized ~ "."~ identifier~"}}" }}"/></td>
+                            {%- endif %}
 
                         {%- for field, metadata in fields %}
-                        {%- if loop.first and ('show' in actions) %}
+                        {%- if loop.first and ('edit' in actions) %}
 
-                        <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+                        <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
 
                         {%- elseif metadata.type in ['datetime'] %}
 
-                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+                        <td>{{ '{%- if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
                         {%- elseif metadata.type in ['date'] %}
 
-                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}</td>
+                        <td>{{ '{%- if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}</td>
 
                         {%- elseif metadata.type in ['time'] %}
 
-                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}</td>
+                        <td>{{ '{%- if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}</td>
 
                         {%- elseif metadata.type in ['array'] %}
 
-                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}</td>
+                        <td>{{ '{%- if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}</td>
 
                         {%- elseif metadata.type in ['boolean'] %}
 
-                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}Yes{% else %}No{% endif %}' }}</td>
+                        <td>{{ '{%- if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}Yes{% else %}No{% endif %}' }}</td>
 
                         {%- else %}
 
@@ -153,7 +153,7 @@
 
 
 <div id="bottom" class="row">
-    {% if bulk_action == true %}
+    {%- if without_bulk_action == false %}
         <div class="col-md-4 pull-left">
             <div class="pagination form-inline ">
                 <select class = "form-control" name="bulk_action" >

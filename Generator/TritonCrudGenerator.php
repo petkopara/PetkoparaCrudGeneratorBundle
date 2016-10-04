@@ -21,20 +21,16 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
      * @param ClassMetadataInfo $metadata
      * @param string $format
      * @param string $routePrefix
-     * @param boolean $needWriteActions
+     * @param boolean $withoutWrite
      * @param boolean $forceOverwrite
      * @param GeneratorAdvancedConfiguration $advancedConfig
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions, $forceOverwrite, GeneratorAdvancedConfiguration $advancedConfig = null) {
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $withoutWrite, $forceOverwrite, GeneratorAdvancedConfiguration $advancedConfig = null) {
         $this->advancedConfig = $advancedConfig;
         $this->routePrefix = $routePrefix;
         $this->routeNamePrefix = self::getRouteNamePrefix($routePrefix);
-        $this->actions = $needWriteActions ? array('index', 'show', 'new', 'edit', 'delete') : array('index', 'show');
-
-        if ($advancedConfig->getWithBulk() !== false) {
-            array_push($this->actions, 'bulk');
-        }
+        $this->actions = $advancedConfig->getCrudActions();
 
         if (count($metadata->identifier) != 1) {
             throw new RuntimeException('The CRUD generator does not support entity classes with multiple or no primary keys.');
@@ -100,8 +96,8 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'route_prefix' => $this->routePrefix,
             'route_name_prefix' => $this->routeNamePrefix,
             'base_template' => $this->advancedConfig->getBaseTemplate(),
-            'bulk_action' => $this->advancedConfig->getWithBulk(),
-            'with_filter' => $this->advancedConfig->getWithFilter(),
+            'without_bulk_action' => $this->advancedConfig->getWithoutBulk(),
+            'filter_type' => $this->advancedConfig->getFilterType(),
         ));
     }
 
@@ -193,7 +189,7 @@ class TritonCrudGenerator extends DoctrineCrudGenerator {
             'entity_namespace' => $entityNamespace,
             'format' => $this->format,
             'bundle_views' => $this->advancedConfig->getBundleViews(),
-            'with_filter' => $this->advancedConfig->getWithFilter(),
+            'filter_type' => $this->advancedConfig->getFilterTYpe(),
         ));
     }
 

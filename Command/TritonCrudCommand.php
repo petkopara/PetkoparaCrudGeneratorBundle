@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the CrudBundle
  *
@@ -10,7 +9,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Petkopara\TritonCrudBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
@@ -42,39 +40,37 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand
     {
 
         $this
-                ->setName('triton:generate:crud')
-                ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
-                ->setDefinition(array(
-                    new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
-                    new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
-                    new InputOption('route-prefix', '', InputOption::VALUE_REQUIRED, 'The route prefix'),
-                    new InputOption('template', '', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
-                    new InputOption('overwrite', '', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
-                    new InputOption('bundle-views', '', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
-<<<<<<< HEAD
-                    new InputOption('filter-type', '', InputOption::VALUE_NONE, 'What type of filtrations to be used. Form filter or Multi search input'),
-=======
->>>>>>> master
-                    new InputOption('with-write', '', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
-                    new InputOption('with-filter', '', InputOption::VALUE_NONE, 'Whether or not to generate filters '),
-                    new InputOption('with-bulk', '', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions')))
-                ->setHelp(<<<EOT
+            ->setName('triton:generate:crud')
+            ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
+            ->setDefinition(array(
+                new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
+                new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
+                new InputOption('route-prefix', 'r', InputOption::VALUE_REQUIRED, 'The route prefix'),
+                new InputOption('template', 't', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
+                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
+                new InputOption('overwrite', 'o', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
+                new InputOption('bundle-views', 'b', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+                new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
+                new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Form filter or Multi search input', 'form'),
+            ))
+            ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
 
 <info>php %command.full_name% --entity=AcmeBlogBundle:Post --route-prefix=post_admin</info>
 
-Using the --with-write option allows to generate the new, edit and delete actions.
+Using the --without-write to not generate the new, edit, bulk and delete actions.
                 
 Using the --bundle-views option store the view files in the bundles dir.
                 
-Using the --with-bulk=false  option to not generate bulk delete.
+Using the --without-bulk  use this option tp not generate bulk actions code.
                 
 Using the --template option allows to set base template from which the crud views to overide.
-    
-<info>php %command.full_name% doctrine:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin --with-write</info>
+                
+<info>php %command.full_name% doctrine:generate:crud --entity=AcmeBlogBundle:Post --route-prefix=post_admin </info>
 
 Every generated file is based on a template. There are default templates but they can be overridden by placing custom templates in one of the following locations, by order of priority:
 
@@ -153,40 +149,41 @@ EOT
         }
 
         // write?
-        $withWrite = $input->getOption('with-write') ? false : true;
+        $withoutWrite = $input->getOption('without-write') ? true : false;//default false
+
         $output->writeln(array(
             '',
             'By default, the generator creates all actions: list and show, new, update, and delete.',
             'You can also ask it to generate only "list and show" actions:',
             '',
         ));
-        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate the "write" actions', $withWrite ? 'yes' : 'no', '?', $withWrite), $withWrite);
-        $withWrite = $questionHelper->ask($input, $output, $question);
-        $input->setOption('with-write', $withWrite);
-
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate the "write" actions', $withoutWrite ? 'no' : 'yes', '?', $withoutWrite), $withoutWrite);
+        $withoutWrite = $questionHelper->ask($input, $output, $question);
+        $input->setOption('without-write', $withoutWrite);
 
         // filters?
-        $withFilter = $input->getOption('with-filter') ? false : true;
+        $filterType = $input->getOption('filter-type');
         $output->writeln(array(
             '',
             'By default, the generator creates filter',
             '',
         ));
-        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate filter', $withFilter ? 'yes' : 'no', '?', $withFilter), $withFilter);
-        $withFilter = $questionHelper->ask($input, $output, $question);
-        $input->setOption('with-filter', $withFilter);
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
+        $question->setValidator(array('Petkopara\TritonCrudBundle\Command\TritonValidators', 'validateFilterType'));
+        $filterType = $questionHelper->ask($input, $output, $question);
+        $input->setOption('filter-type', $filterType);
 
         //bulk delete
-        if ($withWrite === true) {
-            $withBulkActions = $input->getOption('with-bulk') ? false : true;
+        if ($withoutWrite === false) {
+                $withoutBulk = $input->getOption('without-bulk') ? true : false;
             $output->writeln(array(
                 '',
                 'By default, the generator creates bulk actions ',
                 '',
             ));
-            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk actions', $withBulkActions ? 'yes' : 'no', '?', $withBulkActions), $withBulkActions);
-            $withBulkActions = $questionHelper->ask($input, $output, $question);
-            $input->setOption('with-bulk', $withBulkActions);
+            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk actions', $withoutBulk ? 'no' : 'yes', '?', $withoutBulk), $withoutBulk);
+            $withoutBulk = $questionHelper->ask($input, $output, $question);
+            $input->setOption('without-bulk', $withoutBulk);
         }
 
         // template?
@@ -232,6 +229,10 @@ EOT
             '',
             sprintf('You are going to generate a CRUD controller for "<info>%s:%s</info>"', $bundle, $entity),
             sprintf('using the "<info>%s</info>" format.', $format),
+            sprintf('base template "<info>%s</info>".', $template),
+            sprintf('without write "<info>%s</info>".', $withoutWrite),
+            sprintf('Filters "<info>%s</info>".', $filterType),
+            sprintf('with bulk actions "<info>%s</info>".', $withoutBulk),
             '',
         ));
     }
@@ -256,14 +257,17 @@ EOT
 
         $format = Validators::validateFormat($input->getOption('format'));
         $prefix = $this->getRoutePrefix($input, $entity);
-        $withWrite = $input->getOption('with-write');
-        $withFilter = $input->getOption('with-filter');
-        $withBulk = $input->getOption('with-bulk');
+        $withoutWrite = $input->getOption('without-write'); //default with write
+
+        $filterType = TritonValidators::validateFilterType($input->getOption('filter-type'));
+        $withoutBulk = $input->getOption('without-bulk');
+        $withoutShow= $input->getOption('without-show');
+
         $bundleViews = $input->getOption('bundle-views');
 
         $template = $input->getOption('template');
 
-        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $withFilter, $withBulk, $withWrite);
+        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $filterType, $withoutBulk, $withoutShow, $withoutWrite);
 
 
         $forceOverwrite = $input->getOption('overwrite');
@@ -281,7 +285,7 @@ EOT
 
         $generator = $this->getGenerator($bundle);
 
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite, $forceOverwrite, $advancedConfig);
+        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withoutWrite, $forceOverwrite, $advancedConfig);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
@@ -289,12 +293,12 @@ EOT
         $runner = $questionHelper->getRunner($output, $errors);
 
         // form
-        if ($withWrite) {
+        if ($withoutWrite===false) {
             $this->generateForm($bundle, $entity, $metadata, $forceOverwrite);
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
-        if ($withFilter) {
+        if ($filterType == 'form') {
             $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
             $output->writeln('Generating the Filter code: <info>OK</info>');
         }
@@ -338,15 +342,4 @@ EOT
 
         return $this->formGenerator;
     }
-
-    public function setTritonFormGenerator(TritonFormGenerator $formGenerator)
-    {
-        $this->formGenerator = $formGenerator;
-    }
-
-    public function setTritonFilterGenerator(TritonFilterGenerator $filterGenerator)
-    {
-        $this->filterGenerator = $filterGenerator;
-    }
-
 }

@@ -11,7 +11,7 @@
     {
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('e');
-{% if with_filter == true %}
+{% if filter_type == 'form' %}
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
 {% endif %}
 
@@ -24,14 +24,14 @@
 {% endif %}
             '{{ entity_pluralized }}' => ${{ entity_pluralized }},
             'pagerHtml' => $pagerHtml,
-{% if with_filter == true %}
+{% if filter_type == 'form' %}
             'filterForm' => $filterForm->createView(),
 {% endif %}
 
         ));
     }
 
-{% if with_filter == true %}
+{% if filter_type == 'form' %}
     
     /**
     * Create filter form and process filter request.

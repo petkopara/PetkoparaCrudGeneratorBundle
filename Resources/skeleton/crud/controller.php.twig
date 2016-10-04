@@ -19,7 +19,7 @@ use {{ namespace }}\Entity\{{ entity }};
 use {{ namespace }}\Form\{{ entity }}Type;
 {% endif %}
 
-{% if with_filter == true %}
+{% if filter_type == 'form' %}
 use {{ namespace }}\Form\{{ entity }}FilterType;
 {% endif %}
 
