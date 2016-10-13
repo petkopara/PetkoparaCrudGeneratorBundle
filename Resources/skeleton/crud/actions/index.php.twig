@@ -13,6 +13,8 @@
         $queryBuilder = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('e');
 {% if filter_type == 'form' %}
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
+{% elseif filter_type == 'input' %}
+        
 {% endif %}
 
         list(${{ entity_pluralized }}, $pagerHtml) = $this->paginator($queryBuilder, $request);

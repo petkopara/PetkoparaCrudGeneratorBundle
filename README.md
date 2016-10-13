@@ -1,8 +1,8 @@
-# TritonCrudBundle
+# CrudGeneratorBundle
 Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter bootstrap 3.3.6 markup.
 Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
-[![Build Status](https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master)](https://travis-ci.org/petkopara/TritonCrudBundle)
+[![Build Status](https://travis-ci.org/petkopara/CrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/CrudGeneratorBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
 [![Latest Stable](https://img.shields.io/packagist/v/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
 [![Total Downloads](https://img.shields.io/packagist/dt/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
@@ -19,7 +19,7 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 ## Screenshot
 
-![Screenshot](https://raw.github.com/petkopara/TritonCrudBundle/master/screenshot.png "Screenshot")
+![Screenshot](https://raw.github.com/petkopara/CrudGeneratorBundle/master/screenshot.png "Screenshot")
 
 ## Installation
 This bundle is compatible with Symfony 2.8/3.0 or higher.
@@ -28,12 +28,12 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
 
 #### Symfony >= 2.8 
 
-    composer require triton/crud-generator
+    composer require petkopara/crud-generator-bundle
 
 Add it to the `AppKernel.php` class:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
-    new Petkopara\TritonCrudBundle\PetkoparaTritonCrudBundle(),
+    new Petkopara\CrudGeneratorBundle\PetkoparaCrudGeneratorBundle(),
 
 Optionally for the bootstrap theme, add this to your `app/config/config.yml`
 ```yaml
@@ -43,7 +43,7 @@ twig:
 
 ```
 
-If you are using the triton base.html.twig for base  template, install the assets.
+If you are using bundle's base.html.twig for base template, install the assets.
 ```sh
 php bin/console assets:install --symlink
 ```
@@ -59,7 +59,7 @@ support using [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBu
 
 Use the following command from console:
 ```sh
-php bin/console triton:generate:crud
+php bin/console petkopara:generate:crud
 ```
 And follow the wizard steps.
 
@@ -70,7 +70,7 @@ The bundle adds few new parameters to the generate command compared to the doctr
 
 * `--with-bulk` - To generate bulk actions code.
 
-* `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default TritonCrudBundle::base.html.twig).
+* `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default CrudGeneratorBundle::base.html.twig).
 
 * `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_. It's not present in the wizard, but can be used as parameter.
 
@@ -83,4 +83,4 @@ Petko Petkov - petkopara@gmail.com
 
 ## License
 
-TritonCrudBundle is licensed under the MIT License.
+CrudGeneratorBundle is licensed under the MIT License.

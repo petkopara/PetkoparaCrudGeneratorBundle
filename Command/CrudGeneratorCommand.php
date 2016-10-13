@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the CrudBundle
  *
@@ -9,13 +10,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Petkopara\TritonCrudBundle\Command;
+
+namespace Petkopara\CrudGeneratorBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
-use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
-use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
-use Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator;
-use Petkopara\TritonCrudBundle\Generator\TritonFormGenerator;
+use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -29,8 +31,12 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
-class TritonCrudCommand extends GenerateDoctrineCrudCommand
+class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
 {
+
+    const FILTER_TYPE_FORM = 'form';
+    const FILTER_TYPE_INPUT = 'input';
+    const FILTER_TYPE_NONE = 'none';
 
     protected $generator;
     protected $formGenerator;
@@ -40,22 +46,22 @@ class TritonCrudCommand extends GenerateDoctrineCrudCommand
     {
 
         $this
-            ->setName('triton:generate:crud')
-            ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
-            ->setDefinition(array(
-                new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
-                new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
-                new InputOption('route-prefix', 'r', InputOption::VALUE_REQUIRED, 'The route prefix'),
-                new InputOption('template', 't', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaTritonCrudBundle::base.html.twig'),
-                new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
-                new InputOption('overwrite', 'o', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
-                new InputOption('bundle-views', 'b', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
-                new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
-                new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
-                new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
-                new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Form filter or Multi search input', 'form'),
-            ))
-            ->setHelp(<<<EOT
+                ->setName('petkopara:generate:crud')
+                ->setDescription('A CRUD generator with pagination, filters, bulk delete and bootstrap markdown.')
+                ->setDefinition(array(
+                    new InputArgument('entity', InputArgument::OPTIONAL, 'The entity class name to initialize (shortcut notation)'),
+                    new InputOption('entity', '', InputOption::VALUE_REQUIRED, 'The entity class name to initialize (shortcut notation)'),
+                    new InputOption('route-prefix', 'r', InputOption::VALUE_REQUIRED, 'The route prefix'),
+                    new InputOption('template', 't', InputOption::VALUE_REQUIRED, 'The base template which will be extended by the templates', 'PetkoparaCrudGeneratorBundle::base.html.twig'),
+                    new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
+                    new InputOption('overwrite', 'o', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
+                    new InputOption('bundle-views', 'b', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+                    new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                    new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
+                    new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
+                    new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Form filter, Multi search input or none', 'form'),
+                ))
+                ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
 
 The default command only generates the list and show actions.
@@ -74,13 +80,13 @@ Using the --template option allows to set base template from which the crud view
 
 Every generated file is based on a template. There are default templates but they can be overridden by placing custom templates in one of the following locations, by order of priority:
 
-<info>BUNDLE_PATH/Resources/TritonCrudBundle/skeleton/crud
-APP_PATH/Resources/TritonCrudBundle/skeleton/crud</info>
+<info>BUNDLE_PATH/Resources/CrudGeneratorBundle/skeleton/crud
+APP_PATH/Resources/CrudGeneratorBundle/skeleton/crud</info>
 
 And
 
-<info>__bundle_path__/Resources/TritonCrudBundle/skeleton/form
-__project_root__/app/Resources/TritonCrudBundle/skeleton/form</info>
+<info>__bundle_path__/Resources/CrudGeneratorBundle/skeleton/form
+__project_root__/app/Resources/CrudGeneratorBundle/skeleton/form</info>
 
 EOT
         );
@@ -88,7 +94,7 @@ EOT
 
     protected function createGenerator($bundle = null)
     {
-        return new TritonCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->getParameter('kernel.root_dir'));
+        return new PetkoparaCrudGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->getParameter('kernel.root_dir'));
     }
 
     protected function getSkeletonDirs(BundleInterface $bundle = null)
@@ -103,8 +109,8 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaTritonCrudBundle/Resources/skeleton');
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaTritonCrudBundle/Resources');
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources/skeleton');
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources');
 
         return $skeletonDirs;
     }
@@ -113,7 +119,7 @@ EOT
     {
 
         $questionHelper = $this->getQuestionHelper();
-        $questionHelper->writeSection($output, 'Welcome to the Triton CRUD generator');
+        $questionHelper->writeSection($output, 'Welcome to the Petkopara CRUD generator');
 
         // namespace
         $output->writeln(array(
@@ -149,7 +155,7 @@ EOT
         }
 
         // write?
-        $withoutWrite = $input->getOption('without-write') ? true : false;//default false
+        $withoutWrite = $input->getOption('without-write') ? true : false; //default false
 
         $output->writeln(array(
             '',
@@ -169,13 +175,13 @@ EOT
             '',
         ));
         $question = new ConfirmationQuestion($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
-        $question->setValidator(array('Petkopara\TritonCrudBundle\Command\TritonValidators', 'validateFilterType'));
+        $question->setValidator(array('Petkopara\CrudGeneratorBundle\Command\CrudValidators', 'validateFilterType'));
         $filterType = $questionHelper->ask($input, $output, $question);
         $input->setOption('filter-type', $filterType);
 
         //bulk delete
         if ($withoutWrite === false) {
-                $withoutBulk = $input->getOption('without-bulk') ? true : false;
+            $withoutBulk = $input->getOption('without-bulk') ? true : false;
             $output->writeln(array(
                 '',
                 'By default, the generator creates bulk actions ',
@@ -190,7 +196,7 @@ EOT
         $template = $input->getOption('template');
         $output->writeln(array(
             '',
-            'By default, the created views extends the TritonCrudBundle::base.html.twig',
+            'By default, the created views extends the CrudGeneratorBundle::base.html.twig',
             'You can also set your template which the views to extend, for example base.html.twig ',
             '',
         ));
@@ -255,16 +261,14 @@ EOT
         $entity = Validators::validateEntityName($input->getOption('entity'));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
+        //get the options
         $format = Validators::validateFormat($input->getOption('format'));
         $prefix = $this->getRoutePrefix($input, $entity);
         $withoutWrite = $input->getOption('without-write'); //default with write
-
-        $filterType = TritonValidators::validateFilterType($input->getOption('filter-type'));
+        $filterType = CrudValidators::validateFilterType($input->getOption('filter-type'));
         $withoutBulk = $input->getOption('without-bulk');
-        $withoutShow= $input->getOption('without-show');
-
+        $withoutShow = $input->getOption('without-show');
         $bundleViews = $input->getOption('bundle-views');
-
         $template = $input->getOption('template');
 
         $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $filterType, $withoutBulk, $withoutShow, $withoutWrite);
@@ -293,14 +297,16 @@ EOT
         $runner = $questionHelper->getRunner($output, $errors);
 
         // form
-        if ($withoutWrite===false) {
+        if ($withoutWrite === false) {
             $this->generateForm($bundle, $entity, $metadata, $forceOverwrite);
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
-        if ($filterType == 'form') {
+        if ($filterType == self::FILTER_TYPE_FORM) {
             $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
             $output->writeln('Generating the Filter code: <info>OK</info>');
+        } elseif ($filterType == self::FILTER_TYPE_INPUT) {
+            
         }
 
         // routing
@@ -326,7 +332,7 @@ EOT
     protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
-            $this->filterGenerator = new TritonFilterGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->filterGenerator = new PetkoparaFilterGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
             $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
@@ -336,10 +342,11 @@ EOT
     protected function getFormGenerator($bundle = null)
     {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new TritonFormGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->formGenerator = new PetkoparaFormGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
         return $this->formGenerator;
     }
+
 }

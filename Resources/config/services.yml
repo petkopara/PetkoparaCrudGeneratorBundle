@@ -1,4 +1,4 @@
 services:
-#    triton_crud.example:
-#        class: Triton\Bundle\CrudBundle\Example
+#    petkopara_crud.example:
+#        class: Petkopara\Bundle\CrudBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]

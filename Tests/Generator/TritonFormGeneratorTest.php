@@ -11,13 +11,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Petkopara\TritonCrudBundle\Tests\Generator;
+namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Petkopara\TritonCrudBundle\Generator\TritonFormGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 
-class TritonFormGeneratorTest extends GeneratorTest
+class PetkoparaFormGeneratorTest extends GeneratorTest
 {
 
     public function testGenerate()
@@ -60,7 +60,7 @@ class TritonFormGeneratorTest extends GeneratorTest
                 ->method($this->anything())  // all other calls return self
                 ->will($this->returnSelf());
 
-        $generator = new TritonFormGenerator($metadataFactory);
+        $generator = new PetkoparaFormGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();

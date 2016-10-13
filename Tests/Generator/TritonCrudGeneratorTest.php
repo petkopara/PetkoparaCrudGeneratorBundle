@@ -11,14 +11,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Petkopara\TritonCrudBundle\Tests\Generator;
+namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
-use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
-use Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator;
+use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Generator\CrudGeneratorGenerator;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 
-class TritonCrudGeneratorTest extends GeneratorTest {
+class CrudGeneratorGeneratorTest extends GeneratorTest {
 
     public function testGenerateYamlFull() {
         $advancedConfig = new GeneratorAdvancedConfiguration();
@@ -229,7 +229,7 @@ class TritonCrudGeneratorTest extends GeneratorTest {
     }
 
     protected function getGenerator() {
-        $generator = new TritonCrudGenerator($this->filesystem, $this->tmpDir);
+        $generator = new CrudGeneratorGenerator($this->filesystem, $this->tmpDir);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
         return $generator;
     }

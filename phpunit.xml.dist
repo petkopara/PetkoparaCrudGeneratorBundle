@@ -2,7 +2,7 @@
 
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
-        <testsuite name="TritonGeneratorBundle">
+        <testsuite name="PetkoparaGeneratorBundle">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>

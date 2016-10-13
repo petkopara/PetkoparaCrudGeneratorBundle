@@ -1,4 +1,4 @@
-<?php namespace Petkopara\TritonCrudBundle\Generator;
+<?php namespace Petkopara\CrudGeneratorBundle\Generator;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * Generates a form class based on a Doctrine entity.
  *
  */
-class TritonFormGenerator extends Generator
+class PetkoparaFormGenerator extends Generator
 {
 
     private $className;

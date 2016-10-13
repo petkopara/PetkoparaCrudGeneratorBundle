@@ -1,5 +1,5 @@
 {
-    "name": "petkopara/triton-crud-generator-bundle",
+    "name": "petkopara/crud-generator-bundle",
     "description": "Symfony3 bundle for CRUD generation with pagination, filtering bulk delete and bootstrap3 markup. This Generator supports Doctrine association mapping.",
     "keywords": ["crud", "generator", "symfony3", "pagination", "filter", "bootstrap3", "doctrine", "bulk"],
     "type": "symfony-bundle",
@@ -22,7 +22,7 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": { "Petkopara\\TritonCrudBundle\\": "" },
+        "psr-4": { "Petkopara\\CrudGeneratorBundle\\": "" },
         "exclude-from-classmap": [
             "/Tests/"
         ]

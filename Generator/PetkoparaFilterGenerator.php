@@ -1,4 +1,4 @@
-<?php namespace Petkopara\TritonCrudBundle\Generator;
+<?php namespace Petkopara\CrudGeneratorBundle\Generator;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
 /**
  * Generates a form Filter class based on a Doctrine entity.
  */
-class TritonFilterGenerator extends Generator
+class PetkoparaFilterGenerator extends Generator
 {
 
     private $className;

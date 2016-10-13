@@ -1,8 +1,8 @@
 <?php
 
-namespace Petkopara\TritonCrudBundle\Tests\Command;
+namespace Petkopara\CrudGeneratorBundle\Tests\Command;
 
-use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
 use Sensio\Bundle\GeneratorBundle\Tests\Command\GenerateCommandTest;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * file that was distributed with this source code.
  */
 
-class TritonCrudCommandTest extends GenerateCommandTest
+class CrudGeneratorCommandTest extends GenerateCommandTest
 {
 
     /**
@@ -40,7 +40,7 @@ class TritonCrudCommandTest extends GenerateCommandTest
     public function getInteractiveCommandData()
     {
         return array(
-            array(array(), "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaTritonCrudBundle::base.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', 'annotation', 'foobar', true)),
+            array(array(), "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', 'annotation', 'foobar', true)),
 //            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'), '', array('Blog\\Post', 'annotation', 'blog_post', false)),
 //            array(array(), "AcmeBlogBundle:Blog/Post\ny\nyml\nfoobar\n", array('Blog\\Post', 'yml', 'foobar', true)),
 //            array(array(), "AcmeBlogBundle:Blog/Post\ny\nyml\n/foobar\n", array('Blog\\Post', 'yml', 'foobar', true)),
@@ -83,7 +83,7 @@ acme_blog:
 DATA;
         file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
-        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaTritonCrudBundle::base.html.twig\nannotation\n/foobar\n\n";
+        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n";
         $expected = array('Blog\\Post', 'annotation', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
         $generator = $this->getGenerator();
@@ -110,7 +110,7 @@ acme_blog:
 DATA;
         file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
-        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaTritonCrudBundle::base.html.twig\nyml\n/foobar\n\n";
+        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nyml\n/foobar\n\n";
         $expected = array('Blog\\Post', 'yml', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
         $advConfig = new GeneratorAdvancedConfiguration();
@@ -136,7 +136,7 @@ acme_blog:
 DATA;
         file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
-        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaTritonCrudBundle::base.html.twig\nannotation\n/foobar\n\n";
+        $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n";
         $expected = array('Blog\\Post', 'annotation', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
         $advConfig = new GeneratorAdvancedConfiguration();
@@ -155,7 +155,7 @@ DATA;
     protected function getCommand($generator, $input)
     {
         $command = $this
-                ->getMockBuilder('Petkopara\TritonCrudBundle\Command\TritonCrudCommand')
+                ->getMockBuilder('Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand')
                 ->setMethods(array('getEntityMetadata'))
                 ->getMock()
         ;
@@ -167,8 +167,8 @@ DATA;
         $command->setContainer($this->getContainer());
         $command->setHelperSet($this->getHelperSet($input));
         $command->setGenerator($generator);
-        $command->setTritonFormGenerator($this->getFormGenerator());
-        $command->setTritonFilterGenerator($this->getFilterGenerator());
+        $command->setPetkoparaFormGenerator($this->getFormGenerator());
+        $command->setPetkoparaFilterGenerator($this->getFilterGenerator());
         return $command;
     }
 
@@ -185,7 +185,7 @@ DATA;
     {
         // get a noop generator
         return $this
-                        ->getMockBuilder('Petkopara\TritonCrudBundle\Generator\TritonCrudGenerator')
+                        ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\CrudGeneratorGenerator')
                         ->disableOriginalConstructor()
                         ->setMethods(array('generate'))
                         ->getMock()
@@ -195,7 +195,7 @@ DATA;
     protected function getFormGenerator()
     {
         return $this
-                        ->getMockBuilder('Petkopara\TritonCrudBundle\Generator\TritonFormGenerator')
+                        ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator')
                         ->disableOriginalConstructor()
                         ->setMethods(array('generate'))
                         ->getMock()
@@ -204,7 +204,7 @@ DATA;
     protected function getFilterGenerator()
     {
         return $this
-                        ->getMockBuilder('Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator')
+                        ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator')
                         ->disableOriginalConstructor()
                         ->setMethods(array('generate'))
                         ->getMock()

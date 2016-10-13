@@ -1,4 +1,4 @@
-<?php namespace Petkopara\TritonCrudBundle\Configuration;
+<?php namespace Petkopara\CrudGeneratorBundle\Configuration;
 
 class GeneratorAdvancedConfiguration
 {
@@ -10,7 +10,7 @@ class GeneratorAdvancedConfiguration
     protected $withoutShow;
     protected $withoutWrite;
 
-    public function __construct($baseTemplate = 'PetkoparaTritonCrudBundle::base.html.twig', $bundleViews = false, $filterType = 'form', $withoutBulk = false, $withoutShow = false, $withoutWrite = false)
+    public function __construct($baseTemplate = 'PetkoparaCrudGeneratorBundle::base.html.twig', $bundleViews = false, $filterType = 'form', $withoutBulk = false, $withoutShow = false, $withoutWrite = false)
     {
         $this->baseTemplate = $baseTemplate;
         $this->bundleViews = $bundleViews;

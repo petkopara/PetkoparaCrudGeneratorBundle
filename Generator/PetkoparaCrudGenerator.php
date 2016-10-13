@@ -1,15 +1,15 @@
 <?php
 
-namespace Petkopara\TritonCrudBundle\Generator;
+namespace Petkopara\CrudGeneratorBundle\Generator;
 
 use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Petkopara\TritonCrudBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-class TritonCrudGenerator extends DoctrineCrudGenerator {
+class PetkoparaCrudGenerator extends DoctrineCrudGenerator {
 
     protected $formFilterGenerator;
     protected $advancedConfig;

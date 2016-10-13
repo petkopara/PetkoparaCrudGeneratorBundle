@@ -9,13 +9,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Petkopara\TritonCrudBundle\Tests\Generator;
+namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Petkopara\TritonCrudBundle\Generator\TritonFilterGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 
-class TritonFilterGeneratorTest extends GeneratorTest
+class PetkoparaFilterGeneratorTest extends GeneratorTest
 {
 
     public function testGenerate()
@@ -55,7 +55,7 @@ class TritonFilterGeneratorTest extends GeneratorTest
             ->method($this->anything())  // all other calls return self
             ->will($this->returnSelf());
 
-        $generator = new TritonFilterGenerator($metadataFactory);
+        $generator = new PetkoparaFilterGenerator($metadataFactory);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
