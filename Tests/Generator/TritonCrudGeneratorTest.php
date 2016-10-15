@@ -13,14 +13,18 @@
 
 namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
-use Petkopara\CrudGeneratorBundle\Generator\CrudGeneratorGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-class CrudGeneratorGeneratorTest extends GeneratorTest {
+class CrudGeneratorGeneratorTest extends GeneratorTest
+{
 
-    public function testGenerateYamlFull() {
+    public function testGenerateYamlFull()
+    {
         $advancedConfig = new GeneratorAdvancedConfiguration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'yml', '/post', true, true, $advancedConfig);
         $files = array(
@@ -52,11 +56,12 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-        
+
         $this->assertPagination();
     }
 
-    public function testGenerateXml() {
+    public function testGenerateXml()
+    {
         $advancedConfig = new GeneratorAdvancedConfiguration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'xml', '/post', false, true, $advancedConfig);
         $files = array(
@@ -65,14 +70,14 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
             'Resources/config/routing/post.xml',
             'Resources/views/post/index.html.twig',
             'Resources/views/post/show.html.twig',
+            'Resources/views/post/new.html.twig',
+            'Resources/views/post/edit.html.twig',
         );
         foreach ($files as $file) {
             $this->assertTrue(file_exists($this->tmpDir . '/' . $file), sprintf('%s has been generated', $file));
         }
         $files = array(
             'Resources/config/routing/post.yml',
-            'Resources/views/post/new.html.twig',
-            'Resources/views/post/edit.html.twig',
         );
         foreach ($files as $file) {
             $this->assertFalse(file_exists($this->tmpDir . '/' . $file), sprintf('%s has not been generated', $file));
@@ -88,19 +93,17 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         }
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
-            'public function newAction',
-            'public function editAction',
             '@Route',
         );
         foreach ($strings as $string) {
             $this->assertNotContains($string, $content);
         }
-        
-        $this->assertPagination();
 
+        $this->assertPagination();
     }
 
-    public function testGenerateAnnotationWrite() {
+    public function testGenerateAnnotationWrite()
+    {
         $advancedConfig = new GeneratorAdvancedConfiguration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', true, true, $advancedConfig);
         $files = array(
@@ -133,12 +136,12 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-        
-        $this->assertPagination();
 
+        $this->assertPagination();
     }
 
-    public function testGenerateAnnotation() {
+    public function testGenerateAnnotation()
+    {
         $advancedConfig = new GeneratorAdvancedConfiguration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', false, true, $advancedConfig);
         $files = array(
@@ -146,6 +149,8 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
             'Tests/Controller/PostControllerTest.php',
             'Resources/views/post/index.html.twig',
             'Resources/views/post/show.html.twig',
+            'Resources/views/post/new.html.twig',
+            'Resources/views/post/edit.html.twig',
         );
         foreach ($files as $file) {
             $this->assertTrue(file_exists($this->tmpDir . '/' . $file), sprintf('%s has been generated', $file));
@@ -153,8 +158,6 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         $files = array(
             'Resources/config/routing/post.yml',
             'Resources/config/routing/post.xml',
-            'Resources/views/post/new.html.twig',
-            'Resources/views/post/edit.html.twig',
         );
         foreach ($files as $file) {
             $this->assertFalse(file_exists($this->tmpDir . '/' . $file), sprintf('%s has not been generated', $file));
@@ -169,43 +172,41 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         foreach ($strings as $string) {
             $this->assertContains($string, $content);
         }
-        $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
-        $strings = array(
-            'public function newAction',
-            'public function editAction',
-        );
-        foreach ($strings as $string) {
-            $this->assertNotContains($string, $content);
-        }
-        
+
         $this->assertPagination();
     }
 
-    public function testGenerateWithBaseTemplate() {
+    public function testGenerateWithBaseTemplate()
+    {
         
     }
 
-    public function testGenerateWithBundleViews() {
+    public function testGenerateWithBundleViews()
+    {
         
     }
 
-    public function testGenerateWithoutFilter() {
+    public function testGenerateWithoutFilter()
+    {
         
     }
-    
-    public function testGenerateWithoutDelete() {
+
+    public function testGenerateWithoutDelete()
+    {
         
     }
 
     /**
      * @dataProvider getRoutePrefixes
      */
-    public function testGetRouteNamePrefix($original, $expected) {
+    public function testGetRouteNamePrefix($original, $expected)
+    {
         $prefix = DoctrineCrudGenerator::getRouteNamePrefix($original);
         $this->assertEquals($expected, $prefix);
     }
 
-    public function getRoutePrefixes() {
+    public function getRoutePrefixes()
+    {
         return array(
             array('', ''),
             array('/', ''),
@@ -228,16 +229,22 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         );
     }
 
-    protected function getGenerator() {
-        $generator = new CrudGeneratorGenerator($this->filesystem, $this->tmpDir);
+    /**
+     * 
+     * @return PetkoparaCrudGenerator
+     */
+    protected function getGenerator()
+    {
+        $generator = new PetkoparaCrudGenerator($this->filesystem, $this->tmpDir);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
         return $generator;
     }
 
     /**
-     * @return \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @return BundleInterface
      */
-    protected function getBundle() {
+    protected function getBundle()
+    {
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
         $bundle->expects($this->any())->method('getName')->will($this->returnValue('FooBarBundle'));
@@ -246,16 +253,18 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
     }
 
     /**
-     * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
+     * @return ClassMetadataInfo
      */
-    public function getMetadata() {
+    public function getMetadata()
+    {
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
         $metadata->fieldMappings = array('title' => array('type' => 'string'));
         return $metadata;
     }
 
-    protected function assertPagination() {
+    protected function assertPagination()
+    {
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
             'protected function paginator',
@@ -265,7 +274,8 @@ class CrudGeneratorGeneratorTest extends GeneratorTest {
         }
     }
 
-    protected function assertWithDelete() {
+    protected function assertWithDelete()
+    {
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
             'public function deleteById',

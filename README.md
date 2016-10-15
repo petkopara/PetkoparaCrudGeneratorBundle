@@ -43,11 +43,12 @@ twig:
 
 ```
 
-If you are using bundle's base.html.twig for base template, install the assets.
+Install the assets.
 ```sh
 php bin/console assets:install --symlink
 ```
- 
+Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.
+<script src="{{asset("bundles/tritoncrud/js/petkopara-crud-generator.min.js")}}"></script>
 
 ## Dependencies
 

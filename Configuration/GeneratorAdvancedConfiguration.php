@@ -33,7 +33,6 @@ class GeneratorAdvancedConfiguration
         if ($this->withoutShow == false) {
             array_push($actions, 'show');
         }
-
         return $actions;
     }
 
