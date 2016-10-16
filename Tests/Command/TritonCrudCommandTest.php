@@ -166,7 +166,7 @@ DATA;
         ;
         $command->setContainer($this->getContainer());
         $command->setHelperSet($this->getHelperSet($input));
-        $command->setCrudGenerator($generator);
+        $command->setGenerator($generator);
         $command->setPetkoparaFormGenerator($this->getFormGenerator());
         $command->setPetkoparaFilterGenerator($this->getFilterGenerator());
         return $command;

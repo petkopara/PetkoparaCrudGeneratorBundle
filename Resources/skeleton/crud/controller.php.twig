@@ -19,7 +19,7 @@ use {{ namespace }}\Entity\{{ entity }};
 use {{ namespace }}\Form\{{ entity }}Type;
 {% endif %}
 
-{% if filter_type == 'form' %}
+{% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
 use {{ namespace }}\Form\{{ entity }}FilterType;
 {% endif %}
 

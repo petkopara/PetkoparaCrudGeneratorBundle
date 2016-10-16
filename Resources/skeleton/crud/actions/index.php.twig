@@ -11,12 +11,10 @@
     {
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository('{{ bundle }}:{{ entity }}')->createQueryBuilder('e');
-{% if filter_type == 'form' %}
-        list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
-{% elseif filter_type == 'input' %}
         
+{% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
+        list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
 {% endif %}
-
         list(${{ entity_pluralized }}, $pagerHtml) = $this->paginator($queryBuilder, $request);
         
 {% if bundle_views == false%}
@@ -26,15 +24,14 @@
 {% endif %}
             '{{ entity_pluralized }}' => ${{ entity_pluralized }},
             'pagerHtml' => $pagerHtml,
-{% if filter_type == 'form' %}
+{% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
             'filterForm' => $filterForm->createView(),
 {% endif %}
 
         ));
     }
 
-{% if filter_type == 'form' %}
-    
+{% if filter_type == constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_FORM') %}
     /**
     * Create filter form and process filter request.
     *
@@ -75,6 +72,28 @@
                 $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType', $filterData);
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
             }
+        }
+
+        return array($filterForm, $queryBuilder);
+    }
+{% endif %}
+
+{% if filter_type == constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_INPUT') %}
+    /**
+    * Create filter form and process filter request.
+    *
+    */
+    protected function filter($queryBuilder, $request)
+    {
+        $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType');
+
+        // Filter action
+        // Bind values from the request
+        $filterForm->submit($request->query->get($filterForm->getName()));
+
+        if ($filterForm->isValid()) {
+            // Build the query from the given form object
+            $this->get('petkopara_multi_search.updater')->search($filterForm->get('search'), $queryBuilder);
         }
 
         return array($filterForm, $queryBuilder);

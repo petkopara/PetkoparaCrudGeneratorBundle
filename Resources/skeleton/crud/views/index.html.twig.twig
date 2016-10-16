@@ -7,72 +7,22 @@
 {{ "{% block body %}" }}
 
 
-<div id="top" class="row">
+<div class="row">
 
-    <div class="col-md-12">
-        <div class="page-header">
-            <h3>{{ entity }}
-{% if filter_type == 'form' %}
-                    <a class="btn dropdown-toggle pull-right" data-toggle="collapse" data-target="#filters">
-                        Filter
-                        <span class="caret"></span>
-                    </a>
+{%- if filter_type == 'form'%}
+    {% include 'crud/views/others/form_filter_header.html.twig.twig' %}
+{% elseif filter_type =='input' %}
+    {% include 'crud/views/others/multi_search_header.html.twig.twig' %}
+
 {% endif %}
-            </h3>
-        </div>
-    </div>
-
-
-{%- if filter_type == 'form' %}
-        <div class="col-md-12">
-            {#        <div class="input-group h2">
-                        <input name="data[search]" class="form-control" id="search" type="text" placeholder="Pesquisar Itens">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>#}
-            {{ '{%- if form_errors(filterForm) %}' }}
-            <div class="alert alert-block alert-error fade in form-errors">
-                {{ '{{ form_errors(filterForm) }}' }}
-            </div>
-            {{ '{% endif %}' }}
-
-
-            <div id="filters" class="collapse">
-
-                <form class="well" action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
-
-                    {{ "{{ form_rest(filterForm) }}" }}
-
-                    <p>
-                        <button type="submit" class="btn btn-warning" name="filter_action" value="filter"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>
-                        <button type="submit" class="btn btn-default" name="filter_action" value="reset"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Reset</button>
-                    </p>
-                </form>
-            </div>
-        </div>
-{% endif %}
-
 
 </div> <!-- /#top -->
 
 
 {% include 'crud/views/others/flash_messages.html.twig.twig' %}
+<hr>
 
-
-<div id="list" class="row">
-
-{%- if 'new' in actions %}
-        <div class="col-md-12">
-            <a class="btn btn-primary" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" style="margin-bottom:10px">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
-            </a>
-        </div>
-{% endif %}
-
-
+<div class="row">
 
 {%- if without_bulk_action == false %}
         <form method="POST" action="{{ "{{ path('"~ route_name_prefix ~"_bulk_action') }}" }} ">
@@ -131,7 +81,7 @@
 
 
 
-<div id="bottom" class="row">
+<div class="row">
 {% if without_bulk_action == false %}
         <div class="col-md-4 pull-left">
             <div class="pagination form-inline ">

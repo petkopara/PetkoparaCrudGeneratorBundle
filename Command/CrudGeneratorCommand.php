@@ -18,6 +18,7 @@ use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
+use Petkopara\CrudGeneratorBundle\Generator\PetkoparaMultiSearchFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -41,6 +42,7 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
     protected $generator;
     protected $formGenerator;
     private $filterGenerator;
+    private $multiSearchGenerator;
 
     protected function configure()
     {
@@ -174,7 +176,7 @@ EOT
             'By default, the generator creates filter',
             '',
         ));
-        $question = new ConfirmationQuestion($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
+        $question = new Question($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
         $question->setValidator(array('Petkopara\CrudGeneratorBundle\Command\CrudValidators', 'validateFilterType'));
         $filterType = $questionHelper->ask($input, $output, $question);
         $input->setOption('filter-type', $filterType);
@@ -306,7 +308,8 @@ EOT
             $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
             $output->writeln('Generating the Filter code: <info>OK</info>');
         } elseif ($filterType == self::FILTER_TYPE_INPUT) {
-            
+            $this->generateMultiSearchFilter($bundle, $entity, $forceOverwrite);
+            $output->writeln('Generating the Multi Search Filter code: <info>OK</info>');
         }
 
         // routing
@@ -329,6 +332,21 @@ EOT
         $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite);
     }
 
+    protected function generateMultiSearchFilter($bundle, $entity, $forceOverwrite = false)
+    {
+        $this->getMultiSearchFilter($bundle)->generate($bundle, $entity, $forceOverwrite);
+    }
+
+    protected function getMultiSearchFilter($bundle)
+    {
+        if (null === $this->multiSearchGenerator) {
+            $this->multiSearchGenerator = new PetkoparaMultiSearchFilterGenerator();
+            $this->multiSearchGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->multiSearchGenerator;
+    }
+
     protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
@@ -348,5 +366,5 @@ EOT
 
         return $this->formGenerator;
     }
-    
+
 }

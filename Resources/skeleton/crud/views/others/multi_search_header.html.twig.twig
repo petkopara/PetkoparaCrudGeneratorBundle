@@ -1,0 +1,38 @@
+   
+
+<div class="col-md-3">
+    <h3>{{ entity }}</h3>
+</div>
+
+<div class="col-md-6">
+    <form action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
+        <div class="input-group h3">
+
+           {{ "{{form_widget(filterForm.search, { 'attr': {'class': 'form-control'} })}}" }}
+           {{ "{{form_rest(filterForm) }}"}}
+
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+
+        </div>
+    </form>
+</div>
+
+<div class="col-md-3">
+{% if 'new' in actions %}
+            <a class="btn btn-primary h3 pull-right" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" style="margin-bottom:10px">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New
+            </a>
+{% endif %}
+</div>
+
+<div class="col-md-12">
+    {{ '{%- if form_errors(filterForm) %}' }}
+    <div class="alert alert-block alert-error fade in form-errors">
+        {{ '{{ form_errors(filterForm) }}' }}
+    </div>
+    {{ '{% endif %}' }}
+</div>

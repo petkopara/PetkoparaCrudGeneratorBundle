@@ -11,7 +11,7 @@ class CrudValidators
     public static function validateFilterType($filterType)
     {
         if (!$filterType) {
-            throw new \RuntimeException('Please enter a configuration format.');
+            throw new \RuntimeException('Please enter a filter type.');
         }
 
         $filterType = strtolower($filterType);

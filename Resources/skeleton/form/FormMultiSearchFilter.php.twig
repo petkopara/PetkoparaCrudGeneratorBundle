@@ -1,0 +1,35 @@
+<?php
+
+namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+use Petkopara\MultiSearchBundle\Form\Type\MultiSearchType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+
+class {{ form_class }} extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        
+        $builder->add('search', MultiSearchType::class, array(
+                    'class' => '{{bundle ~":"~entity_class}}',
+                    ));
+
+
+    }
+
+    public function getBlockPrefix()
+    {
+        return '{{ form_filter_type_name }}';
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'csrf_protection' => false,
+            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
+        ));
+    }
+}

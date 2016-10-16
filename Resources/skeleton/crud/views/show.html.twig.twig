@@ -19,32 +19,19 @@
     <div class="col-md-6">
         <p><strong>{{ field|capitalize }}</strong></p>
         <p>
-
-            {%- if metadata.type in ['datetime'] %}
-
+{%if metadata.type in ['datetime'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}
-
-            {%- elseif metadata.type in ['date'] %}
-
+{%elseif metadata.type in ['date'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}
-
-            {%- elseif metadata.type in ['time'] %}
-
+{%elseif metadata.type in ['time'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}
-
-            {%- elseif metadata.type in ['array'] %}
-
+{%elseif metadata.type in ['array'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}
-
-            {%- elseif metadata.type in ['boolean'] %}
-
+{%elseif metadata.type in ['boolean'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}Yes{% else %}No{% endif %}' }}
-
-            {%- else %}
-
+{%else %}
             {{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}
-
-            {%- endif %}
+{% endif %}
         </p>
 
     </div>
