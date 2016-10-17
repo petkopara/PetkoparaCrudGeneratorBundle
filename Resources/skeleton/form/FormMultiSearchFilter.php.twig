@@ -16,7 +16,8 @@ class {{ form_class }} extends AbstractType
         $builder->add('search', MultiSearchType::class, array(
                     'class' => '{{bundle ~":"~entity_class}}',
                     ));
-
+                    
+       $builder->setMethod('GET');
 
     }
 

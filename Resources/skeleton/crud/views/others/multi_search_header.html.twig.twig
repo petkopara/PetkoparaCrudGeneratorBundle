@@ -1,25 +1,42 @@
    
 
-<div class="col-md-3">
-    <h3>{{ entity }}</h3>
+<div class="col-md-12">
+    <div class="page-header">
+    <h2>{{ entity }}</h2>
+    </div>
 </div>
 
-<div class="col-md-6">
-    <form action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
-        <div class="input-group h3">
 
-           {{ "{{form_widget(filterForm.search, { 'attr': {'class': 'form-control'} })}}" }}
-           {{ "{{form_rest(filterForm) }}"}}
 
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
 
+<div class="col-md-3 pull-left">
+            <div class="pagination form-inline ">
+                <select class = "form-control" name="bulk_action" >
+                    <option value="">10</option>
+                    <option value="delete">20</option>
+                    <option value="delete">50</option>
+                    <option value="delete">100</option>
+                </select>
+            </div>
+</div>
+
+        <div class="col-md-6">
+            <form action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
+
+                <div class="input-group h3">
+
+                   {{ "{{form_widget(filterForm.search, { 'attr': {'class': 'form-control'} })}}" }}
+                   {{ "{{form_rest(filterForm) }}"}}
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+
+                </div>
+            </form>
         </div>
-    </form>
-</div>
 
 <div class="col-md-3">
 {% if 'new' in actions %}
@@ -28,7 +45,6 @@
             </a>
 {% endif %}
 </div>
-
 <div class="col-md-12">
     {{ '{%- if form_errors(filterForm) %}' }}
     <div class="alert alert-block alert-error fade in form-errors">

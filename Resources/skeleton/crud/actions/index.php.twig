@@ -87,9 +87,8 @@
     {
         $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType');
 
-        // Filter action
         // Bind values from the request
-        $filterForm->submit($request->query->get($filterForm->getName()));
+        $filterForm->handleRequest($request);
 
         if ($filterForm->isValid()) {
             // Build the query from the given form object
