@@ -84,15 +84,15 @@ DATA;
         file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
         $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n";
-        $expected = array('Blog\\Post', 'annotation', 'foobar', true);
-        list($entity, $format, $prefix, $withWrite) = $expected;
+        $expected = array('Blog\\Post', 'annotation', 'foobar', false);
+        list($entity, $format, $prefix, $withoutWrite) = $expected;
         $generator = $this->getGenerator();
 
         $advConfig = new GeneratorAdvancedConfiguration();
         $generator
                 ->expects($this->once())
                 ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withWrite, false, $advConfig)
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withoutWrite, false, $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
@@ -167,8 +167,8 @@ DATA;
         $command->setContainer($this->getContainer());
         $command->setHelperSet($this->getHelperSet($input));
         $command->setGenerator($generator);
-        $command->setPetkoparaFormGenerator($this->getFormGenerator());
-        $command->setPetkoparaFilterGenerator($this->getFilterGenerator());
+        $command->setFormGenerator($this->getFormGenerator());
+        $command->setFilterGenerator($this->getFilterGenerator());
         return $command;
     }
 
@@ -185,7 +185,7 @@ DATA;
     {
         // get a noop generator
         return $this
-                        ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\CrudGeneratorGenerator')
+                        ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator')
                         ->disableOriginalConstructor()
                         ->setMethods(array('generate'))
                         ->getMock()

@@ -180,7 +180,8 @@ EOT
         $question->setValidator(array('Petkopara\CrudGeneratorBundle\Command\CrudValidators', 'validateFilterType'));
         $filterType = $questionHelper->ask($input, $output, $question);
         $input->setOption('filter-type', $filterType);
-
+        
+        $withoutBulk = true;
         //bulk delete
         if ($withoutWrite === false) {
             $withoutBulk = $input->getOption('without-bulk') ? true : false;
@@ -290,7 +291,7 @@ EOT
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator($bundle);
-
+//        die(var_dump($format, $prefix, $withoutWrite, $forceOverwrite, $advancedConfig));
         $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withoutWrite, $forceOverwrite, $advancedConfig);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
@@ -365,6 +366,10 @@ EOT
         }
 
         return $this->formGenerator;
+    }
+    
+    public function setFilterGenerator(PetkoparaFilterGenerator $filterGenerator){
+        $this->filterGenerator = $filterGenerator;
     }
 
 }

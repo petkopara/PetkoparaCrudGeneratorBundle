@@ -3,14 +3,14 @@
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
-use Sensio\Bundle\GeneratorBundle\Generator\Generator;
+use Sensio\Bundle\GeneratorBundle\Generator\DoctrineFormGenerator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * Generates a form class based on a Doctrine entity.
  *
  */
-class PetkoparaFormGenerator extends Generator
+class PetkoparaFormGenerator extends DoctrineFormGenerator
 {
 
     private $className;
