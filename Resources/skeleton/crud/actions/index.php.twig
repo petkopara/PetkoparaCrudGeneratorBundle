@@ -92,7 +92,7 @@
 
         if ($filterForm->isValid()) {
             // Build the query from the given form object
-            $this->get('petkopara_multi_search.updater')->search($filterForm->get('search'), $queryBuilder);
+            $this->get('petkopara_multi_search.builder')->searchForm( $queryBuilder, $filterForm->get('search'));
         }
 
         return array($filterForm, $queryBuilder);
