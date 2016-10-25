@@ -19,7 +19,7 @@
     <div class="col-md-6">
         <p><strong>{{ field|capitalize }}</strong></p>
         <p>
-{%if metadata.type in ['datetime'] %}
+{%if metadata.type in ['datetime','datetimetz'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}
 {%elseif metadata.type in ['date'] %}
             {{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}
