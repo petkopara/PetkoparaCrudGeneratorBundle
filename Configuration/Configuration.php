@@ -2,12 +2,14 @@
 
 namespace Petkopara\CrudGeneratorBundle\Configuration;
 
+use Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand;
+
 class Configuration
 {
 
     protected $baseTemplate = 'PetkoparaCrudGeneratorBundle::base.html.twig';
     protected $bundleViews = false;
-    protected $filterType = 'form';
+    protected $filterType = CrudGeneratorCommand::FILTER_TYPE_INPUT;
     protected $withoutBulk = false;
     protected $withoutShow = false;
     protected $withoutWrite = false;

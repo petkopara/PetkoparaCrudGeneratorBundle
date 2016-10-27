@@ -62,7 +62,7 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
                     new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
-                    new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Form filter, Multi search input or none', 'form'),
+                    new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Multi search input, Form filter or none', 'input'),
                 ))
                 ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
@@ -306,7 +306,7 @@ EOT
 
         $generator = $this->getGenerator($bundle);
 
-        $generator->generate($bundle, $entity, $metadata[0], $configuration);
+        $generator->generateCrud($bundle, $entity, $metadata[0], $configuration);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 

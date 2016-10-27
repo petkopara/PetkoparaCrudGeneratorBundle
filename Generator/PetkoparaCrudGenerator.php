@@ -49,7 +49,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
             $dir = sprintf('%s/Resources/views/%s', $bundle->getPath(), str_replace('\\', '/', $this->entity));
         }
 
-        $this->generateControllerClass();
+        $this->generateCrudControllerClass();
 
         if (!file_exists($dir)) {
             $this->filesystem->mkdir($dir, 0777);
@@ -160,7 +160,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
          * Generates the controller class only.
          * @param boolean $config->getOverwrite()
          */
-        protected function generateControllerClass() {
+        protected function generateCrudControllerClass() {
         $dir = $this->bundle->getPath();
 
         $parts = explode('\\', $this->entity);
@@ -171,7 +171,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
                 '%s/Controller/%s/%sController.php', $dir, str_replace('\\', '/', $entityNamespace), $entityClass
         );
 
-        if (!$config->getOverwrite() && file_exists($target)) {
+        if (!$this->config->getOverwrite() && file_exists($target)) {
             throw new \RuntimeException('Unable to generate the controller as it already exists.');
         }
 
@@ -186,7 +186,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
             'entity_class' => $entityClass,
             'namespace' => $this->bundle->getNamespace(),
             'entity_namespace' => $entityNamespace,
-            'config->format' => $this->config->getFormat(),
+            'format' => $this->config->getFormat(),
             'bundle_views' => $this->config->getBundleViews(),
             'filter_type' => $this->config->getFilterTYpe(),
         ));
