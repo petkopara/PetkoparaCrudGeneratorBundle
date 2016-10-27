@@ -2,7 +2,7 @@
 
 namespace Petkopara\CrudGeneratorBundle\Tests\Command;
 
-use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Configuration\Configuration;
 use Sensio\Bundle\GeneratorBundle\Tests\Command\GenerateCommandTest;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -26,7 +26,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
     public function testInteractiveCommand($options, $input, $expected)
     {
         list($entity, $format, $prefix, $withWrite) = $expected;
-        $advConfig = new GeneratorAdvancedConfiguration();
+        $advConfig = new Configuration();
         $generator = $this->getGenerator();
         $generator
                 ->expects($this->once())
@@ -69,7 +69,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
     {
         return array(
             array(array('--entity' => 'AcmeBlogBundle:Blog/Post'), array('Blog\\Post', 'annotation', 'blog_post', false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--with-write' => true), array('Blog\\Post', 'yml', 'foo', true)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--without-write' => false), array('Blog\\Post', 'yml', 'foo', true)),
         );
     }
 
@@ -88,7 +88,7 @@ DATA;
         list($entity, $format, $prefix, $withoutWrite) = $expected;
         $generator = $this->getGenerator();
 
-        $advConfig = new GeneratorAdvancedConfiguration();
+        $advConfig = new Configuration();
         $generator
                 ->expects($this->once())
                 ->method('generate')
@@ -113,7 +113,7 @@ DATA;
         $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nyml\n/foobar\n\n";
         $expected = array('Blog\\Post', 'yml', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
-        $advConfig = new GeneratorAdvancedConfiguration();
+        $advConfig = new Configuration();
 
         $generator = $this->getGenerator();
         $generator
@@ -139,7 +139,7 @@ DATA;
         $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n";
         $expected = array('Blog\\Post', 'annotation', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
-        $advConfig = new GeneratorAdvancedConfiguration();
+        $advConfig = new Configuration();
         $generator = $this->getGenerator();
         $generator
                 ->expects($this->once())

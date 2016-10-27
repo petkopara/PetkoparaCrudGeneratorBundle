@@ -14,7 +14,7 @@
 namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Configuration\Configuration;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
@@ -25,7 +25,7 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
 
     public function testGenerateYamlFull()
     {
-        $advancedConfig = new GeneratorAdvancedConfiguration();
+        $advancedConfig = new Configuration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'yml', '/post', true, true, $advancedConfig);
         $files = array(
             'Controller/PostController.php',
@@ -62,7 +62,7 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
 
     public function testGenerateXml()
     {
-        $advancedConfig = new GeneratorAdvancedConfiguration();
+        $advancedConfig = new Configuration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'xml', '/post', false, true, $advancedConfig);
         $files = array(
             'Controller/PostController.php',
@@ -104,7 +104,7 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
 
     public function testGenerateAnnotationWrite()
     {
-        $advancedConfig = new GeneratorAdvancedConfiguration();
+        $advancedConfig = new Configuration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', true, true, $advancedConfig);
         $files = array(
             'Controller/PostController.php',
@@ -142,7 +142,7 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
 
     public function testGenerateAnnotation()
     {
-        $advancedConfig = new GeneratorAdvancedConfiguration();
+        $advancedConfig = new Configuration();
         $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', false, true, $advancedConfig);
         $files = array(
             'Controller/PostController.php',

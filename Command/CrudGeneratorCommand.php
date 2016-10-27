@@ -14,7 +14,8 @@
 namespace Petkopara\CrudGeneratorBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
-use Petkopara\CrudGeneratorBundle\Configuration\GeneratorAdvancedConfiguration;
+use Petkopara\CrudGeneratorBundle\Configuration\Configuration;
+use Petkopara\CrudGeneratorBundle\Configuration\ConfigurationBuilder;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
@@ -180,7 +181,7 @@ EOT
         $question->setValidator(array('Petkopara\CrudGeneratorBundle\Command\CrudValidators', 'validateFilterType'));
         $filterType = $questionHelper->ask($input, $output, $question);
         $input->setOption('filter-type', $filterType);
-        
+
         $withoutBulk = true;
         //bulk delete
         if ($withoutWrite === false) {
@@ -274,8 +275,6 @@ EOT
         $bundleViews = $input->getOption('bundle-views');
         $template = $input->getOption('template');
 
-        $advancedConfig = new GeneratorAdvancedConfiguration($template, $bundleViews, $filterType, $withoutBulk, $withoutShow, $withoutWrite);
-
 
         $forceOverwrite = $input->getOption('overwrite');
 
@@ -290,9 +289,24 @@ EOT
 
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
+
+        $configBuilder = new ConfigurationBuilder();
+        $configuration = $configBuilder
+                ->setBaseTemplate($template)
+                ->setBundleViews($bundleViews)
+                ->setFilterType($filterType)
+                ->setWithoutBulk($withoutBulk)
+                ->setWithoutShow($withoutShow)
+                ->setWithoutWrite($withoutWrite)
+                ->setOverwrite($forceOverwrite)
+                ->setFormat($format)
+                ->setRoutePrefix($prefix)
+                ->getConfiguration()
+        ;
+
         $generator = $this->getGenerator($bundle);
-//        die(var_dump($format, $prefix, $withoutWrite, $forceOverwrite, $advancedConfig));
-        $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withoutWrite, $forceOverwrite, $advancedConfig);
+
+        $generator->generate($bundle, $entity, $metadata[0], $configuration);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
 
@@ -367,8 +381,9 @@ EOT
 
         return $this->formGenerator;
     }
-    
-    public function setFilterGenerator(PetkoparaFilterGenerator $filterGenerator){
+
+    public function setFilterGenerator(PetkoparaFilterGenerator $filterGenerator)
+    {
         $this->filterGenerator = $filterGenerator;
     }
 

@@ -1,24 +1,19 @@
-<?php namespace Petkopara\CrudGeneratorBundle\Configuration;
+<?php
 
-class GeneratorAdvancedConfiguration
+namespace Petkopara\CrudGeneratorBundle\Configuration;
+
+class Configuration
 {
 
-    protected $baseTemplate;
-    protected $bundleViews;
-    protected $filterType;
-    protected $withoutBulk;
-    protected $withoutShow;
-    protected $withoutWrite;
-
-    public function __construct($baseTemplate = 'PetkoparaCrudGeneratorBundle::base.html.twig', $bundleViews = false, $filterType = 'form', $withoutBulk = false, $withoutShow = false, $withoutWrite = false)
-    {
-        $this->baseTemplate = $baseTemplate;
-        $this->bundleViews = $bundleViews;
-        $this->filterType = $filterType;
-        $this->withoutShow = $withoutShow;
-        $this->withoutBulk = $withoutBulk;
-        $this->withoutWrite = $withoutWrite;
-    }
+    protected $baseTemplate = 'PetkoparaCrudGeneratorBundle::base.html.twig';
+    protected $bundleViews = false;
+    protected $filterType = 'form';
+    protected $withoutBulk = false;
+    protected $withoutShow = false;
+    protected $withoutWrite = false;
+    protected $overwrite = false;
+    protected $routePrefix = '';
+    protected $format = 'annotation';
 
     public function getCrudActions()
     {
@@ -90,4 +85,47 @@ class GeneratorAdvancedConfiguration
         $this->withoutShow = $withoutShow;
         return $this;
     }
+    
+    function getWithoutWrite()
+    {
+        return $this->withoutWrite;
+    }
+
+    function getOverwrite()
+    {
+        return $this->overwrite;
+    }
+
+    function getRoutePrefix()
+    {
+        return $this->routePrefix;
+    }
+
+    function getFormat()
+    {
+        return $this->format;
+    }
+
+    function setWithoutWrite($withoutWrite)
+    {
+        $this->withoutWrite = $withoutWrite;
+    }
+
+    function setOverwrite($overwrite)
+    {
+        $this->overwrite = $overwrite;
+    }
+
+    function setRoutePrefix($routePrefix)
+    {
+        $this->routePrefix = $routePrefix;
+    }
+
+    function setFormat($format)
+    {
+        $this->format = $format;
+    }
+
+
+
 }
