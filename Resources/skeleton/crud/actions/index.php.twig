@@ -36,7 +36,7 @@
     * Create filter form and process filter request.
     *
     */
-    protected function filter($queryBuilder, $request)
+    protected function filter($queryBuilder, Request $request)
     {
         $session = $request->getSession();
         $filterForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}FilterType');
@@ -103,7 +103,7 @@
     * Get results from paginator and get paginator view.
     *
     */
-    protected function paginator($queryBuilder, $request)
+    protected function paginator($queryBuilder, Request $request)
     {
         // Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
@@ -114,9 +114,10 @@
 
         // Paginator - route generator
         $me = $this;
-        $routeGenerator = function($page) use ($me)
+        $routeGenerator = function($page) use ($me, $request)
         {
-            return $me->generateUrl('{{ route_name_prefix }}', array('page' => $page));
+            $request->query->set('page', $page);
+            return $me->generateUrl('post', $request->query->all());
         };
 
         // Paginator - view

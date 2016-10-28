@@ -1,7 +1,7 @@
    
 
 <div class="col-md-12">
-        <h3>{{ entity }}
+        <h3><a href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">{{ entity }}</a>
             
 {% if 'new' in actions %}
             <a class="btn btn-primary pull-right" href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" style="margin-bottom:10px">
