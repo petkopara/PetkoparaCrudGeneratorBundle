@@ -3,6 +3,7 @@
 namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
 use Petkopara\MultiSearchBundle\Form\Type\MultiSearchType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,13 +24,14 @@ class {{ form_class }} extends AbstractType
 
     public function getBlockPrefix()
     {
-        return '{{ form_filter_type_name }}';
+        return null;
     }
     
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
+            'allow_extra_fields' => true,
             'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
         ));
     }

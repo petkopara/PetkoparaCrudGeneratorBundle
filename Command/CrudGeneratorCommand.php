@@ -59,6 +59,8 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
                     new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
                     new InputOption('overwrite', 'o', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
                     new InputOption('bundle-views', 'b', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+                    new InputOption('without-sorting', 'wsr', InputOption::VALUE_NONE, 'Whether or not have sorting in the index'),
+                    new InputOption('without-page-size', 'wps', InputOption::VALUE_NONE, 'Whether or not to show items per page select in the index'),
                     new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
@@ -272,9 +274,10 @@ EOT
         $filterType = CrudValidators::validateFilterType($input->getOption('filter-type'));
         $withoutBulk = $input->getOption('without-bulk');
         $withoutShow = $input->getOption('without-show');
+        $withoutSorting = $input->getOption('without-sorting');
+        $withoutPageSize = $input->getOption('without-page-size');
         $bundleViews = $input->getOption('bundle-views');
         $template = $input->getOption('template');
-
 
         $forceOverwrite = $input->getOption('overwrite');
 
@@ -298,6 +301,8 @@ EOT
                 ->setWithoutBulk($withoutBulk)
                 ->setWithoutShow($withoutShow)
                 ->setWithoutWrite($withoutWrite)
+                ->setWithoutSorting($withoutSorting)
+                ->setWithoutPageSize($withoutPageSize)
                 ->setOverwrite($forceOverwrite)
                 ->setFormat($format)
                 ->setRoutePrefix($prefix)

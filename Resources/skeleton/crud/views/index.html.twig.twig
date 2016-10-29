@@ -33,9 +33,19 @@
 {% if without_bulk_action == false %}
                         <th width="20px"><input type="checkbox" class="check-all" onclick="toggleAll(this)"></th>
 {% endif %}
-{% for field, metadata in fields %}
+
+{% if without_sorting == false %}
+                {{'{% import "PetkoparaCrudGeneratorBundle::macros/th_sortable.html.twig" as macros %}'}}
+    {% for field, metadata in fields %}
+                        <th>{{"{{macros.th_sortable('" ~field~"',app.request.get('sort_col'), app.request.get('sort_order') , '" ~ route_name_prefix ~ "')}}"}}</th>
+    {% endfor %}
+{% else %}
+    {% for field, metadata in fields %}
                         <th>{{ field|capitalize }}</th>
-{% endfor %}
+    {% endfor %}
+{% endif %}
+
+                       
                         <th width = "130px">List</th>
                     </tr>
                 </thead>

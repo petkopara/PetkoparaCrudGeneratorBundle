@@ -88,19 +88,31 @@ class ConfigurationBuilder implements ConfigurationBuilderInterface
 
     public function setFormat($format)
     {
-         $this->configuration->setFormat($format);
+        $this->configuration->setFormat($format);
         return $this;
     }
 
     public function setOverwrite($overwrite)
     {
-         $this->configuration->setOverwrite($overwrite);
+        $this->configuration->setOverwrite($overwrite);
         return $this;
     }
 
     public function setRoutePrefix($routePrefix)
     {
-         $this->configuration->setRoutePrefix($routePrefix);
+        $this->configuration->setRoutePrefix($routePrefix);
+        return $this;
+    }
+
+    public function setWithoutPageSize($withoutPageSize)
+    {
+        $this->configuration->setWithoutPageSize($withoutPageSize);
+        return $this;
+    }
+
+    public function setWithoutSorting($withoutSorting)
+    {
+        $this->configuration->setWithoutSorting($withoutSorting);
         return $this;
     }
 

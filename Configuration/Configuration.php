@@ -13,6 +13,8 @@ class Configuration
     protected $withoutBulk = false;
     protected $withoutShow = false;
     protected $withoutWrite = false;
+    protected $withoutSorting = false;
+    protected $withoutPageSize = false;
     protected $overwrite = false;
     protected $routePrefix = '';
     protected $format = 'annotation';
@@ -127,6 +129,31 @@ class Configuration
     {
         $this->format = $format;
     }
+    public function getWithoutSorting()
+    {
+        return $this->withoutSorting;
+    }
+
+    public function setWithoutSorting($withoutSorting)
+    {
+        $this->withoutSorting = $withoutSorting;
+        return $this;
+    }
+    
+    
+    public function getWithoutPageSize()
+    {
+        return $this->withoutPageSize;
+    }
+
+    public function setWithoutPageSize($withoutPageSize)
+    {
+        $this->withoutPageSize = $withoutPageSize;
+        return $this;
+    }
+
+
+
 
 
 
