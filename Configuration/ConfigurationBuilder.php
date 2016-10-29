@@ -15,7 +15,7 @@ class ConfigurationBuilder implements ConfigurationBuilderInterface
 
     private $configuration;
 
-    function __construct()
+    public function __construct()
     {
         $this->configuration = new Configuration();
     }

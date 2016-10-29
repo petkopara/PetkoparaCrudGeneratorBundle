@@ -19,7 +19,6 @@ use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
-use Petkopara\CrudGeneratorBundle\Generator\PetkoparaMultiSearchFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -43,7 +42,6 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
     protected $generator;
     protected $formGenerator;
     private $filterGenerator;
-    private $multiSearchGenerator;
 
     protected function configure()
     {
