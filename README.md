@@ -1,6 +1,7 @@
 # CrudGeneratorBundle
 Symfony3 CRUD generator bundle with pagination, filtering, Twitter bootstrap 3.3.6 markup and many other features.
-It's fully customizable and Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
+It's Simple to use and fully customizable.
+Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
 [![Build Status](https://travis-ci.org/petkopara/CrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/CrudGeneratorBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
@@ -34,9 +35,15 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
     composer require petkopara/crud-generator-bundle
 
 Add it to the `AppKernel.php` class:
+
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
     new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
     new Petkopara\CrudGeneratorBundle\PetkoparaCrudGeneratorBundle(),
+
+Install the assets.
+```sh
+php bin/console assets:install --symlink
+```
 
 Optionally for the bootstrap theme, add this to your `app/config/config.yml`
 ```yaml
@@ -46,10 +53,6 @@ twig:
 
 ```
 
-Install the assets.
-```sh
-php bin/console assets:install --symlink
-```
 Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.
 <script src="{{asset("bundles/tritoncrud/js/petkopara-crud-generator.min.js")}}"></script>
 
@@ -57,7 +60,7 @@ Optionally if you are using your own base tempalte, be sure that you include the
 
 This bundle extends [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle). 
 Pagination with [PagerFanta](https://github.com/whiteoctober/Pagerfanta/) . 
-For the filtering is using [PetkoparaMutiSearchBundle]( https://github.com/petkopara/PetkoparaMultiSearchBundle) or [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle).
+For the filtering is used [PetkoparaMutiSearchBundle]( https://github.com/petkopara/PetkoparaMultiSearchBundle) and [LexikFormFilterBundle](https://github.com/lexik/LexikFormFilterBundle).
 
 ## Usage
 
@@ -76,6 +79,8 @@ The bundle adds few new parameters compared to the doctrine crud generator, to c
   * form - To use Lexik form filter.
   * none - Will not generate any filter code.
 
+* `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default PetkoparaCrudGeneratorBundle::base.html.twig).
+
 * `--without-write` - The default behavior of the bundle is to generate write code, so for that `--with-write` option is transformed to this.
 
 * `--without-show` - Many times you don't need show code, for that this option is introduced. 
@@ -85,8 +90,6 @@ The bundle adds few new parameters compared to the doctrine crud generator, to c
 * `--without-page-size` - To not generate items per page code.
 
 * `--without-bulk` - To not generate bulk actions code.
-
-* `--template` - The base template name, which the views will override. For example set it to `--template=base.html.twig` to extends your base template.(by default CrudGeneratorBundle::base.html.twig).
 
 * `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_. It's not present in the wizard, but can be used as parameter.
 

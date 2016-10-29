@@ -2,6 +2,7 @@
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use RuntimeException;
 use Sensio\Bundle\GeneratorBundle\Generator\DoctrineFormGenerator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -15,16 +16,16 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
 
     private $className;
     private $classPath;
-    private $metadataFactory;
+    private $metadataGuesser;
 
     /**
      * Constructor.
      *
      * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
      */
-    public function __construct(DisconnectedMetadataFactory $metadataFactory)
+    public function __construct(MetadataGuesser $guesser)
     {
-        $this->metadataFactory = $metadataFactory;
+        $this->metadataGuesser = $guesser;
     }
 
     public function getClassName()
@@ -134,25 +135,10 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
         $field['name'] = $fieldName;
         $field['widget'] = 'EntityType::class';
         $field['class'] = $relation['targetEntity'];
-        $field['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+        $field['choice_label'] = $this->metadataGuesser->guessChoiceLabelFromClass($relation['targetEntity']);
         $field['type'] = $relationType;
         return $field;
     }
 
-    /**
-     * Trying to find string field in relation entity. 
-     * @param type $entity
-     * @return string
-     */
-    private function guessChoiceLabelFromClass($entity)
-    {
-        $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
-        foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
-            if ($field['type'] == 'string') {
-                return $fieldName;
-            }
-        }
-        //if no string field found, return id
-        return 'id';
-    }
+ 
 }

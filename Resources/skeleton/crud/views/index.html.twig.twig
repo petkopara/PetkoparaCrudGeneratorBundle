@@ -8,13 +8,27 @@
 
 
 <div class="row">
-
+    <div class="col-md-12">
+        <div class="page-header">
+            <h2><a href="{{ "{{ path('"~ route_name_prefix ~"') }}" }}">{{ entity }}</a></h2>
+        </div>
+    </div>
+        
+    
 {%- if filter_type == 'form'%}
     {% include 'crud/views/others/form_filter_header.html.twig.twig' %}
 {% elseif filter_type =='input' %}
     {% include 'crud/views/others/multi_search_header.html.twig.twig' %}
 
 {% endif %}
+    
+    <div class="col-md-12">
+        {{ '{%- if form_errors(filterForm) %}' }}
+        <div class="alert alert-block alert-error fade in form-errors">
+            {{ '{{ form_errors(filterForm) }}' }}
+        </div>
+        {{ '{% endif %}' }}
+    </div>
 
 </div> <!-- /#top -->
 
@@ -37,7 +51,7 @@
 {% if without_sorting == false %}
                 {{'{% import "PetkoparaCrudGeneratorBundle::macros/th_sortable.html.twig" as macros %}'}}
     {% for field, metadata in fields %}
-                        <th>{{"{{macros.th_sortable('" ~field~"',app.request.get('sort_col'), app.request.get('sort_order') , '" ~ route_name_prefix ~ "')}}"}}</th>
+                        <th>{{"{{macros.th_sortable('" ~field~"',app.request.get('pcg_sort_col'), app.request.get('pcg_sort_order') , '" ~ route_name_prefix ~ "')}}"}}</th>
     {% endfor %}
 {% else %}
     {% for field, metadata in fields %}

@@ -22,14 +22,14 @@ class Configuration
     public function getCrudActions()
     {
         $actions = array('index');
-        if ($this->withoutWrite == false) {
+        if ($this->withoutWrite === false) {
             $actions = array_merge($actions, array('new', 'edit', 'delete'));
 
-            if ($this->withoutBulk == false) {
+            if ($this->withoutBulk === false) {
                 array_push($actions, 'bulk');
             }
         }
-        if ($this->withoutShow == false) {
+        if ($this->withoutShow === false) {
             array_push($actions, 'show');
         }
         return $actions;
@@ -90,42 +90,42 @@ class Configuration
         return $this;
     }
     
-    function getWithoutWrite()
+    public function getWithoutWrite()
     {
         return $this->withoutWrite;
     }
 
-    function getOverwrite()
+    public function getOverwrite()
     {
         return $this->overwrite;
     }
 
-    function getRoutePrefix()
+    public function getRoutePrefix()
     {
         return $this->routePrefix;
     }
 
-    function getFormat()
+    public function getFormat()
     {
         return $this->format;
     }
 
-    function setWithoutWrite($withoutWrite)
+    public function setWithoutWrite($withoutWrite)
     {
         $this->withoutWrite = $withoutWrite;
     }
 
-    function setOverwrite($overwrite)
+    public function setOverwrite($overwrite)
     {
         $this->overwrite = $overwrite;
     }
 
-    function setRoutePrefix($routePrefix)
+    public function setRoutePrefix($routePrefix)
     {
         $this->routePrefix = $routePrefix;
     }
 
-    function setFormat($format)
+    public function setFormat($format)
     {
         $this->format = $format;
     }

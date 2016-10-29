@@ -14,8 +14,8 @@
 namespace Petkopara\CrudGeneratorBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
-use Petkopara\CrudGeneratorBundle\Configuration\Configuration;
 use Petkopara\CrudGeneratorBundle\Configuration\ConfigurationBuilder;
+use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
@@ -310,7 +310,7 @@ EOT
         ;
 
         $generator = $this->getGenerator($bundle);
-
+        
         $generator->generateCrud($bundle, $entity, $metadata[0], $configuration);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
@@ -324,14 +324,10 @@ EOT
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
-        if ($filterType == self::FILTER_TYPE_FORM) {
-            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
+        if ($filterType !== self::FILTER_TYPE_NONE) {
+            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite,$filterType );
             $output->writeln('Generating the Filter code: <info>OK</info>');
-        } elseif ($filterType == self::FILTER_TYPE_INPUT) {
-            $this->generateMultiSearchFilter($bundle, $entity, $forceOverwrite);
-            $output->writeln('Generating the Multi Search Filter code: <info>OK</info>');
         }
-
         // routing
         $output->write('Updating the routing: ');
         if ('annotation' != $format) {
@@ -347,30 +343,16 @@ EOT
      * Tries to generate filtlers if they don't exist yet and if we need write operations on entities.
      * @param string $entity
      */
-    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false)
+    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false, $type = self::FILTER_TYPE_INPUT)
     {
-        $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite);
-    }
-
-    protected function generateMultiSearchFilter($bundle, $entity, $forceOverwrite = false)
-    {
-        $this->getMultiSearchFilter($bundle)->generate($bundle, $entity, $forceOverwrite);
-    }
-
-    protected function getMultiSearchFilter($bundle)
-    {
-        if (null === $this->multiSearchGenerator) {
-            $this->multiSearchGenerator = new PetkoparaMultiSearchFilterGenerator();
-            $this->multiSearchGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
-        }
-
-        return $this->multiSearchGenerator;
+        $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite, $type);
     }
 
     protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
-            $this->filterGenerator = new PetkoparaFilterGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->filterGenerator = new PetkoparaFilterGenerator($metadataGuesser);
             $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
@@ -380,7 +362,8 @@ EOT
     protected function getFormGenerator($bundle = null)
     {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new PetkoparaFormGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->formGenerator = new PetkoparaFormGenerator($metadataGuesser);
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 

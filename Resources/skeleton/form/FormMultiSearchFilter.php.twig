@@ -16,6 +16,11 @@ class {{ form_class }} extends AbstractType
         
         $builder->add('search', MultiSearchType::class, array(
                     'class' => '{{bundle ~":"~entity_class}}',
+                    'search_fields' => array( //optional, if it's empty it will search in the all entity columns
+{% for field in fields_data %}
+                        '{{field.fieldName}}',
+{%endfor %}
+                 ), 
                     ));
                     
        $builder->setMethod('GET');

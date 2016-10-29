@@ -1,7 +1,11 @@
-<?php namespace Petkopara\CrudGeneratorBundle\Generator;
+<?php
+
+namespace Petkopara\CrudGeneratorBundle\Generator;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand;
+use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Yaml\Exception\RuntimeException;
@@ -14,16 +18,16 @@ class PetkoparaFilterGenerator extends Generator
 
     private $className;
     private $classPath;
-    private $metadataFactory;
+    private $metadataGuesser;
 
     /**
      * Constructor.
      *
      * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
      */
-    public function __construct(DisconnectedMetadataFactory $metadataFactory)
+    public function __construct(MetadataGuesser $guesser)
     {
-        $this->metadataFactory = $metadataFactory;
+        $this->metadataGuesser = $guesser;
     }
 
     public function getClassName()
@@ -46,7 +50,7 @@ class PetkoparaFilterGenerator extends Generator
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite, $type)
     {
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
@@ -66,16 +70,30 @@ class PetkoparaFilterGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('form/FormFilterType.php.twig', $this->classPath, array(
-            'fields_data' => $this->getFieldsDataFromMetadata($metadata),
-            'fields_associated' => $this->getAssociatedFields($metadata),
-            'namespace' => $bundle->getNamespace(),
-            'entity_namespace' => implode('\\', $parts),
-            'entity_class' => $entityClass,
-            'bundle' => $bundle->getName(),
-            'form_class' => $this->className,
-            'form_filter_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . $this->className),
-        ));
+        if ($type == CrudGeneratorCommand::FILTER_TYPE_FORM) {
+
+
+            $this->renderFile('form/FormFilterType.php.twig', $this->classPath, array(
+                'fields_data' => $this->getFieldsDataFromMetadata($metadata),
+                'fields_associated' => $this->getAssociatedFields($metadata),
+                'namespace' => $bundle->getNamespace(),
+                'entity_namespace' => implode('\\', $parts),
+                'entity_class' => $entityClass,
+                'bundle' => $bundle->getName(),
+                'form_class' => $this->className,
+                'form_filter_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . $this->className),
+            ));
+        } else { //multi search input 
+            $this->renderFile('form/FormMultiSearchFilter.php.twig', $this->classPath, array(
+                'namespace' => $bundle->getNamespace(),
+                'fields_data' => $this->getFieldsDataFromMetadata($metadata),
+                'entity_namespace' => implode('\\', $parts),
+                'entity_class' => $entityClass,
+                'bundle' => $bundle->getName(),
+                'form_class' => $this->className,
+                'form_filter_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()) . ($parts ? '_' : '') . implode('_', $parts) . '_' . $this->className),
+            ));
+        }
     }
 
     /**
@@ -139,32 +157,16 @@ class PetkoparaFilterGenerator extends Generator
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
             if ($relation['type'] == ClassMetadataInfo::MANY_TO_ONE ||
-                $relation['type'] == ClassMetadataInfo::ONE_TO_MANY ||
-                $relation['type'] == ClassMetadataInfo::ONE_TO_ONE ||
-                $relation['type'] == ClassMetadataInfo::MANY_TO_MANY) {
+                    $relation['type'] == ClassMetadataInfo::ONE_TO_MANY ||
+                    $relation['type'] == ClassMetadataInfo::ONE_TO_ONE ||
+                    $relation['type'] == ClassMetadataInfo::MANY_TO_MANY) {
                 $fields[$fieldName]['name'] = $fieldName;
                 $fields[$fieldName]['widget'] = 'Filters\EntityFilterType::class';
                 $fields[$fieldName]['class'] = $relation['targetEntity'];
-                $fields[$fieldName]['choice_label'] = $this->guessChoiceLabelFromClass($relation['targetEntity']);
+                $fields[$fieldName]['choice_label'] = $this->metadataGuesser->guessChoiceLabelFromClass($relation['targetEntity']);
             }
         }
         return $fields;
     }
 
-    /**
-     * Trying to find string field in relation entity. 
-     * @param type $entity
-     * @return string
-     */
-    private function guessChoiceLabelFromClass($entity)
-    {
-        $metadata = $this->metadataFactory->getClassMetadata($entity)->getMetadata();
-        foreach ($metadata[0]->fieldMappings as $fieldName => $field) {
-            if ($field['type'] == 'string') {
-                return $fieldName;
-            }
-        }
-        //if no string field found, return id
-        return 'id';
-    }
 }
