@@ -103,18 +103,17 @@ EOT
     protected function getSkeletonDirs(BundleInterface $bundle = null)
     {
         $skeletonDirs = array();
-
-        if (isset($bundle) && is_dir($dir = $bundle->getPath() . '/Resources/SensioGeneratorBundle/skeleton')) {
+        if (isset($bundle) && is_dir($dir = $bundle->getPath() . '/Resources/PetkoparaCrudGeneratorBundle/skeleton')) {
             $skeletonDirs[] = $dir;
         }
 
-        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir() . '/Resources/SensioGeneratorBundle/skeleton')) {
+        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir() . '/Resources/PetkoparaCrudGeneratorBundle/skeleton')) {
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources/skeleton');
-        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources');
-
+        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
+        $skeletonDirs[] = __DIR__.'/../Resources';
+        
         return $skeletonDirs;
     }
 
@@ -182,19 +181,6 @@ EOT
         $filterType = $questionHelper->ask($input, $output, $question);
         $input->setOption('filter-type', $filterType);
 
-        $withoutBulk = true;
-        //bulk delete
-        if ($withoutWrite === false) {
-            $withoutBulk = $input->getOption('without-bulk') ? true : false;
-            $output->writeln(array(
-                '',
-                'By default, the generator creates bulk actions ',
-                '',
-            ));
-            $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate bulk actions', $withoutBulk ? 'no' : 'yes', '?', $withoutBulk), $withoutBulk);
-            $withoutBulk = $questionHelper->ask($input, $output, $question);
-            $input->setOption('without-bulk', $withoutBulk);
-        }
 
         // template?
         $template = $input->getOption('template');
@@ -242,7 +228,6 @@ EOT
             sprintf('base template "<info>%s</info>".', $template),
             sprintf('without write "<info>%s</info>".', $withoutWrite),
             sprintf('Filters "<info>%s</info>".', $filterType),
-            sprintf('with bulk actions "<info>%s</info>".', $withoutBulk),
             '',
         ));
     }
