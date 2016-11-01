@@ -49,18 +49,13 @@ class PetkoparaFormGeneratorTest extends GeneratorTest
     private function generateForm($overwrite)
     {
 
-        $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
+        $guesser = $this->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser')
+                ->setMethods(array('guessChoiceLabelFromClass'))
                 ->disableOriginalConstructor()
-                ->setMethods(array('getClassMetadata', 'getMetadata'))
                 ->getMock();
-        $obj = new \stdClass();
-        $obj->fieldMappings = array('name' => array('type' => 'string'));
-        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array($obj)));
-        $metadataFactory->expects($this->any())
-                ->method($this->anything())  // all other calls return self
-                ->will($this->returnSelf());
+        $guesser->expects($this->any())->method('guessChoiceLabelFromClass')->will($this->returnValue('name'));
 
-        $generator = new PetkoparaFormGenerator($metadataFactory);
+        $generator = new PetkoparaFormGenerator($guesser);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();

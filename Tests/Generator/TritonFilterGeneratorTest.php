@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the CrudGeneratorBundle
  *
@@ -9,18 +10,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Petkopara\CrudGeneratorBundle\Tests\Generator;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Tests\Generator\GeneratorTest;
 
 class PetkoparaFilterGeneratorTest extends GeneratorTest
 {
 
-    public function testGenerate()
+    public function testGenerateForm()
     {
-        $this->generateFilter(false);
+        $this->generateFormFilter(false);
         $this->assertTrue(file_exists($this->tmpDir . '/Form/PostFilterType.php'));
         $content = file_get_contents($this->tmpDir . '/Form/PostFilterType.php');
 
@@ -41,27 +44,57 @@ class PetkoparaFilterGeneratorTest extends GeneratorTest
         }
     }
 
-    private function generateFilter($overwrite)
+    public function testGenerateMultiSearch()
+    {
+        $this->generateMultiSearchFilter(false);
+        $this->assertTrue(file_exists($this->tmpDir . '/Form/PostFilterType.php'));
+        $content = file_get_contents($this->tmpDir . '/Form/PostFilterType.php');
+
+        $this->assertContains("->add('search', MultiSearchType::class", $content);
+        $this->assertContains('class PostFilterType extends AbstractType', $content);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $this->assertContains('getName', $content);
+            $this->assertContains("'foo_barbundle_post'", $content);
+        } else {
+            $this->assertNotContains('getName', $content);
+            $this->assertNotContains("'foo_barbundle_post'", $content);
+        }
+    }
+
+    private function generateFormFilter($overwrite)
     {
 
-        $metadataFactory = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getClassMetadata', 'getMetadata'))
-            ->getMock();
-        $obj = new \stdClass();
-        $obj->fieldMappings = array('name' => array('type' => 'string'));
-        $metadataFactory->expects($this->any())->method('getMetadata')->will($this->returnValue(array($obj)));
-        $metadataFactory->expects($this->any())
-            ->method($this->anything())  // all other calls return self
-            ->will($this->returnSelf());
+        $generator = $this->getFilterGenerator();
+        $bundle = $this->getBundle();
+        $metadata = $this->getMetadata();
+        $generator->generate($bundle, 'Post', $metadata, $overwrite, CrudGeneratorCommand::FILTER_TYPE_FORM);
+    }
 
-        $generator = new PetkoparaFilterGenerator($metadataFactory);
+    private function generateMultiSearchFilter($overwrite)
+    {
+        $generator = $this->getFilterGenerator();
+        $bundle = $this->getBundle();
+        $metadata = $this->getMetadata();
+        $generator->generate($bundle, 'Post', $metadata, $overwrite, CrudGeneratorCommand::FILTER_TYPE_INPUT);
+    }
+
+    private function getFilterGenerator()
+    {
+
+        $guesser = $this->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser')
+                ->setMethods(array('guessChoiceLabelFromClass'))
+                ->disableOriginalConstructor()
+                ->getMock();
+        $guesser->expects($this->any())->method('guessChoiceLabelFromClass')->will($this->returnValue('name'));
+
+        $generator = new PetkoparaFilterGenerator($guesser);
         $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
 
-        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
-        $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
-        $bundle->expects($this->any())->method('getNamespace')->will($this->returnValue('Foo\BarBundle'));
+        return $generator;
+    }
 
+    private function getMetadata()
+    {
         $metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')->disableOriginalConstructor()->getMock();
         $metadata->identifier = array('id');
         $metadata->fieldMappings = array(
@@ -73,7 +106,15 @@ class PetkoparaFilterGeneratorTest extends GeneratorTest
         $metadata->associationMappings = array(
             'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'targetEntity' => 'FooBundle\Entity\Parent'),
         );
-
-        $generator->generate($bundle, 'Post', $metadata, $overwrite);
+        return $metadata;
     }
+
+    private function getBundle()
+    {
+        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
+        $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
+        $bundle->expects($this->any())->method('getNamespace')->will($this->returnValue('Foo\BarBundle'));
+        return $bundle;
+    }
+
 }

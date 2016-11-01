@@ -306,7 +306,6 @@ EOT
                 ->setRoutePrefix($prefix)
                 ->getConfiguration()
         ;
-
         $generator = $this->getGenerator($bundle);
         
         $generator->generateCrud($bundle, $entity, $metadata[0], $configuration);
