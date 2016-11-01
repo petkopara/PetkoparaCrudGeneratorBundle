@@ -25,13 +25,17 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
      */
     public function testInteractiveCommand($options, $input, $expected)
     {
-        list($entity, $format, $prefix, $withWrite) = $expected;
+        list($entity, $format, $prefix, $withoutWrite) = $expected;
         $advConfig = new Configuration();
+        $advConfig->setWithoutWrite($withoutWrite);
+        $advConfig->setRoutePrefix($prefix);
+        $advConfig->setFormat($format);
+        
         $generator = $this->getGenerator();
         $generator
                 ->expects($this->once())
-                ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withWrite, false, $advConfig)
+                ->method('generateCrud')
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
@@ -40,8 +44,8 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
     public function getInteractiveCommandData()
     {
         return array(
-            array(array(), "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', 'annotation', 'foobar', true)),
-//            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'), '', array('Blog\\Post', 'annotation', 'blog_post', false)),
+//            array(array(), "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', 'annotation', 'foobar', true)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'), '', array('Blog\\Post', 'annotation', 'blog_post', false)),
 //            array(array(), "AcmeBlogBundle:Blog/Post\ny\nyml\nfoobar\n", array('Blog\\Post', 'yml', 'foobar', true)),
 //            array(array(), "AcmeBlogBundle:Blog/Post\ny\nyml\n/foobar\n", array('Blog\\Post', 'yml', 'foobar', true)),
 //            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--with-write' => true), '', array('Blog\\Post', 'yml', 'foo', true)),
@@ -54,12 +58,17 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
      */
     public function testNonInteractiveCommand($options, $expected)
     {
-        list($entity, $format, $prefix, $withWrite) = $expected;
+        list($entity, $format, $prefix, $withoutWrite) = $expected;
         $generator = $this->getGenerator();
+         $advConfig = new Configuration();
+        $generator = $this->getGenerator();
+        $advConfig->setWithoutWrite($withoutWrite);
+        $advConfig->setRoutePrefix($prefix);
+        $advConfig->setFormat($format);
         $generator
                 ->expects($this->once())
-                ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withWrite)
+                ->method('generateCrud')
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, ''));
         $tester->execute($options, array('interactive' => false));
@@ -89,10 +98,13 @@ DATA;
         $generator = $this->getGenerator();
 
         $advConfig = new Configuration();
+        $advConfig->setWithoutWrite($withoutWrite);
+        $advConfig->setRoutePrefix($prefix);
+        $advConfig->setFormat($format);
         $generator
                 ->expects($this->once())
-                ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withoutWrite, false, $advConfig)
+                ->method('generateCrud')
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
@@ -114,12 +126,13 @@ DATA;
         $expected = array('Blog\\Post', 'yml', 'foobar', true);
         list($entity, $format, $prefix, $withWrite) = $expected;
         $advConfig = new Configuration();
-
+        $advConfig->setRoutePrefix($prefix);
+        $advConfig->setFormat($format);
         $generator = $this->getGenerator();
         $generator
                 ->expects($this->once())
                 ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withWrite, false, $advConfig)
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
@@ -137,14 +150,20 @@ DATA;
         file_put_contents($rootDir . '/config/routing.yml', $routing);
         $options = array();
         $input = "AcmeBlogBundle:Blog/Post\ny\ny\ny\nPetkoparaCrudGeneratorBundle::base.html.twig\nannotation\n/foobar\n\n";
-        $expected = array('Blog\\Post', 'annotation', 'foobar', true);
-        list($entity, $format, $prefix, $withWrite) = $expected;
+        $expected = array('Blog\\Post', 'annotation', 'foobar', false);
+        list($entity, $format, $prefix, $withoutWrite) = $expected;
         $advConfig = new Configuration();
+
+        $advConfig->setWithoutWrite($withoutWrite);
+        $advConfig->setRoutePrefix($prefix);
+        $advConfig->setFormat($format);
+        
+        
         $generator = $this->getGenerator();
         $generator
                 ->expects($this->once())
                 ->method('generate')
-                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $format, $prefix, $withWrite,false, $advConfig)
+                ->with($this->getBundle(), $entity, $this->getDoctrineMetadata(), $advConfig)
         ;
         $tester = new CommandTester($this->getCommand($generator, $input));
         $tester->execute($options);
@@ -187,7 +206,7 @@ DATA;
         return $this
                         ->getMockBuilder('Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator')
                         ->disableOriginalConstructor()
-                        ->setMethods(array('generate'))
+                        ->setMethods(array('generateCrud'))
                         ->getMock()
         ;
     }
@@ -201,6 +220,7 @@ DATA;
                         ->getMock()
         ;
     }
+
     protected function getFilterGenerator()
     {
         return $this

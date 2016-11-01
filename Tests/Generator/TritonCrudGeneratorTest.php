@@ -26,7 +26,11 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
     public function testGenerateYamlFull()
     {
         $advancedConfig = new Configuration();
-        $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'yml', '/post', true, true, $advancedConfig);
+        $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setFormat('yml');
+        $advancedConfig->setOverwrite(true);
+
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
             'Tests/Controller/PostControllerTest.php',
@@ -63,7 +67,10 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
     public function testGenerateXml()
     {
         $advancedConfig = new Configuration();
-        $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'xml', '/post', false, true, $advancedConfig);
+        $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setFormat('xml');
+        
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
             'Tests/Controller/PostControllerTest.php',
@@ -105,7 +112,9 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
     public function testGenerateAnnotationWrite()
     {
         $advancedConfig = new Configuration();
-        $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', true, true, $advancedConfig);
+        $advancedConfig->setFormat('annotation');
+        $advancedConfig->setRoutePrefix('/post');
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
             'Tests/Controller/PostControllerTest.php',
@@ -143,7 +152,11 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
     public function testGenerateAnnotation()
     {
         $advancedConfig = new Configuration();
-        $this->getGenerator()->generate($this->getBundle(), 'Post', $this->getMetadata(), 'annotation', '/post', false, true, $advancedConfig);
+         $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setFormat('annotation');
+        $advancedConfig->setOverwrite(true);
+        
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
             'Tests/Controller/PostControllerTest.php',
