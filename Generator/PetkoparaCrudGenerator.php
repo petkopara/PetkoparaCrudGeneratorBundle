@@ -93,6 +93,8 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
             'route_name_prefix' => $this->routeNamePrefix,
             'base_template' => $this->config->getBaseTemplate(),
             'without_bulk_action' => $this->config->getWithoutBulk(),
+            'without_sorting' => $this->config->getWithoutSorting(),
+            'without_page_size' => $this->config->getWithoutPageSize(),
             'filter_type' => $this->config->getFilterType(),
         ));
     }
@@ -189,6 +191,8 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
             'format' => $this->config->getFormat(),
             'bundle_views' => $this->config->getBundleViews(),
             'filter_type' => $this->config->getFilterTYpe(),
+            'without_sorting' => $this->config->getWithoutSorting(),
+            'without_page_size' => $this->config->getWithoutPageSize(),
         ));
     }
 

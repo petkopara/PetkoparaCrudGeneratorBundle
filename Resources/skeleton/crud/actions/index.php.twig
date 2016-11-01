@@ -105,19 +105,33 @@
     */
     protected function paginator($queryBuilder, Request $request)
     {
+        //sorting
+{% if without_sorting == false %}
+        $sortCol = $queryBuilder->getRootAlias().'.'.$request->get('pcg_sort_col', 'id');
+        $queryBuilder->orderBy($sortCol, $request->get('pcg_sort_order', 'desc'));
+{% endif %}
         // Paginator
         $adapter = new DoctrineORMAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
-        $currentPage = $request->get('page', 1);
-        $pagerfanta->setCurrentPage($currentPage);
+{% if without_sorting == false %}
+        $pagerfanta->setMaxPerPage($request->get('pcg_show' , 10));
+{% endif %}
+
+        try {
+            $pagerfanta->setCurrentPage($request->get('pcg_page', 1));
+        } catch (\Pagerfanta\Exception\OutOfRangeCurrentPageException $ex) {
+            $pagerfanta->setCurrentPage(1);
+        }
+        
         $entities = $pagerfanta->getCurrentPageResults();
 
         // Paginator - route generator
         $me = $this;
         $routeGenerator = function($page) use ($me, $request)
         {
-            $request->query->set('page', $page);
-            return $me->generateUrl('post', $request->query->all());
+            $requestParams = $request->query->all();
+            $requestParams['pcg_page'] = $page;
+            return $me->generateUrl('{{ route_name_prefix }}', $requestParams);
         };
 
         // Paginator - view

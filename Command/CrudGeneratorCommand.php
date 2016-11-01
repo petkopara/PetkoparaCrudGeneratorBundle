@@ -14,12 +14,11 @@
 namespace Petkopara\CrudGeneratorBundle\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
-use Petkopara\CrudGeneratorBundle\Configuration\Configuration;
 use Petkopara\CrudGeneratorBundle\Configuration\ConfigurationBuilder;
+use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaCrudGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFilterGenerator;
 use Petkopara\CrudGeneratorBundle\Generator\PetkoparaFormGenerator;
-use Petkopara\CrudGeneratorBundle\Generator\PetkoparaMultiSearchFilterGenerator;
 use Sensio\Bundle\GeneratorBundle\Command\AutoComplete\EntitiesAutoCompleter;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
@@ -43,7 +42,6 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
     protected $generator;
     protected $formGenerator;
     private $filterGenerator;
-    private $multiSearchGenerator;
 
     protected function configure()
     {
@@ -59,6 +57,8 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
                     new InputOption('format', 'f', InputOption::VALUE_REQUIRED, 'The format used for configuration files (php, xml, yml, or annotation)', 'annotation'),
                     new InputOption('overwrite', 'o', InputOption::VALUE_NONE, 'Overwrite any existing controller or form class when generating the CRUD contents'),
                     new InputOption('bundle-views', 'b', InputOption::VALUE_NONE, 'Whether or not to store the view files in app/Resources/views/ or in bundle dir'),
+                    new InputOption('without-sorting', 'wsr', InputOption::VALUE_NONE, 'Whether or not have sorting in the index'),
+                    new InputOption('without-page-size', 'wps', InputOption::VALUE_NONE, 'Whether or not to show items per page select in the index'),
                     new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
@@ -272,9 +272,10 @@ EOT
         $filterType = CrudValidators::validateFilterType($input->getOption('filter-type'));
         $withoutBulk = $input->getOption('without-bulk');
         $withoutShow = $input->getOption('without-show');
+        $withoutSorting = $input->getOption('without-sorting');
+        $withoutPageSize = $input->getOption('without-page-size');
         $bundleViews = $input->getOption('bundle-views');
         $template = $input->getOption('template');
-
 
         $forceOverwrite = $input->getOption('overwrite');
 
@@ -298,6 +299,8 @@ EOT
                 ->setWithoutBulk($withoutBulk)
                 ->setWithoutShow($withoutShow)
                 ->setWithoutWrite($withoutWrite)
+                ->setWithoutSorting($withoutSorting)
+                ->setWithoutPageSize($withoutPageSize)
                 ->setOverwrite($forceOverwrite)
                 ->setFormat($format)
                 ->setRoutePrefix($prefix)
@@ -305,7 +308,7 @@ EOT
         ;
 
         $generator = $this->getGenerator($bundle);
-
+        
         $generator->generateCrud($bundle, $entity, $metadata[0], $configuration);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
@@ -319,14 +322,10 @@ EOT
             $output->writeln('Generating the Form code: <info>OK</info>');
         }
 
-        if ($filterType == self::FILTER_TYPE_FORM) {
-            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite);
+        if ($filterType !== self::FILTER_TYPE_NONE) {
+            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite,$filterType );
             $output->writeln('Generating the Filter code: <info>OK</info>');
-        } elseif ($filterType == self::FILTER_TYPE_INPUT) {
-            $this->generateMultiSearchFilter($bundle, $entity, $forceOverwrite);
-            $output->writeln('Generating the Multi Search Filter code: <info>OK</info>');
         }
-
         // routing
         $output->write('Updating the routing: ');
         if ('annotation' != $format) {
@@ -342,30 +341,16 @@ EOT
      * Tries to generate filtlers if they don't exist yet and if we need write operations on entities.
      * @param string $entity
      */
-    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false)
+    protected function generateFilter($bundle, $entity, $metadata, $forceOverwrite = false, $type = self::FILTER_TYPE_INPUT)
     {
-        $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite);
-    }
-
-    protected function generateMultiSearchFilter($bundle, $entity, $forceOverwrite = false)
-    {
-        $this->getMultiSearchFilter($bundle)->generate($bundle, $entity, $forceOverwrite);
-    }
-
-    protected function getMultiSearchFilter($bundle)
-    {
-        if (null === $this->multiSearchGenerator) {
-            $this->multiSearchGenerator = new PetkoparaMultiSearchFilterGenerator();
-            $this->multiSearchGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
-        }
-
-        return $this->multiSearchGenerator;
+        $this->getFilterGenerator($bundle)->generate($bundle, $entity, $metadata[0], $forceOverwrite, $type);
     }
 
     protected function getFilterGenerator($bundle = null)
     {
         if (null === $this->filterGenerator) {
-            $this->filterGenerator = new PetkoparaFilterGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->filterGenerator = new PetkoparaFilterGenerator($metadataGuesser);
             $this->filterGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
@@ -375,7 +360,8 @@ EOT
     protected function getFormGenerator($bundle = null)
     {
         if (null === $this->formGenerator) {
-            $this->formGenerator = new PetkoparaFormGenerator(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
+            $this->formGenerator = new PetkoparaFormGenerator($metadataGuesser);
             $this->formGenerator->setSkeletonDirs($this->getSkeletonDirs($bundle));
         }
 
