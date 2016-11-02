@@ -48,7 +48,6 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $forceOverwrite = false)
     {
-
         $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 

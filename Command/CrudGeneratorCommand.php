@@ -111,9 +111,9 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
-        $skeletonDirs[] = __DIR__.'/../Resources';
-        
+        $skeletonDirs[] = __DIR__ . '/../Resources/skeleton';
+        $skeletonDirs[] = __DIR__ . '/../Resources';
+
         return $skeletonDirs;
     }
 
@@ -292,7 +292,7 @@ EOT
                 ->getConfiguration()
         ;
         $generator = $this->getGenerator($bundle);
-        
+
         $generator->generateCrud($bundle, $entity, $metadata[0], $configuration);
 
         $output->writeln('Generating the CRUD code: <info>OK</info>');
@@ -307,7 +307,8 @@ EOT
         }
 
         if ($filterType !== self::FILTER_TYPE_NONE) {
-            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite,$filterType );
+
+            $this->generateFilter($bundle, $entity, $metadata, $forceOverwrite, $filterType);
             $output->writeln('Generating the Filter code: <info>OK</info>');
         }
         // routing
@@ -332,6 +333,7 @@ EOT
 
     protected function getFilterGenerator($bundle = null)
     {
+        die(var_dump($this->filterGenerator));
         if (null === $this->filterGenerator) {
             $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
             $this->filterGenerator = new PetkoparaFilterGenerator($metadataGuesser);
@@ -355,6 +357,11 @@ EOT
     public function setFilterGenerator(PetkoparaFilterGenerator $filterGenerator)
     {
         $this->filterGenerator = $filterGenerator;
+    }
+
+    public function setFormCrudGenerator(PetkoparaFormGenerator $formGenerator)
+    {
+        $this->formGenerator = $formGenerator;
     }
 
 }
