@@ -26,7 +26,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
      */
     public function testInteractiveCommand($options, $input, $expected)
     {
-        list($entity, $withoutWrite, $filterType, $template, $format, $prefix, $withoutShow, $withoutBulk, $withoutSort, $withoutPageSize, $overwrite) = $expected;
+        list($entity, $withoutWrite, $filterType, $template, $format, $prefix, $withoutShow, $withoutBulk, $withoutSort, $withoutPageSize, $bundleViews, $overwrite) = $expected;
         $advConfig = new Configuration();
         $advConfig->setWithoutWrite($withoutWrite);
         $advConfig->setRoutePrefix($prefix);
@@ -38,6 +38,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
         $advConfig->setWithoutSorting($withoutSort);
         $advConfig->setWithoutPageSize($withoutPageSize);
         $advConfig->setOverwrite($overwrite);
+        $advConfig->setBundleViews($bundleViews);
 
         $generator = $this->getGenerator();
         $generator
@@ -52,14 +53,14 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
     public function getInteractiveCommandData()
     {
         return array(
-            array(array(), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'), '', array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--template'=> 'base.html.twig', '--filter-type'=>'none'), '', array('Blog\\Post', false, 'none', 'base.html.twig', 'annotation', 'blog_post', false, false, false, false, false)),
-            array(array(), "AcmeBlogBundle:Blog/Post\nn\nform\nbase.html.twig\nyml\n/foobar\n\n", array('Blog\\Post', false, 'form', 'base.html.twig', 'yml', 'foobar', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--without-write' => true, '--filter-type' => 'input'), '', array('Blog\\Post', true, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'yml', 'foo', false, false, false, false, false)),
-            array(array('--without-show' => true, '--without-bulk' => true,), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', true, true, false, false, false)),
-            array(array('--without-sorting' => true, '--without-page-size' => true), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', false, false, true, true, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--overwrite'=> true,'--without-sorting' => true, '--without-page-size' => true, '--without-show' => true, '--without-bulk' => true,), '', array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', true, true, true, true, true)),
+            array(array(), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', false, false, false, false, false, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--bundle-views'=> true), '', array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', false, false, false, false, true,false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--template'=> 'base.html.twig', '--filter-type'=>'none'), '', array('Blog\\Post', false, 'none', 'base.html.twig', 'annotation', 'blog_post', false, false, false, false, false, false)),
+            array(array(), "AcmeBlogBundle:Blog/Post\nn\nform\nbase.html.twig\nyml\n/foobar\n\n", array('Blog\\Post', false, 'form', 'base.html.twig', 'yml', 'foobar', false, false, false, false,false, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--without-write' => true, '--filter-type' => 'input'), '', array('Blog\\Post', true, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'yml', 'foo', false, false, false, false,false, false)),
+            array(array('--without-show' => true, '--without-bulk' => true,), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', true, true, false, false, false,false)),
+            array(array('--without-sorting' => true, '--without-page-size' => true, '--bundle-views'=> true), "AcmeBlogBundle:Blog/Post\nn\ninput\nbase.html.twig\nannotation\n/foobar\n\n", array('Blog\\Post', false, 'input', 'base.html.twig', 'annotation', 'foobar', false, false, true, true, true,false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--overwrite'=> true,'--without-sorting' => true, '--without-page-size' => true, '--without-show' => true, '--without-bulk' => true,), '', array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', true, true, true, true, false, true)),
         );
     }
 
@@ -68,7 +69,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
      */
     public function testNonInteractiveCommand($options, $expected)
     {
-        list($entity, $withoutWrite, $filterType, $template, $format, $prefix, $withoutShow, $withoutBulk, $withoutSort, $withoutPageSize, $overwrite) = $expected;
+        list($entity, $withoutWrite, $filterType, $template, $format, $prefix, $withoutShow, $withoutBulk, $withoutSort, $withoutPageSize, $bundleViews, $overwrite) = $expected;
         $advConfig = new Configuration();
         $advConfig->setWithoutWrite($withoutWrite);
         $advConfig->setRoutePrefix($prefix);
@@ -79,6 +80,7 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
         $advConfig->setWithoutBulk($withoutBulk);
         $advConfig->setWithoutSorting($withoutSort);
         $advConfig->setWithoutPageSize($withoutPageSize);
+        $advConfig->setBundleViews($bundleViews);
         $advConfig->setOverwrite($overwrite);
         $generator = $this->getGenerator();
 
@@ -94,10 +96,10 @@ class CrudGeneratorCommandTest extends GenerateCommandTest
     public function getNonInteractiveCommandData()
     {
         return array(
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'),  array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--filter-type'=> 'form', '--template'=> 'base.html.twig'),  array('Blog\\Post', false, 'form', 'base.html.twig', 'annotation', 'blog_post', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--without-write' => true),  array('Blog\\Post', true, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'yml', 'foo', false, false, false, false, false)),
-            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--without-show' => true, '--without-bulk' => true,'--without-sorting' => true, '--without-page-size' => true),  array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', true, true, true, true, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post'),  array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', false, false, false, false,  false, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--filter-type'=> 'form', '--bundle-views'=> true,  '--template'=> 'base.html.twig'),  array('Blog\\Post', false, 'form', 'base.html.twig', 'annotation', 'blog_post', false, false, false, false, true, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--format' => 'yml', '--route-prefix' => 'foo', '--without-write' => true),  array('Blog\\Post', true, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'yml', 'foo', false, false, false, false, false, false)),
+            array(array('--entity' => 'AcmeBlogBundle:Blog/Post', '--without-show' => true, '--without-bulk' => true,'--without-sorting' => true, '--without-page-size' => true),  array('Blog\\Post', false, 'input', 'PetkoparaCrudGeneratorBundle::base.html.twig', 'annotation', 'blog_post', true, true, true, true,  false, false)),
         );
     }
 

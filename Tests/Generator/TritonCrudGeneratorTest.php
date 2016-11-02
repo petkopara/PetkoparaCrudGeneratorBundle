@@ -61,7 +61,11 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
             $this->assertContains($string, $content);
         }
 
+
+        $this->assertBulk();
         $this->assertPagination();
+        $this->assertSorting();
+        $this->assertPageSize();
     }
 
     public function testGenerateXml()
@@ -69,7 +73,7 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
         $advancedConfig = new Configuration();
         $advancedConfig->setRoutePrefix('post');
         $advancedConfig->setFormat('xml');
-        
+
         $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
@@ -106,7 +110,10 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
             $this->assertNotContains($string, $content);
         }
 
+        $this->assertBulk();
         $this->assertPagination();
+        $this->assertSorting();
+        $this->assertPageSize();
     }
 
     public function testGenerateAnnotationWrite()
@@ -146,16 +153,20 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
             $this->assertContains($string, $content);
         }
 
+
+        $this->assertBulk();
         $this->assertPagination();
+        $this->assertSorting();
+        $this->assertPageSize();
     }
 
     public function testGenerateAnnotation()
     {
         $advancedConfig = new Configuration();
-         $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setRoutePrefix('post');
         $advancedConfig->setFormat('annotation');
         $advancedConfig->setOverwrite(true);
-        
+
         $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
         $files = array(
             'Controller/PostController.php',
@@ -186,28 +197,57 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
             $this->assertContains($string, $content);
         }
 
+        $this->assertBulk();
         $this->assertPagination();
+        $this->assertSorting();
+        $this->assertPageSize();
     }
 
     public function testGenerateWithBaseTemplate()
     {
-        
+        $template = 'base.html.twig';
+        $advancedConfig = new Configuration();
+        $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setFormat('annotation');
+        $advancedConfig->setOverwrite(true);
+
+        $advancedConfig->setBaseTemplate($template);
+
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
+        $content = file_get_contents($this->tmpDir . '/Resources/views/post/index.html.twig');
+        $strings = array(
+            "{% extends '$template' %}",
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+
+        $this->assertBulk();
+        $this->assertPagination();
+        $this->assertSorting();
+        $this->assertPageSize();
     }
 
     public function testGenerateWithBundleViews()
     {
-        
+        $advancedConfig = new Configuration();
+        $advancedConfig->setRoutePrefix('post');
+        $advancedConfig->setFormat('annotation');
+        $advancedConfig->setBundleViews(false);
+
+        $this->getGenerator()->generateCrud($this->getBundle(), 'Post', $this->getMetadata(), $advancedConfig);
+        $files = array(
+            'Controller/PostController.php',
+            'Resources/views/post/index.html.twig',
+            'Resources/views/post/show.html.twig',
+            'Resources/views/post/new.html.twig',
+            'Resources/views/post/edit.html.twig',
+        );
+        foreach ($files as $file) {
+            $this->assertTrue(file_exists($this->tmpDir . '/' . $file), sprintf('%s has been generated', $file));
+        }
     }
 
-    public function testGenerateWithoutFilter()
-    {
-        
-    }
-
-    public function testGenerateWithoutDelete()
-    {
-        
-    }
 
     /**
      * @dataProvider getRoutePrefixes
@@ -287,11 +327,62 @@ class CrudGeneratorGeneratorTest extends GeneratorTest
         }
     }
 
-    protected function assertWithDelete()
+    protected function assertBulk()
     {
         $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
         $strings = array(
             'public function deleteById',
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+
+
+        $content = file_get_contents($this->tmpDir . '/Resources/views/post/index.html.twig');
+        $strings = array(
+            '<select class = "form-control" name="bulk_action" >',
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+    }
+
+    protected function assertSorting()
+    {
+        $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
+        $strings = array(
+            '$queryBuilder->orderBy($sortCol, $request->get(\'pcg_sort_order\', \'desc\'));',
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+
+
+        $content = file_get_contents($this->tmpDir . '/Resources/views/post/index.html.twig');
+        $strings = array(
+            '{% import "PetkoparaCrudGeneratorBundle::macros/th_sortable.html.twig" as macros %}',
+            'macros.th_sortable',
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+    }
+
+    protected function assertPageSize()
+    {
+        $content = file_get_contents($this->tmpDir . '/Controller/PostController.php');
+        $strings = array(
+            '$pagerfanta->setCurrentPage($request->get(\'pcg_page\', 1));',
+        );
+        foreach ($strings as $string) {
+            $this->assertContains($string, $content);
+        }
+
+
+        $content = file_get_contents($this->tmpDir . '/Resources/views/post/index.html.twig');
+        $strings = array(
+            '<select class = "form-control"  onchange="window.location = this.value" >',
+            '<option value=\'{{ path(\'post\', app.request.query.all|merge({\'pcg_show\': \'10\'})) }}\' {% if app.request.get(\'pcg_show\') == 10 %} selected {% endif %}>10</option>',
         );
         foreach ($strings as $string) {
             $this->assertContains($string, $content);

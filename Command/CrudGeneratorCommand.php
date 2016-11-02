@@ -333,7 +333,6 @@ EOT
 
     protected function getFilterGenerator($bundle = null)
     {
-        die(var_dump($this->filterGenerator));
         if (null === $this->filterGenerator) {
             $metadataGuesser = new MetadataGuesser(new DisconnectedMetadataFactory($this->getContainer()->get('doctrine')));
             $this->filterGenerator = new PetkoparaFilterGenerator($metadataGuesser);
