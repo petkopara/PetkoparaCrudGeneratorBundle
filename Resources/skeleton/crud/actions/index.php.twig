@@ -49,7 +49,7 @@
         // Filter action
         if ($request->get('filter_action') == 'filter') {
             // Bind values from the request
-            $filterForm->submit($request->query->get($filterForm->getName()));
+            $filterForm->handleRequest($request);
 
             if ($filterForm->isValid()) {
                 // Build the query from the given form object

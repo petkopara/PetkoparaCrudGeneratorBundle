@@ -5,17 +5,21 @@
     <div  id="filters" class="collapse">
 
         <form class="well" action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
-            {% for field, metadata in fields %} 
+            <div class="row">
+                {% for field, metadata in fields %} 
 
-                <div class="col-md-6">{{"{{ form_row(filterForm."~field~") }}"}}</div>
+                    <div class="col-md-6">{{"{{ form_row(filterForm."~field~") }}"}}</div>
 
-            {% endfor %}
-            {{ "{{ form_rest(filterForm) }}" }}
+                {% endfor %}
+                {{ "{{ form_rest(filterForm) }}" }}
 
-            <p>
-                <button type="submit" class="btn btn-warning" name="filter_action" value="filter"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>
-                <button type="submit" class="btn btn-default" name="filter_action" value="reset"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Reset</button>
-            </p>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-warning" name="filter_action" value="filter"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>
+                        <button type="submit" class="btn btn-default" name="filter_action" value="reset"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Reset</button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
