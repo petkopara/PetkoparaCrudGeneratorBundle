@@ -5,8 +5,10 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 [![Build Status](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
-[![Latest Stable](https://img.shields.io/packagist/v/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
-[![Total Downloads](https://img.shields.io/packagist/dt/triton/crud-generator.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/triton/crud-generator)
+[![Latest Stable](https://img.shields.io/packagist/v/petkopara/crud-generator-bundle.svg?maxAge=2592000)
+[![Total Downloads](https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)
+[![Code Coverage](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
 
 ## Features
 * Pagination - using pagerFanta

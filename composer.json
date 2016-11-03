@@ -1,7 +1,7 @@
 {
     "name": "petkopara/crud-generator-bundle",
     "description": "Symfony3 bundle for CRUD generation with pagination, filtering, sorting, page size, bulk delete and bootstrap3 markup. This Generator supports Doctrine association mapping.",
-    "keywords": ["crud", "generator", "symfony3", "pagination", "filter", "bootstrap3", "doctrine", "bulk"],
+    "keywords": ["crud", "generator", "symfony3", "pagination", "filter", "bootstrap3", "doctrine", "bulk", "sorting", "page size"],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [

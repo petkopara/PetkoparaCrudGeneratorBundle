@@ -111,8 +111,8 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__ . '/../Resources/skeleton';
-        $skeletonDirs[] = __DIR__ . '/../Resources';
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources/skeleton');
+        $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@PetkoparaCrudGeneratorBundle/Resources');
 
         return $skeletonDirs;
     }
