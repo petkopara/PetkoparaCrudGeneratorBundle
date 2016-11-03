@@ -5,8 +5,8 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 [![Build Status](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
-[![Latest Stable](https://img.shields.io/packagist/v/petkopara/crud-generator-bundle.svg?maxAge=2592000)
-[![Total Downloads](https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)
+[![Latest Stable](https://img.shields.io/packagist/v/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/petkopara/crud-generator-bundle)
+[![Total Downloads](https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/petkopara/crud-generator-bundle)
 [![Code Coverage](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
 
@@ -25,7 +25,7 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 ## Screenshot
 
-![Screenshot](https://raw.github.com/petkopara/CrudGeneratorBundle/master/screenshot.png "Screenshot")
+![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot.png "Screenshot")
 
 ## Installation
 This bundle is compatible with Symfony 2.8/3.0 or higher.
