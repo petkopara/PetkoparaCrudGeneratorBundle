@@ -20,11 +20,10 @@ class PetkoparaFilterGenerator extends Generator
     private $classPath;
     private $metadataGuesser;
 
-    /**
-     * Constructor.
-     *
-     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
-     */
+  /**
+   * 
+   * @param MetadataGuesser $guesser
+   */
     public function __construct(MetadataGuesser $guesser)
     {
         $this->metadataGuesser = $guesser;
@@ -110,7 +109,7 @@ class PetkoparaFilterGenerator extends Generator
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
             $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
-            if ($fieldWidget) {
+            if ($fieldWidget!== false) {
                 $fieldsResult[$fieldName]['fieldName'] = $fieldName;
                 $fieldsResult[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
             }
@@ -119,7 +118,7 @@ class PetkoparaFilterGenerator extends Generator
         return $fieldsResult;
     }
 
-    private function getFilterType($dbType, $columnName)
+    private function getFilterType($dbType)
     {
         switch ($dbType) {
             case 'boolean':

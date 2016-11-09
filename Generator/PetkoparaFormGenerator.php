@@ -1,4 +1,6 @@
-<?php namespace Petkopara\CrudGeneratorBundle\Generator;
+<?php
+
+namespace Petkopara\CrudGeneratorBundle\Generator;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -19,9 +21,8 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
     private $metadataGuesser;
 
     /**
-     * Constructor.
-     *
-     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
+     * 
+     * @param MetadataGuesser $guesser
      */
     public function __construct(MetadataGuesser $guesser)
     {
@@ -67,7 +68,7 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
         array_pop($parts);
 
         $this->renderFile('form/FormType.php.twig', $this->classPath, array(
-            'fields' => $this->getFieldsFromMetadata($metadata),
+            'fields' => $this->getFieldsFromEntityMetadata($metadata),
             'fields_associated' => $this->getAssociatedFields($metadata),
             'fields_mapping' => $metadata->fieldMappings,
             'namespace' => $bundle->getNamespace(),
@@ -91,7 +92,7 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
      *
      * @return array $fields
      */
-    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
+    private function getFieldsFromEntityMetadata(ClassMetadataInfo $metadata)
     {
         $fields = (array) $metadata->fieldNames;
 
@@ -108,7 +109,7 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
         $fields = array();
 
         foreach ($metadata->associationMappings as $fieldName => $relation) {
-            
+
             switch ($relation['type']) {
                 case ClassMetadataInfo::ONE_TO_ONE:
                 case ClassMetadataInfo::MANY_TO_ONE:
@@ -131,6 +132,7 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
      */
     private function getRelationFieldData($fieldName, $relation, $relationType)
     {
+        $field = array();
         $field['name'] = $fieldName;
         $field['widget'] = 'EntityType::class';
         $field['class'] = $relation['targetEntity'];
@@ -139,5 +141,4 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
         return $field;
     }
 
- 
 }
