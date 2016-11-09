@@ -23,9 +23,10 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 * Possiblity to not generate show code.
 * Most of the features are optional and you can generate the CRUD very flexible depending on your needs.
 
-## Screenshot
+## Screenshots
 
-![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot.png "Screenshot")
+![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_multi.png "Screenshot Multi Search")
+![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_form.png "Screenshot Form Filter")
 
 ## Installation
 This bundle is compatible with Symfony 2.8/3.0 or higher.
