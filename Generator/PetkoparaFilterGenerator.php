@@ -108,7 +108,7 @@ class PetkoparaFilterGenerator extends Generator
         $fieldsResult = array();
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
-            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
+            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type']);
             if ($fieldWidget!== false) {
                 $fieldsResult[$fieldName]['fieldName'] = $fieldName;
                 $fieldsResult[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);

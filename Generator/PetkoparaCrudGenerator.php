@@ -18,7 +18,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
     /**
      * 
      * @param BundleInterface $bundle
-     * @param type $entity
+     * @param string $entity
      * @param ClassMetadataInfo $metadata
      * @param Configuration $config
      * @throws RuntimeException
