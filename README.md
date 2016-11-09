@@ -25,7 +25,9 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 
 ## Screenshots
 
+### Multi Search Filter
 ![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_multi.png "Screenshot Multi Search")
+### Form Filter 
 ![Screenshot](https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_form.png "Screenshot Form Filter")
 
 ## Installation
