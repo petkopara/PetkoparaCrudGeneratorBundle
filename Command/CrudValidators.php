@@ -16,7 +16,7 @@ class CrudValidators
 
         $filterType = strtolower($filterType);
 
-        if($filterType==1){//set to default value
+        if ($filterType == 1) {//set to default value
             $filterType = CrudGeneratorCommand::FILTER_TYPE_FORM;
         }
         // in case they typed "no", but ok with that

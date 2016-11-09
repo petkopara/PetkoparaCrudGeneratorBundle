@@ -19,10 +19,10 @@ class PetkoparaFilterGenerator extends Generator
     private $classPath;
     private $metadataGuesser;
 
-  /**
-   * 
-   * @param MetadataGuesser $guesser
-   */
+    /**
+     * 
+     * @param MetadataGuesser $guesser
+     */
     public function __construct(MetadataGuesser $guesser)
     {
         $this->metadataGuesser = $guesser;
