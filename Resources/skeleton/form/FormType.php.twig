@@ -34,18 +34,13 @@ class {{ form_class }} extends AbstractType
             ->add('{{ field.name }}', {{field.widget}}, array(
                 'class' => '{{field.class}}',
                 'choice_label' => '{{field.choice_label}}',
-{% if field.type == 'MANY_TO_ONE' or field.type == 'ONE_TO_ONE' %}
+{% if field.type == constant('Doctrine\\ORM\\Mapping\\ClassMetadataInfo::ONE_TO_ONE') or field.type == constant('Doctrine\\ORM\\Mapping\\ClassMetadataInfo::MANY_TO_ONE')%}
                 'placeholder' => 'Please choose',
                 'empty_data' => null,
                 'required' => false
  {%endif %}
 
-{% if field.type == 'ONE_TO_MANY' %}
-                'required' => false,
-                'expanded' => false,
-                'multiple' => true
-{%endif %}
-{% if field.type == 'MANY_TO_MANY' %}
+{% if field.type == constant('Doctrine\\ORM\\Mapping\\ClassMetadataInfo::MANY_TO_MANY') %}
                 'expanded' => true,
                 'multiple' => true
 {%endif %}

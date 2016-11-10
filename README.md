@@ -13,7 +13,7 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 ## Features
 * Pagination - using pagerFanta
 * Filtering (With single multi search input or form)
-* Doctrine association mapping support(Many-to-One, One-to-Many, One-to-One and Many-to-Many) in forms and filters
+* Doctrine association mapping support for Many-to-One, One-to-One and Many-to-Many (if the relation is the owning side) in forms and filters
 * Sorting 
 * Items per page
 * Bulk actions(delete) on multiple rows

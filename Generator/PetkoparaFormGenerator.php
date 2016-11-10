@@ -113,13 +113,10 @@ class PetkoparaFormGenerator extends DoctrineFormGenerator
             switch ($relation['type']) {
                 case ClassMetadataInfo::ONE_TO_ONE:
                 case ClassMetadataInfo::MANY_TO_ONE:
-                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_ONE");
-                    break;
                 case ClassMetadataInfo::MANY_TO_MANY:
-                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "MANY_TO_MANY");
-                    break;
-                case ClassMetadataInfo::ONE_TO_MANY:
-                    $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, "ONE_TO_MANY");
+                    if ($relation['isOwningSide']) {
+                        $fields[$fieldName] = $this->getRelationFieldData($fieldName, $relation, $relation['type']);
+                    }
                     break;
             }
         }
