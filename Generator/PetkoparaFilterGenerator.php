@@ -2,7 +2,6 @@
 
 namespace Petkopara\CrudGeneratorBundle\Generator;
 
-use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand;
 use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
@@ -20,10 +19,10 @@ class PetkoparaFilterGenerator extends Generator
     private $classPath;
     private $metadataGuesser;
 
-  /**
-   * 
-   * @param MetadataGuesser $guesser
-   */
+    /**
+     * 
+     * @param MetadataGuesser $guesser
+     */
     public function __construct(MetadataGuesser $guesser)
     {
         $this->metadataGuesser = $guesser;

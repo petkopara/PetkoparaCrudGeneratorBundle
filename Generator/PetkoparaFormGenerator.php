@@ -2,7 +2,6 @@
 
 namespace Petkopara\CrudGeneratorBundle\Generator;
 
-use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
 use RuntimeException;
