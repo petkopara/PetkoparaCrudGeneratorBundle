@@ -69,7 +69,7 @@ class PetkoparaFormGeneratorTest extends GeneratorTest
             'createdAt' => array('type' => 'date'),
             'publishedAt' => array('type' => 'time'),
             'updatedAt' => array('type' => 'datetime'),
-            'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'targetEntity' => 'FooBundle\Entity\Parent'),
+            'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'isOwningSide'=> true ,'targetEntity' => 'FooBundle\Entity\Parent'),
         );
         $metadata->fieldNames = array(
             'title' => 'title',
