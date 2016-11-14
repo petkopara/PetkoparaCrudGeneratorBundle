@@ -56,7 +56,7 @@ class PetkoparaFormGeneratorTest extends GeneratorTest
         $guesser->expects($this->any())->method('guessChoiceLabelFromClass')->will($this->returnValue('name'));
 
         $generator = new PetkoparaFormGenerator($guesser);
-        $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
+        $generator->setSkeletonDirs(array(__DIR__ . '/../../Resources/skeleton'));
 
         $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\BundleInterface')->getMock();
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
@@ -69,7 +69,7 @@ class PetkoparaFormGeneratorTest extends GeneratorTest
             'createdAt' => array('type' => 'date'),
             'publishedAt' => array('type' => 'time'),
             'updatedAt' => array('type' => 'datetime'),
-            'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'targetEntity' => 'FooBundle\Entity\Parent'),
+            'parent' => array('type' => ClassMetadataInfo::MANY_TO_ONE, 'isOwningSide'=> true ,'targetEntity' => 'FooBundle\Entity\Parent'),
         );
         $metadata->fieldNames = array(
             'title' => 'title',

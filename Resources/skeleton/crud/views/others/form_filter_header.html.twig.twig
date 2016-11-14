@@ -7,12 +7,12 @@
         <form class="well" action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
             <div class="row">
                 {% for field, metadata in fields %} 
-
                     <div class="col-md-6">{{"{{ form_row(filterForm."~field~") }}"}}</div>
 
                 {% endfor %}
+                  <div class="col-md-6">
                 {{ "{{ form_rest(filterForm) }}" }}
-
+                  </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <button type="submit" class="btn btn-warning" name="filter_action" value="filter"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>

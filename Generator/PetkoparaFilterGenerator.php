@@ -2,7 +2,6 @@
 
 namespace Petkopara\CrudGeneratorBundle\Generator;
 
-use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Petkopara\CrudGeneratorBundle\Command\CrudGeneratorCommand;
 use Petkopara\CrudGeneratorBundle\Generator\Guesser\MetadataGuesser;
@@ -21,9 +20,8 @@ class PetkoparaFilterGenerator extends Generator
     private $metadataGuesser;
 
     /**
-     * Constructor.
-     *
-     * @param DisconnectedMetadataFactory $metadataFactory DisconnectedMetadataFactory instance
+     * 
+     * @param MetadataGuesser $guesser
      */
     public function __construct(MetadataGuesser $guesser)
     {
@@ -109,8 +107,8 @@ class PetkoparaFilterGenerator extends Generator
         $fieldsResult = array();
         // Convert type to filter widget
         foreach ($fieldsData as $fieldName => $data) {
-            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
-            if ($fieldWidget) {
+            $fieldWidget = $this->getFilterType($fieldsData[$fieldName]['type']);
+            if ($fieldWidget!== false) {
                 $fieldsResult[$fieldName]['fieldName'] = $fieldName;
                 $fieldsResult[$fieldName]['filterWidget'] = $this->getFilterType($fieldsData[$fieldName]['type'], $fieldName);
             }
@@ -119,7 +117,7 @@ class PetkoparaFilterGenerator extends Generator
         return $fieldsResult;
     }
 
-    private function getFilterType($dbType, $columnName)
+    private function getFilterType($dbType)
     {
         switch ($dbType) {
             case 'boolean':

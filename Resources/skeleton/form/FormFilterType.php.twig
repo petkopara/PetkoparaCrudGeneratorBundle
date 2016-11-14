@@ -5,9 +5,7 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormError;
+
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
 
 
@@ -16,18 +14,16 @@ class {{ form_class }} extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        {%- for data in fields_data %}
-
+{% for data in fields_data %}
             ->add('{{ data.fieldName }}', {{ data.filterWidget }})
-
-        {%- endfor %}
+{% endfor %}
         
-        {% for field in fields_associated %}
+{% for field in fields_associated %}
             ->add('{{ field.name }}', {{field.widget}}, array(
                     'class' => '{{field.class}}',
                     'choice_label' => '{{field.choice_label}}',
             )) 
-        {% endfor %}
+{% endfor %}
         ;
         $builder->setMethod("GET");
 

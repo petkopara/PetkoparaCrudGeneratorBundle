@@ -88,7 +88,7 @@ class PetkoparaFilterGeneratorTest extends GeneratorTest
         $guesser->expects($this->any())->method('guessChoiceLabelFromClass')->will($this->returnValue('name'));
 
         $generator = new PetkoparaFilterGenerator($guesser);
-        $generator->setSkeletonDirs(__DIR__ . '/../../Resources/skeleton');
+        $generator->setSkeletonDirs(array(__DIR__ . '/../../Resources/skeleton'));
 
         return $generator;
     }

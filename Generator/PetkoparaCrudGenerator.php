@@ -18,7 +18,7 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
     /**
      * 
      * @param BundleInterface $bundle
-     * @param type $entity
+     * @param string $entity
      * @param ClassMetadataInfo $metadata
      * @param Configuration $config
      * @throws RuntimeException
@@ -160,7 +160,6 @@ class PetkoparaCrudGenerator extends DoctrineCrudGenerator
 
         /**
          * Generates the controller class only.
-         * @param boolean $config->getOverwrite()
          */
         protected function generateCrudControllerClass() {
         $dir = $this->bundle->getPath();

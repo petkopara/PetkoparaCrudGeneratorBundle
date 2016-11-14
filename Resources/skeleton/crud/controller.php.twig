@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 {% if 'annotation' == format -%}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 {%- endif %}
 
 use Pagerfanta\Pagerfanta;
@@ -15,13 +14,6 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 use {{ namespace }}\Entity\{{ entity }};
-{% if 'new' in actions or 'edit' in actions %}
-use {{ namespace }}\Form\{{ entity }}Type;
-{% endif %}
-
-{% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
-use {{ namespace }}\Form\{{ entity }}FilterType;
-{% endif %}
 
 /**
  * {{ entity }} controller.
