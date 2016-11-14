@@ -174,9 +174,9 @@ EOT
         $output->writeln(array(
             '',
             'By default, the generator generate filter code.',
-             '"form" to use LexikFormFilterBundle to search in the entity.',
-             '"input" to use PetkoparaMultiSearchBundle to search only with one input in the entity.',
-             '"none" use this to not generate any filter code.',
+             '<comment>form</comment> to use LexikFormFilterBundle to search in the entity.',
+             '<comment>input</comment> to use PetkoparaMultiSearchBundle to search only with one input in the entity.',
+             '<comment>none</comment> use this to not generate any filter code.',
             '',
         ));
         $question = new Question($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
@@ -193,7 +193,7 @@ EOT
             'You can also set your template which the views to extend, for example base.html.twig ',
             '',
         ));
-        $question = new Question($questionHelper->getQuestion('Base template for the views(example: base.html.twig)', $template), $template);
+        $question = new Question($questionHelper->getQuestion('Base template for the views', $template), $template);
         $template = $questionHelper->ask($input, $output, $question);
         $input->setOption('template', $template);
 
@@ -227,9 +227,10 @@ EOT
             $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg=white', true),
             '',
             sprintf('You are going to generate a CRUD controller for "<info>%s:%s</info>"', $bundle, $entity),
-            sprintf('using the "<info>%s</info>" format.', $format),
-            sprintf('base template "<info>%s</info>".', $template),
-            sprintf('without write "<info>%s</info>".', $withoutWrite),
+            sprintf('Using the "<info>%s</info>" format.', $format),
+            sprintf('Route prefix "<info>%s</info>" format.', $prefix),
+            sprintf('Base template "<info>%s</info>".', $template),
+            sprintf('With write "<info>%s</info>".', (!$withoutWrite) ? 'yes' : 'no'),
             sprintf('Filters "<info>%s</info>".', $filterType),
             '',
         ));
