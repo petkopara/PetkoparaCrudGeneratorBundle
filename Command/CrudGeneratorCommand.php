@@ -62,7 +62,7 @@ class CrudGeneratorCommand extends GenerateDoctrineCrudCommand
                     new InputOption('without-write', 'ww', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-show', 'ws', InputOption::VALUE_NONE, 'Whether or not to generate create, new and delete actions'),
                     new InputOption('without-bulk', 'wb', InputOption::VALUE_NONE, 'Whether or not to generate bulk actions'),
-                    new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Multi search input, Form filter or none', 'input'),
+                    new InputOption('filter-type', 'ft', InputOption::VALUE_REQUIRED, 'What type of filtrations to be used. Multi search input, Form filter or none', 'form'),
                 ))
                 ->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a CRUD based on a Doctrine entity.
@@ -173,7 +173,10 @@ EOT
         $filterType = $input->getOption('filter-type');
         $output->writeln(array(
             '',
-            'By default, the generator creates filter',
+            'By default, the generator generate filter code.',
+             '"form" to use LexikFormFilterBundle to search in the entity.',
+             '"input" to use PetkoparaMultiSearchBundle to search only with one input in the entity.',
+             '"none" use this to not generate any filter code.',
             '',
         ));
         $question = new Question($questionHelper->getQuestion('Filter Type (form, input, none)', $filterType), $filterType);
@@ -190,7 +193,7 @@ EOT
             'You can also set your template which the views to extend, for example base.html.twig ',
             '',
         ));
-        $question = new Question($questionHelper->getQuestion('Base template for the views', $template), $template);
+        $question = new Question($questionHelper->getQuestion('Base template for the views(example: base.html.twig)', $template), $template);
         $template = $questionHelper->ask($input, $output, $question);
         $input->setOption('template', $template);
 
