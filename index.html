@@ -20,34 +20,48 @@
 
     <section class="main-content">
       <h1>
-<a id="tritoncrudbundle" class="anchor" href="#tritoncrudbundle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TritonCrudBundle</h1>
+<a id="crudgeneratorbundle" class="anchor" href="#crudgeneratorbundle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CrudGeneratorBundle</h1>
 
-<p>Symfony3 CRUD generator bundle with pagination, filter, bulk actions and Twitter bootstrap 3.3.6 markup.
+<p>Symfony3 CRUD generator bundle with pagination, filtering, Twitter bootstrap 3.3.6 markup and many other features.
+It's Simple to use and fully customizable.
 Extends the functionality of <a href="https://github.com/sensio/SensioGeneratorBundle">SensioGeneratorBundle</a> with additional options and features.</p>
 
-<p><a href="https://travis-ci.org/petkopara/TritonCrudBundle"><img src="https://travis-ci.org/petkopara/TritonCrudBundle.svg?branch=master" alt="Build Status"></a>
+<p><a href="https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle"><img src="https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle.svg?branch=master" alt="Build Status"></a>
 <a href="https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b"><img src="https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png" alt="SensioLabsInsight"></a>
-<a href="https://packagist.org/packages/triton/crud-generator"><img src="https://img.shields.io/packagist/v/triton/crud-generator.svg?maxAge=2592000?style=flat-square" alt="Latest Stable"></a>
-<a href="https://packagist.org/packages/triton/crud-generator"><img src="https://img.shields.io/packagist/dt/triton/crud-generator.svg?maxAge=2592000?style=flat-square" alt="Total Downloads"></a></p>
+<a href="https://packagist.org/packages/petkopara/crud-generator-bundle"><img src="https://img.shields.io/packagist/v/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square" alt="Latest Stable"></a>
+<a href="https://packagist.org/packages/petkopara/crud-generator-bundle"><img src="https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square" alt="Total Downloads"></a>
+<a href="https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master"><img src="https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/coverage.png?b=master" alt="Code Coverage"></a>
+<a href="https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master"><img src="https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a></p>
 
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
-<li>Pagination</li>
-<li>Filtering </li>
-<li>Doctrine association mapping support(Many-to-One, One-to-Many, One-to-One and Many-to-Many) in forms and filters</li>
+<li>Pagination - using pagerFanta</li>
+<li>Filtering (With single multi search input or form)</li>
+<li>Doctrine association mapping support for Many-to-One, One-to-One and Many-to-Many (if the relation is the owning side) in forms and filters</li>
+<li>Sorting </li>
+<li>Items per page</li>
 <li>Bulk actions(delete) on multiple rows</li>
 <li>Delete from index</li>
 <li>Set your base template in the generated views.</li>
 <li>Possibility to set the save path for all the generated files (by default in app/Resources).</li>
-<li>Filtering, bulk and write are optional.</li>
+<li>Possiblity to not generate show code.</li>
+<li>Most of the features are optional and you can generate the CRUD very flexible depending on your needs.</li>
 </ul>
 
 <h2>
-<a id="screenshot" class="anchor" href="#screenshot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshot</h2>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshots</h2>
 
-<p><img src="https://raw.github.com/petkopara/TritonCrudBundle/master/screenshot.png" alt="Screenshot" title="Screenshot"></p>
+<h3>
+<a id="multi-search-filter" class="anchor" href="#multi-search-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multi Search Filter</h3>
+
+<p><img src="https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_multi.png" alt="Screenshot" title="Screenshot Multi Search"></p>
+
+<h3>
+<a id="form-filter" class="anchor" href="#form-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Form Filter</h3>
+
+<p><img src="https://raw.github.com/petkopara/PetkoparaCrudGeneratorBundle/master/screenshot_form.png" alt="Screenshot" title="Screenshot Form Filter"></p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
@@ -60,14 +74,19 @@ Extends the functionality of <a href="https://github.com/sensio/SensioGeneratorB
 <h4>
 <a id="symfony--28" class="anchor" href="#symfony--28" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Symfony &gt;= 2.8</h4>
 
-<pre><code>composer require triton/crud-generator
+<pre><code>composer require petkopara/crud-generator-bundle
 </code></pre>
 
 <p>Add it to the <code>AppKernel.php</code> class:</p>
 
 <pre><code>new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
-new Petkopara\TritonCrudBundle\PetkoparaTritonCrudBundle(),
+new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
+new Petkopara\CrudGeneratorBundle\PetkoparaCrudGeneratorBundle(),
 </code></pre>
+
+<p>Install the assets.</p>
+
+<div class="highlight highlight-source-shell"><pre>php bin/console assets:install --symlink</pre></div>
 
 <p>Optionally for the bootstrap theme, add this to your <code>app/config/config.yml</code></p>
 
@@ -76,39 +95,50 @@ new Petkopara\TritonCrudBundle\PetkoparaTritonCrudBundle(),
     - <span class="pl-s"><span class="pl-pds">'</span>bootstrap_3_layout.html.twig<span class="pl-pds">'</span></span><span class="pl-s"> </span>
 </pre></div>
 
-<p>If you are using the triton base.html.twig for base  template, install the assets.</p>
+<p>Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.</p>
 
-<div class="highlight highlight-source-shell"><pre>php bin/console assets:install --symlink</pre></div>
+
 
 <h2>
 <a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h2>
 
 <p>This bundle extends <a href="https://github.com/sensio/SensioGeneratorBundle">SensioGeneratorBundle</a>. 
-Pagination with <a href="https://github.com/whiteoctober/Pagerfanta/">PagerFanta</a> and filter
-support using <a href="https://github.com/lexik/LexikFormFilterBundle">LexikFormFilterBundle</a>.</p>
+Pagination with <a href="https://github.com/whiteoctober/Pagerfanta/">PagerFanta</a> . 
+For the filtering is used <a href="https://github.com/petkopara/PetkoparaMultiSearchBundle">PetkoparaMutiSearchBundle</a> and <a href="https://github.com/lexik/LexikFormFilterBundle">LexikFormFilterBundle</a>.</p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>Use the following command from console:</p>
 
-<div class="highlight highlight-source-shell"><pre>php bin/console triton:generate:crud</pre></div>
+<div class="highlight highlight-source-shell"><pre>php bin/console petkopara:generate:crud</pre></div>
 
 <p>And follow the wizard steps.</p>
 
 <h3>
 <a id="available-new-options" class="anchor" href="#available-new-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available new options</h3>
 
-<p>The bundle adds few new parameters to the generate command compared to the doctrine crud generator.</p>
+<p>The default behavior of the bundle is to generate full featured crud, but you can customize what to be generated or not. 
+The bundle adds few new parameters compared to the doctrine crud generator, to control all of the new features.</p>
 
 <ul>
-<li><p><code>--with-filter</code> -  To generate the filters.</p></li>
-<li><p><code>--with-bulk</code> - To generate bulk actions code.</p></li>
-<li><p><code>--template</code> - The base template name, which the views will override. For example set it to <code>--template=base.html.twig</code> to extends your base template.(by default TritonCrudBundle::base.html.twig).</p></li>
+<li>
+<p><code>--filter-type</code> - Which filter type to use. There is three options:</p>
+
+<ul>
+<li>input - To use Multi Search input. This is the default option.</li>
+<li>form - To use Lexik form filter.</li>
+<li>none - Will not generate any filter code.</li>
+</ul>
+</li>
+<li><p><code>--template</code> - The base template name, which the views will override. For example set it to <code>--template=base.html.twig</code> to extends your base template.(by default PetkoparaCrudGeneratorBundle::base.html.twig).</p></li>
+<li><p><code>--without-write</code> - The default behavior of the bundle is to generate write code, so for that <code>--with-write</code> option is transformed to this.</p></li>
+<li><p><code>--without-show</code> - Many times you don't need show code, for that this option is introduced. </p></li>
+<li><p><code>--without-sorting</code> - To not generate sorting code.</p></li>
+<li><p><code>--without-page-size</code> - To not generate items per page code.</p></li>
+<li><p><code>--without-bulk</code> - To not generate bulk actions code.</p></li>
 <li><p><code>--bundle-views</code> - Whether to store the view files in the bundles dir. By default the vies are stored in <em>app/Resources/views/</em>. It's not present in the wizard, but can be used as parameter.</p></li>
 </ul>
-
-<p><code>--with-write</code> options is enabled by default.</p>
 
 <h2>
 <a id="author" class="anchor" href="#author" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Author</h2>
@@ -118,7 +148,7 @@ support using <a href="https://github.com/lexik/LexikFormFilterBundle">LexikForm
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
-<p>TritonCrudBundle is licensed under the MIT License.</p>
+<p>CrudGeneratorBundle is licensed under the MIT License.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/petkopara/PetkoparaCrudGeneratorBundle">Tritoncrudbundle</a> is maintained by <a href="https://github.com/petkopara">petkopara</a>.</span>
