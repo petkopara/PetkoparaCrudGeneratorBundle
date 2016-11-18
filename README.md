@@ -60,7 +60,7 @@ twig:
 
 Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.
 
-    <script src="{{asset("bundles/tritoncrud/js/petkopara-crud-generator.min.js")}}"></script>
+    <script src="{{ asset('bundles/petkoparaCrudGenerator/js/petkopara-crud-generator.js') }}"></script>
 
 ## Dependencies
 
