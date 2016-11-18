@@ -1,9 +1,7 @@
 <?php
 
 /*
- * This file is part of the CrudBundle
- *
- * It is based/extended from SensioGeneratorBundle
+ * This file is part of the PetkoparaCrudGeneratorBundle
  *
  * (c) Petko Petkov <petkopara@gmail.com>
  *

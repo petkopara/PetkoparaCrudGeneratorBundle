@@ -1,6 +1,6 @@
    
 
-
+<-- FILTERING -->
 <div class="col-md-12">
     <div  id="filters" class="collapse">
 
@@ -10,9 +10,9 @@
                     <div class="col-md-6">{{"{{ form_row(filterForm."~field~") }}"}}</div>
 
                 {% endfor %}
-                  <div class="col-md-6">
-                {{ "{{ form_rest(filterForm) }}" }}
-                  </div>
+                <div class="col-md-6">
+                    {{ "{{ form_rest(filterForm) }}" }}
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <button type="submit" class="btn btn-warning" name="filter_action" value="filter"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>
@@ -23,6 +23,8 @@
         </form>
     </div>
 </div>
+<-- END FILTERING -->
+
 
 <div class="col-md-3 pull-left">
     {% include 'crud/views/others/page_size.html.twig.twig' %}

@@ -1,9 +1,10 @@
-   
+
 <div class="col-md-3 pull-left">
     {% include 'crud/views/others/page_size.html.twig.twig' %}
 </div>
 
 
+<-- FILTERING -->
 <div class="col-md-6">
     <form action="{{ "{{ path('"~ route_name_prefix ~"') }}" }}" method="get" >
 
@@ -21,6 +22,9 @@
         </div>
     </form>
 </div>
+<-- END FILTERING -->            
+            
+            
 
 <div class="col-md-3">
     {% if 'new' in actions %}

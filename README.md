@@ -59,7 +59,8 @@ twig:
 ```
 
 Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.
-<script src="{{asset("bundles/tritoncrud/js/petkopara-crud-generator.min.js")}}"></script>
+
+    <script src="{{asset("bundles/tritoncrud/js/petkopara-crud-generator.min.js")}}"></script>
 
 ## Dependencies
 
@@ -80,7 +81,7 @@ The default behavior of the bundle is to generate full featured crud, but you ca
 The bundle adds few new parameters compared to the doctrine crud generator, to control all of the new features.
 
 * `--filter-type` - Which filter type to use. There is three options:
-  * input - To use Multi Search input. This is the default option.
+  * input - To use Multi Search input.
   * form - To use Lexik form filter.
   * none - Will not generate any filter code.
 
