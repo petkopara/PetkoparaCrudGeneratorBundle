@@ -39,7 +39,7 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
 
     composer require petkopara/crud-generator-bundle
 
-Add it to the `AppKernel.php` class:
+Register the bundles with your kernel:`AppKernel.php` class:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
     new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
