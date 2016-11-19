@@ -1,7 +1,7 @@
 # CrudGeneratorBundle
 Symfony3 CRUD generator bundle with pagination, filtering, Twitter bootstrap 3.3.6 markup and many other features.
 It's Simple to use and fully customizable.
-Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
+Designed to bring back the functionality of the old Symfony 1.4 admin generator, but extending from [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
 [![Build Status](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b/mini.png)](https://insight.sensiolabs.com/projects/7d24085a-9a27-4607-adf5-efe1bb39f62b)
@@ -11,7 +11,7 @@ Extends the functionality of [SensioGeneratorBundle](https://github.com/sensio/S
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
 
 ## Features
-* Pagination - using pagerFanta
+* Pagination - using PagerFanta
 * Filtering (With single multi search input or form)
 * Doctrine association mapping support for Many-to-One, One-to-One and Many-to-Many (if the relation is the owning side) in forms and filters
 * Sorting 
@@ -58,7 +58,7 @@ twig:
 
 ```
 
-Optionally if you are using your own base tempalte, be sure that you include the javascript file of the bundle in your base template.
+Optionally if you are using your own base template, be sure that you include the javascript file of the bundle in it.
 
     <script src="{{ asset('bundles/petkoparaCrudGenerator/js/petkopara-crud-generator.js') }}"></script>
 
@@ -97,7 +97,10 @@ The bundle adds few new parameters compared to the doctrine crud generator, to c
 
 * `--without-bulk` - To not generate bulk actions code.
 
-* `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_. It's not present in the wizard, but can be used as parameter.
+* `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_ .
+
+
+Don't forget that this is a just crud generator and you are free to change everything generated from the this bundle. 
 
 ## Author
 
