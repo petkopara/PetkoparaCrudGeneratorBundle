@@ -1,6 +1,7 @@
 # CrudGeneratorBundle
 Symfony3 CRUD generator bundle with pagination, filtering, Twitter bootstrap 3.3.6 markup and many other features.
 It's Simple to use and fully customizable.
+
 Designed to bring back the functionality of the old Symfony 1.4 admin generator, but extending from [SensioGeneratorBundle](https://github.com/sensio/SensioGeneratorBundle) with additional options and features.
 
 [![Build Status](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle.svg?branch=master)](https://travis-ci.org/petkopara/PetkoparaCrudGeneratorBundle)
@@ -39,7 +40,7 @@ This bundle is compatible with Symfony 2.8/3.0 or higher.
 
     composer require petkopara/crud-generator-bundle
 
-Register the bundles with your kernel:`AppKernel.php` class:
+Register the CRUD and filter bundles in your `AppKernel.php`:
 
     new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
     new Petkopara\MultiSearchBundle\PetkoparaMultiSearchBundle(),
@@ -50,7 +51,7 @@ Install the assets.
 php bin/console assets:install --symlink
 ```
 
-Optionally for the bootstrap theme, add this to your `app/config/config.yml`
+For the bootstrap theme of the forms, add this to your `app/config/config.yml`
 ```yaml
 twig:
     form_themes:
@@ -100,12 +101,11 @@ The bundle adds few new parameters compared to the doctrine crud generator, to c
 * `--bundle-views` - Whether to store the view files in the bundles dir. By default the vies are stored in _app/Resources/views/_ .
 
 
-Don't forget that this is a just crud generator and you are free to change everything generated from the this bundle. 
+Don't forget, that this is a just crud generator and you are free to change everything generated from this bundle. 
 
 ## Author
 
-Petko Petkov - petkopara@gmail.com
-
+Petko Petkov - petkopara at gmail dot com
 
 ## License
 
