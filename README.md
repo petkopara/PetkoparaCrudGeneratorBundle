@@ -9,7 +9,7 @@ Designed to bring back the functionality of the old Symfony 1.4 admin generator,
 [![Latest Stable](https://img.shields.io/packagist/v/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/petkopara/crud-generator-bundle)
 [![Code Coverage](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/petkopara/PetkoparaCrudGeneratorBundle/?branch=master)
-[//]: # ([![Total Downloads](https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/petkopara/crud-generator-bundle))
+[![Total Downloads](https://img.shields.io/packagist/dt/petkopara/crud-generator-bundle.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/petkopara/crud-generator-bundle)
 
 ## Features
 * Pagination - using PagerFanta
