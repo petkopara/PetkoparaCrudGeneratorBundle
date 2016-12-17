@@ -114,10 +114,9 @@
         <div class="col-md-4 pull-left">
             <div class="pagination form-inline ">
                 <select class = "form-control" name="bulk_action" >
-                    <option value="">--Choose--</option>
                     <option value="delete">DELETE</option>
                 </select>
-                <input type="submit" id='bulkSubmitBtn' form="bulk_form" class="form-control btn btn-danger btn-sm" disabled>
+                <input type="submit" id='bulkSubmitBtn' onclick="return confirm('Are you sure?')" form="bulk_form" class="form-control btn btn-danger btn-sm" disabled>
             </div>
         </div>
 {% endif %}

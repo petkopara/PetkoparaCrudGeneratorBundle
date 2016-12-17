@@ -26,6 +26,7 @@ function bulkSubmitBtnManage()
             break;
         }
     }
+    
     if (selected) {
         document.getElementById('bulkSubmitBtn').disabled = false;
     } else {

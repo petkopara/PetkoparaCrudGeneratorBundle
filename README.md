@@ -61,7 +61,7 @@ twig:
 
 Optionally if you are using your own base template, be sure that you include the javascript file of the bundle in it.
 
-    <script src="{{ asset('bundles/petkoparaCrudGenerator/js/petkopara-crud-generator.js') }}"></script>
+    <script src="{{ asset('bundles/petkoparacrudgenerator/js/petkopara-crud-generator.js') }}"></script>
 
 ## Dependencies
 
