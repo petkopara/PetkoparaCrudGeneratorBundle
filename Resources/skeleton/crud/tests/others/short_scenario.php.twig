@@ -1,15 +1,14 @@
 
     public function testCompleteScenario()
     {
-        $client = $this->client;
-        $this->logIn();
-
+        // Create a new client to browse the application
+        $client = static::createClient();
 
         // Go to the list view
-        $crawler = $client->request('GET', '/admin/{{ route_prefix }}/');
-        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->request('GET', '/{{ route_name_prefix }}/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /{{ route_prefix }}/");
 
         // Go to the show view
-        $crawler = $client->click($crawler->selectLink('show')->link());
-        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        $crawler = $client->click($crawler->filter('a[title="Show"]')->link());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code");
     }
