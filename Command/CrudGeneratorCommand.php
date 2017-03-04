@@ -156,14 +156,13 @@ EOT
 
         // write?
         $withoutWrite = $input->getOption('without-write') ? true : false; //default false
-
         $output->writeln(array(
             '',
             'By default, the generator creates all actions: list and show, new, update, and delete.',
-            'You can also ask it to generate only "list and show" actions:',
+            'You can also skip it and to generate only "list and show" actions:',
             '',
         ));
-        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to generate the "write" actions', $withoutWrite ? 'no' : 'yes', '?', $withoutWrite), $withoutWrite);
+        $question = new ConfirmationQuestion($questionHelper->getQuestion('Do you want to skip generating of the "write" actions', $withoutWrite ? 'yes' : 'no', '?', $withoutWrite), $withoutWrite);
         $withoutWrite = $questionHelper->ask($input, $output, $question);
         $input->setOption('without-write', $withoutWrite);
 
@@ -283,9 +282,9 @@ EOT
                 ->setBaseTemplate($template)
                 ->setBundleViews($bundleViews)
                 ->setFilterType($filterType)
+                ->setWithoutWrite($withoutWrite)
                 ->setWithoutBulk($withoutBulk)
                 ->setWithoutShow($withoutShow)
-                ->setWithoutWrite($withoutWrite)
                 ->setWithoutSorting($withoutSorting)
                 ->setWithoutPageSize($withoutPageSize)
                 ->setOverwrite($forceOverwrite)

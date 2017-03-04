@@ -80,7 +80,11 @@ class Configuration
 
     public function setWithoutBulk($withoutBulk)
     {
-        $this->withoutBulk = $withoutBulk;
+        if ($this->withoutWrite) {
+            $this->withoutBulk = true;
+        } else {
+            $this->withoutBulk = $withoutBulk;
+        }
         return $this;
     }
 
