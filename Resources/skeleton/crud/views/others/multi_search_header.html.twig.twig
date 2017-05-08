@@ -14,7 +14,7 @@
             {{ "{{form_rest(filterForm) }}"}}
 
             <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">
+                <button class="btn btn-primary" type="submit" onclick="$(this).button('loading')" data-loading-text="Loading..">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </span>
