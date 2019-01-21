@@ -15,10 +15,9 @@
 {% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
         list($filterForm, $queryBuilder) = $this->filter($queryBuilder, $request);
 {% endif %}
+        $totalOfRecordsString = $this->getTotalOfRecordsString(clone $queryBuilder, $request);
         list(${{ entity_pluralized }}, $pagerHtml) = $this->paginator($queryBuilder, $request);
         
-        $totalOfRecordsString = $this->getTotalOfRecordsString($queryBuilder, $request);
-
 {% if bundle_views == false%}
         return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/index.html.twig', array(
 {%else%}
