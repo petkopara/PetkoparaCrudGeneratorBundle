@@ -25,9 +25,9 @@
 {% endif %}
             '{{ entity_pluralized }}' => ${{ entity_pluralized }},
             'pagerHtml' => $pagerHtml,
+			'totalOfRecordsString' => $totalOfRecordsString,
 {% if filter_type != constant('Petkopara\\CrudGeneratorBundle\\Command\\CrudGeneratorCommand::FILTER_TYPE_NONE') %}
             'filterForm' => $filterForm->createView(),
-            'totalOfRecordsString' => $totalOfRecordsString,
 {% endif %}
 
         ));
